@@ -3,3 +3,7 @@ Contact Information
 Colin Imaizumi-Rankin
 colin.imaizumi@mail.utoronto.ca
 (@Kevin if you see this message, add me on FB and I'll add you to the messenger group we already have)
+
+Yichen(Charles) Cai
+charles.cai@mail.utoronto.ca
+(The above is my contact info, you can reach me on facebook, this is just for the testing of git push)
