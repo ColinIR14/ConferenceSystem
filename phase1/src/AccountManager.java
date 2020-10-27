@@ -1,20 +1,22 @@
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.io.Serializable;
 
 /**
  * An Account Manager. A use case class for managing user's account.
  */
 
-public class AccountManager {
+public class AccountManager implements Serializable{
 
     private ArrayList<User> userList;
 
     /**
      * Creates an AccountManager with an empty ArrayList of User.
      * NOTE TO CONTROLLER/GATEWAY: Since the AccountManger creates a new userList when it is instantiated, it needs
-     * to load all User information from the database when a new AccountManager is created. Make sure there is a
-     * method in the Gateway that loads the User info as instances of User to the AccountManager. Use addNewUser
-     * method to add to the userList.
+     * to load(or save) all User information in the database when a new AccountManager is created. Make sure there is a
+     * method in the Gateway that reads/write the User info as instances of User to the AccountManager. An
+     * AccountManager can be saved in a AccountManager.ser file for easy reading/writing, as this class implements
+     * Serializable. But this can be decided later.
      */
     public AccountManager(){
         userList = new ArrayList<>();
@@ -24,15 +26,19 @@ public class AccountManager {
      * Takes in an User and add it to the list of User that the manager manages.
      * The system will not accept duplicate usernames.
      * Returns true iff the User is successfully added.
-     * @param u instance of User
+     * @param username String of the new user's username
+     * @param password String of the new user's password
      * @return a boolean if the User has been successfully added
      */
-    public boolean addNewUser(User u){
+    public boolean addNewUser(String username, String password){
         for (User currentUser : userList){
-            if (currentUser.getUsername().equals(u.getUsername())){
+            if (currentUser.getUsername().equals(username)){
                 return false; //duplicate username
             }
         }
+        User u = new User();
+        u.setUsername(username);
+        u.setPassword(password);
         userList.add(u);
         return true;
     }
