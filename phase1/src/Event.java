@@ -43,6 +43,12 @@ public class Event {
   public void addAttendee(User NewAttendee){
     Attendees.add(NewAttendee);
   }
+  public void removeAttendees(ArrayList<User> NewAttendees){
+    Attendees.removeAll(NewAttendees);
+  }
+  public void removeAttendee(User NewAttendee){
+    Attendees.remove(NewAttendee);
+  }
   public Speaker GetSpeaker(){
     return EventSpeaker;
   }
