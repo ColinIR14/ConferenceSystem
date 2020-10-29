@@ -1,8 +1,9 @@
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
-public class Event {
+public class Event implements Serializable{
   private Integer id;
   private String eventName;
   private Time eventTime;

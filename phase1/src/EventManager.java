@@ -1,7 +1,8 @@
 import java.sql.Time;
 import java.util.ArrayList;
+import java.io.Serializable;
 
-public class EventManager {
+public class EventManager implements Serializable{
     private ArrayList<Event> eventList;
 
     /**

@@ -81,4 +81,19 @@ public class AccountManager implements Serializable{
     public void resetPassword(User u, String newPassword){
         u.setPassword(newPassword);
     }
+
+    @Override
+    public String toString(){
+        String userNameList = "Users in the system:";
+        for(User u : userList){
+            userNameList = userNameList + u.getUsername() + ", ";
+        }
+        return userNameList;
+    }
+
+    /**
+     * Delete user
+     * isorganizer
+     * create new organizer
+     */
 }

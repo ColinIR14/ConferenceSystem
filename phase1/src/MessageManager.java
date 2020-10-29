@@ -1,6 +1,7 @@
 import java.util.List;
+import java.io.Serializable;
 
-public class MessageManager {
+public class MessageManager implements Serializable{
 
     private String userMessage;
     private List<User> messageable;

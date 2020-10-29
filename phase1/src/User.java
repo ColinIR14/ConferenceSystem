@@ -1,7 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
-public class User {
+public class User implements Serializable{
     private String password;
     private String username;
     private boolean logInStatus;
