@@ -61,4 +61,8 @@ public class User implements Serializable{
         eventsAttending.add(e);
     }
 
+    //TODO: need to be implemented:
+    public String getAccountType() {
+        return "";
+    }
 }
