@@ -20,8 +20,8 @@ public class EventManager {
      */
     public boolean signUpUsertoEvent(String eventname, User user){
         for (Event x: eventList){
-            if(x.GetEventName().equals(eventname)){
-                if (x.GetAttendees().contains(user)) {
+            if(x.getEventName().equals(eventname)){
+                if (x.getAttendees().contains(user)) {
                     return false;
                 }
                 else{
@@ -42,8 +42,8 @@ public class EventManager {
      */
     public boolean cancelUseratEvent(String eventname, User user){
         for (Event x: eventList){
-            if(x.GetEventName().equals(eventname)){
-                if (x.GetAttendees().contains(user)) {
+            if(x.getEventName().equals(eventname)){
+                if (x.getAttendees().contains(user)) {
                     x.removeAttendee(user);
                     return true;
                 }
@@ -72,13 +72,13 @@ public class EventManager {
             if (x.equals(tempevent)){
                 return false;
             }
-            else if (x.GetEventName().equals(EventName)){
+            else if (x.getEventName().equals(EventName)){
                 return false;
             }
-            else if (x.GetEventTime().equals(EventTime) && x.getEventRoom().equals(EventRoom)){
+            else if (x.getEventTime().equals(EventTime) && x.getEventRoom().equals(EventRoom)){
                 return false;
             }
-            else if (x.GetEventTime().equals(EventTime) && x.GetSpeaker().equals(EventSpeaker)){
+            else if (x.getEventTime().equals(EventTime) && x.getSpeaker().equals(EventSpeaker)){
                 return false;
             }
         }

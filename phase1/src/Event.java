@@ -3,70 +3,70 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Event {
-  private String EventName;
-  private Time EventTime;
-  private List<User> Attendees;
-  private Room EventRoom;
-  private Speaker EventSpeaker;
+  private String eventName;
+  private Time eventTime;
+  private List<User> attendees;
+  private Room eventRoom;
+  private Speaker eventSpeaker;
   public Event(String EventName,Time EventTime,List<User>Attendees,Room EventRoom,Speaker EventSpeaker){//constructor with a list of attendees
-    this.EventName=EventName;
-    this.EventTime=EventTime;
-    this.Attendees= Attendees;
-    this.EventRoom=EventRoom;
-    this.EventSpeaker=EventSpeaker;
+    this.eventName=EventName;
+    this.eventTime=EventTime;
+    this.attendees= Attendees;
+    this.eventRoom=EventRoom;
+    this.eventSpeaker=EventSpeaker;
   }
   public Event(String EventName,Time EventTime,Room EventRoom,Speaker EventSpeaker){//constructor without list of attendees
-    this.EventName=EventName;
-    this.EventTime=EventTime;
-    this.Attendees= new ArrayList<>();
-    this.EventRoom=EventRoom;
-    this.EventSpeaker=EventSpeaker;
+    this.eventName=EventName;
+    this.eventTime=EventTime;
+    this.attendees= new ArrayList<>();
+    this.eventRoom=EventRoom;
+    this.eventSpeaker=EventSpeaker;
   }
-  public String GetEventName(){
-    return EventName;
+  public String getEventName(){
+    return eventName;
   }
-  public Time GetEventTime(){
-    return EventTime;
+  public Time getEventTime(){
+    return eventTime;
   }
-  public void SetEventTime(Time t){
-    EventTime=t;
+  public void setEventTime(Time t){
+    eventTime=t;
   }
-  public List<User> GetAttendees(){
-    return Attendees;
+  public List<User> getAttendees(){
+    return attendees;
   }
   public void setAttendees(ArrayList<User> NewAttendees){//3 methods to edit Attendees implemented
-    Attendees=NewAttendees;
+    attendees=NewAttendees;
   }
   public void addAttendees(ArrayList<User> NewAttendees){
-    Attendees.addAll(NewAttendees);
+    attendees.addAll(NewAttendees);
   }
   public void addAttendee(User NewAttendee){
-    Attendees.add(NewAttendee);
+    attendees.add(NewAttendee);
   }
   public void removeAttendees(ArrayList<User> NewAttendees){
-    Attendees.removeAll(NewAttendees);
+    attendees.removeAll(NewAttendees);
   }
   public void removeAttendee(User NewAttendee){
-    Attendees.remove(NewAttendee);
+    attendees.remove(NewAttendee);
   }
-  public Speaker GetSpeaker(){
-    return EventSpeaker;
+  public Speaker getSpeaker(){
+    return eventSpeaker;
   }
-  public void SetSpeaker(Speaker s){
-    EventSpeaker=s;
+  public void setSpeaker(Speaker s){
+    eventSpeaker=s;
   }
   public Room getEventRoom(){
-    return EventRoom;
+    return eventRoom;
   }
   public void setEventRoom(Room r){
-    EventRoom=r;
+    eventRoom=r;
   }
   @Override
   public boolean equals(Object e){// returns equal if both events have either same speaker and time, or same time and room, thus can be used to prevent conflicts
     if (! (e instanceof  Event)) return false;
     else {
       Event q =  (Event) e;
-      return ((this.EventRoom== q.EventRoom & this.EventTime==q.EventTime)||(this.EventTime==q.EventTime & this.EventSpeaker==q.EventSpeaker));
+      return ((this.eventRoom== q.eventRoom & this.eventTime==q.eventTime)||(this.eventTime==q.eventTime & this.eventSpeaker==q.eventSpeaker));
     }
   }
 
