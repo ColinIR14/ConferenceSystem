@@ -9,6 +9,7 @@ import java.io.Serializable;
 public class AccountManager implements Serializable{
 
     private ArrayList<User> userList;
+    public User currentUser;
 
     /**
      * Creates an AccountManager with an empty ArrayList of User.
@@ -62,6 +63,7 @@ public class AccountManager implements Serializable{
                 if (u.getPassword().equals(password)){
                     //compare password
                     u.setLogInStatus(true);
+                    currentUser = u;
                     return true;
                 }
                 else{
