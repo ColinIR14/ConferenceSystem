@@ -1,7 +1,8 @@
 import java.sql.Time;
 import java.util.ArrayList;
+import java.io.Serializable;
 
-public class EventManager {
+public class EventManager implements Serializable{
     private ArrayList<Event> eventList;
 
     /**
@@ -66,8 +67,8 @@ public class EventManager {
      * an Event in Eventlist clashes with EventTime and EventSpeaker of Event being added.
      * Otherwise, add the Event to eventList and return true.
      */
-    public boolean addNewEvent(String EventName, Time EventTime, Room EventRoom, Speaker EventSpeaker){
-        Event tempevent = new Event(EventName, EventTime, EventRoom, EventSpeaker);
+    public boolean addNewEvent(Integer id, String EventName, Time EventTime, Room EventRoom, Speaker EventSpeaker){
+        Event tempevent = new Event(id, EventName, EventTime, EventRoom, EventSpeaker);
         for (Event x: eventList){
             if (x.equals(tempevent)){
                 return false;

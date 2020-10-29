@@ -3,6 +3,7 @@ import java.io.InputStreamReader;
 
 public class EventSystem {
 
+    //TODO(Using Gateway): Can use read from file method. If no existing manager, read from file will create a new one.
     private AccountManager am = new AccountManager();
     private EventManager em = new EventManager();
     /** Add MessageManager when ready. */

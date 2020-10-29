@@ -1,27 +1,32 @@
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+import java.io.Serializable;
 
-public class Event {
+public class Event implements Serializable{
+  private Integer id;
   private String eventName;
   private Time eventTime;
   private List<User> attendees;
   private Room eventRoom;
   private Speaker eventSpeaker;
-  public Event(String EventName,Time EventTime,List<User>Attendees,Room EventRoom,Speaker EventSpeaker){//constructor with a list of attendees
+  public Event(Integer id,String EventName,Time EventTime,List<User>Attendees,Room EventRoom,Speaker EventSpeaker){//constructor with a list of attendees
+    this.id = id;
     this.eventName=EventName;
     this.eventTime=EventTime;
     this.attendees= Attendees;
     this.eventRoom=EventRoom;
     this.eventSpeaker=EventSpeaker;
   }
-  public Event(String EventName,Time EventTime,Room EventRoom,Speaker EventSpeaker){//constructor without list of attendees
+  public Event(Integer id,String EventName,Time EventTime,Room EventRoom,Speaker EventSpeaker){//constructor without list of attendees
+    this.id=id;
     this.eventName=EventName;
     this.eventTime=EventTime;
     this.attendees= new ArrayList<>();
     this.eventRoom=EventRoom;
     this.eventSpeaker=EventSpeaker;
   }
+  public Integer getId(){return id;}
   public String getEventName(){
     return eventName;
   }
