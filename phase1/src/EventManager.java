@@ -21,8 +21,8 @@ public class EventManager implements Serializable{
      */
     public boolean signUpUsertoEvent(String eventname, User user){
         for (Event x: eventList){
-            if(x.getEventName().equals(eventname)){
-                if (x.getAttendees().contains(user)) {
+            if(x.GetEventName().equals(eventname)){
+                if (x.GetAttendees().contains(user)) {
                     return false;
                 }
                 else{
@@ -43,8 +43,8 @@ public class EventManager implements Serializable{
      */
     public boolean cancelUseratEvent(String eventname, User user){
         for (Event x: eventList){
-            if(x.getEventName().equals(eventname)){
-                if (x.getAttendees().contains(user)) {
+            if(x.GetEventName().equals(eventname)){
+                if (x.GetAttendees().contains(user)) {
                     x.removeAttendee(user);
                     return true;
                 }
@@ -73,13 +73,13 @@ public class EventManager implements Serializable{
             if (x.equals(tempevent)){
                 return false;
             }
-            else if (x.getEventName().equals(EventName)){
+            else if (x.GetEventName().equals(EventName)){
                 return false;
             }
-            else if (x.getEventTime().equals(EventTime) && x.getEventRoom().equals(EventRoom)){
+            else if (x.GetEventTime().equals(EventTime) && x.getEventRoom().equals(EventRoom)){
                 return false;
             }
-            else if (x.getEventTime().equals(EventTime) && x.getSpeaker().equals(EventSpeaker)){
+            else if (x.GetEventTime().equals(EventTime) && x.GetSpeaker().equals(EventSpeaker)){
                 return false;
             }
         }

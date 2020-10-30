@@ -8,6 +8,13 @@ public class User implements Serializable{
     private boolean logInStatus;
     private List<User> messageable;
     private List<Event> eventsAttending;
+    private String accountType;
+
+    public User(String username, String password, String accountType) {
+        this.username = username;
+        this.password = password;
+        this.accountType = accountType; // Ensure this is one of "presenter" "organizer" "attendee" in use cases
+    }
 
     public void setPassword(String newPassword) {
         this.password = newPassword;
@@ -63,6 +70,6 @@ public class User implements Serializable{
 
     //TODO: need to be implemented:
     public String getAccountType() {
-        return "";
+        return accountType;
     }
 }
