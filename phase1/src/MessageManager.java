@@ -1,7 +1,7 @@
-import com.sun.xml.internal.messaging.saaj.packaging.mime.MessagingException;
 import java.util.ArrayList;
+import java.io.Serializable;
 
-public class MessageManager {
+public class MessageManager implements Serializable{
 
     private ArrayList<Message> messageList;
     private boolean messageable;

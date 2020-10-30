@@ -33,7 +33,7 @@ public class Gateway {
         } catch (IOException ex) {
             logger.log(Level.SEVERE, "Cannot read from input file, returning" + "a new AccountManager.", ex);
             AccountManager am = new AccountManager();
-            am.addNewUser("admin", "prime", "Organizer");
+            am.addNewUser("admin", "prime", "organizer");
             return am;
         }
     }
@@ -85,6 +85,41 @@ public class Gateway {
         OutputStream buffer = new BufferedOutputStream(file);
         ObjectOutput output = new ObjectOutputStream(buffer);
         output.writeObject(em);
+        output.close();
+    }
+
+    /**
+     * Reads MessageManager from file.
+     * @param path The path of the file.
+     * @return An instance of the saved MessageManager.
+     * @throws ClassNotFoundException Throws the exception if no MessageManager save is found. *Should be avoided*
+     */
+    public MessageManager readMessageManagerFromFile(String path) throws ClassNotFoundException {
+        try {
+            InputStream file = new FileInputStream(path);
+            InputStream buffer = new BufferedInputStream(file);
+            ObjectInput input = new ObjectInputStream(buffer);
+
+            MessageManager mm = (MessageManager) input.readObject();
+            input.close();
+            return mm;
+        } catch (IOException ex) {
+            logger.log(Level.SEVERE, "Cannot read from input file, returning" + "a new MessageManager.", ex);
+            return new MessageManager();
+        }
+    }
+
+    /**
+     * Save the MessageManager to file.
+     * @param mm the MessageManager to be saved.
+     * @param filePath the path of the save file. Creates a new .ser file there is no existing saves.
+     * @throws IOException if problems encountered
+     */
+    public void saveMessageManagerToFile(MessageManager mm, String filePath) throws IOException {
+        OutputStream file = new FileOutputStream(filePath);
+        OutputStream buffer = new BufferedOutputStream(file);
+        ObjectOutput output = new ObjectOutputStream(buffer);
+        output.writeObject(mm);
         output.close();
     }
 

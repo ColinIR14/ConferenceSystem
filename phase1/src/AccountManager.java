@@ -38,16 +38,14 @@ public class AccountManager implements Serializable{
             }
         }
         //TODO:pass in accountType as parameter when constructor of User is implemented.
-        User u = new User();
-        u.setUsername(username);
-        u.setPassword(password);
+        User u = new User(username, password, accountType);
         userList.add(u);
         return true;
     }
 
     //overload, default new user is Attendees.
     public boolean addNewUser(String username, String password){
-        return addNewUser(username, password, "Attendees");
+        return addNewUser(username, password, "attendee");
     }
 
 
