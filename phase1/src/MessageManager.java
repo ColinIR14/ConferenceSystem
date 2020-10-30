@@ -4,7 +4,6 @@ import java.util.ArrayList;
 public class MessageManager {
 
     private ArrayList<Message> messageList;
-    private String userMessage;
     private boolean messageable;
 
     public MessageManager(){
