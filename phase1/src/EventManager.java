@@ -4,24 +4,25 @@ import java.io.Serializable;
 
 public class EventManager implements Serializable{
     private ArrayList<Event> eventList;
-
+    private int idcounter;
     /**
-     * Constructor for creating EventManager, making the eventList.
+     * Constructor for creating EventManager, making the eventList and a counter for id number.
      */
     public EventManager(){
         eventList = new ArrayList<>();
+        idcounter = 0;
     }
 
     /**
      * Add the user to the attendees list of the Event called eventname.
-     * @param eventname String of the Event's name
+     * @param event Event object to be added
      * @param user User that will be added to the Event
      * @return boolean true if the Event with eventname exists and the user is not in the Event's Attendees list.
      * Otherwise, return false.
      */
-    public boolean signUpUsertoEvent(String eventname, User user){
+    public boolean signUpUsertoEvent(Event event, User user){
         for (Event x: eventList){
-            if(x.getEventName().equals(eventname)){
+            if(x.equals(event)){
                 if (x.getAttendees().contains(user)) {
                     return false;
                 }
@@ -36,14 +37,14 @@ public class EventManager implements Serializable{
 
     /**
      * Remove the user from the attendees list of the Event called eventname.
-     * @param eventname String of the Event's name
+     * @param event Event object to be removed
      * @param user User that will be removed from the Event
      * @return boolean true if the Event with eventname exists and the user is in the Event's Attendees list.
      * Otherwise, return false.
      */
-    public boolean cancelUseratEvent(String eventname, User user){
+    public boolean cancelUseratEvent(Event event, User user){
         for (Event x: eventList){
-            if(x.getEventName().equals(eventname)){
+            if(x.equals(event)){
                 if (x.getAttendees().contains(user)) {
                     x.removeAttendee(user);
                     return true;
@@ -67,19 +68,11 @@ public class EventManager implements Serializable{
      * an Event in Eventlist clashes with EventTime and EventSpeaker of Event being added.
      * Otherwise, add the Event to eventList and return true.
      */
-    public boolean addNewEvent(Integer id, String EventName, Time EventTime, Room EventRoom, Speaker EventSpeaker){
-        Event tempevent = new Event(id, EventName, EventTime, EventRoom, EventSpeaker);
+    public boolean addNewEvent(String EventName, Time EventTime, Room EventRoom, Speaker EventSpeaker){
+        Event tempevent = new Event(idcounter, EventName, EventTime, EventRoom, EventSpeaker);
+        idcounter += 1;
         for (Event x: eventList){
             if (x.equals(tempevent)){
-                return false;
-            }
-            else if (x.getEventName().equals(EventName)){
-                return false;
-            }
-            else if (x.getEventTime().equals(EventTime) && x.getEventRoom().equals(EventRoom)){
-                return false;
-            }
-            else if (x.getEventTime().equals(EventTime) && x.getSpeaker().equals(EventSpeaker)){
                 return false;
             }
         }
