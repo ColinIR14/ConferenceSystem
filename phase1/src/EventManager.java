@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class EventManager implements Serializable{
     private ArrayList<Event> eventList;
-    private int nextId;
+    private static int nextId;
     /**
      * Constructor for creating EventManager, making the eventList and a counter for id number.
      */
