@@ -4,13 +4,13 @@ import java.io.Serializable;
 
 public class EventManager implements Serializable{
     private ArrayList<Event> eventList;
-    private int idcounter;
+    private int nextId;
     /**
      * Constructor for creating EventManager, making the eventList and a counter for id number.
      */
     public EventManager(){
         eventList = new ArrayList<>();
-        idcounter = 0;
+        nextId = 0;
     }
 
     /**
@@ -69,8 +69,8 @@ public class EventManager implements Serializable{
      * Otherwise, add the Event to eventList and return true.
      */
     public boolean addNewEvent(String EventName, Time EventTime, Room EventRoom, Speaker EventSpeaker){
-        Event tempevent = new Event(idcounter, EventName, EventTime, EventRoom, EventSpeaker);
-        idcounter += 1;
+        Event tempevent = new Event(nextId, EventName, EventTime, EventRoom, EventSpeaker);
+        nextId += 1;
         for (Event x: eventList){
             if (x.equals(tempevent)){
                 return false;
@@ -80,4 +80,11 @@ public class EventManager implements Serializable{
         return true;
     }
 
+    /**
+     * Return the number of events in eventList
+     * @return int of length of eventList
+     */
+    public int numEvents(){
+        return eventList.size();
+    }
 }
