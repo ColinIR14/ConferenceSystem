@@ -9,9 +9,11 @@ public class TextPresenter {
         String next = in.nextLine();
 
         if (next.equals("L")) {
-            //Run login method
+            //login
         } else if (next.equals("N")) {
-            //Run new account method
+            //new account
         }
     }
+
+    ///moving to Controller
 }
