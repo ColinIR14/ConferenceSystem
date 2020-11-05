@@ -13,24 +13,11 @@ public class EventSystem {
 
     public void run() {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        welcome();
-
-        int i =0;
-
-        while(true) {
-            welcome();
-
-
         }
-
-
-
-    }
 
     private void method(String input) {
         if (input == "main") {
-            main();
+            //main();
         }
     }
 
@@ -94,7 +81,7 @@ public class EventSystem {
         String next = in.nextLine();
 
         if (next.equals("E")) {
-            eventMenu();
+            eventMenu(in);
         } else if (next.equals("M")) {
             messageMenu();
         } else if (next.equals("A")) {
