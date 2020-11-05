@@ -13,25 +13,6 @@ public class EventSystem {
 
     public void run() {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-
-        welcome();
-
-        int i =0;
-
-        while(true) {
-            welcome();
-
-
-        }
-
-
-
-    }
-
-    private void method(String input) {
-        if (input == "main") {
-            main();
-        }
     }
 
     public void logIn(String username, String password) {
@@ -60,9 +41,7 @@ public class EventSystem {
 
 
     public void welcome() {
-        // Call in file
         Scanner in = new Scanner(System.in);
-
         System.out.println("Welcome to the Conference Manager program! Type 'L' to log in or 'N' to create a new attendee account.");
         String next = in.nextLine();
 
@@ -89,7 +68,7 @@ public class EventSystem {
 
     private void mainMenu(Scanner in) {
         System.out.println("Main Menu\n");
-        System.out.println("Events (E)\nMessages (M)\nAccount (A)\nSign out (S)\nEvents");
+        System.out.println("Events (E)\nMessages (M)\nAccount (A)\nSign out (S)");
         System.out.println("Please enter a one-letter input selection.");
         String next = in.nextLine();
 
@@ -108,23 +87,21 @@ public class EventSystem {
 
     }
 
-    private void eventMenu(Scanner in) { //Raj //List of events
+    private void eventMenu() {
         System.out.println("Event Menu\n");
-        System.out.println(
-            "Add event (1)\n" +
-                    "Cancel events (2)\n" +
-                    "Add self to event (3)\n" +
-                    "Add user to event (4)\n" +
-                    "Change speaker of event (5)\n" +
-
+        System.out.println("Add event (1)\n" +
+                "Cancel events (2)\n" +
+                "Add self to event (3)\n" +
+                "Add user to event (4)\n" +
+                "Change speaker of event (5)\n" +
                 "Remove user from event (6)\n" +
-                "Remove self from event (7\n" +
+                "Remove self from event* (7\n" +
                 "Send message to all attendees of an event (8)\n" +
                 "Main menu (9)\n");
         System.out.println("Please enter a one-character input selection.");
     }
 
-    private void messageMenu() { //Lan
+    private void messageMenu() {
         System.out.println("Event Menu\n");
         System.out.println("View messages (1)\n" +
                 "Send message (2)\n" +
@@ -136,7 +113,7 @@ public class EventSystem {
         System.out.println("Please enter a one-character input selection.");
     }
 
-    private void accountMenu() { // Daisy
+    private void accountMenu() {
         System.out.println("Account Menu\n");
         System.out.println("Add Organizer account (1)\n" +
                 "Add Speaker account (2)\n" +
@@ -144,11 +121,6 @@ public class EventSystem {
                 "Reset password (4)\n" +
                 "Main menu (5)\n");
         System.out.println("Please enter a one-character input selection.");
-    }
-
-
-    private void exit() {
-        //saveAccount
     }
 
 
