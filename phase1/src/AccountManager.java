@@ -131,4 +131,12 @@ public class AccountManager implements Serializable{
         }
         return userNameList.toString();
     }
+    public User getUser(String username){
+        for (User currentUser : userList){
+            if (currentUser.getUsername().equals(username)){
+            return currentUser;}
+        }
+        return new User("invalid","invalid","user");
+
+    }
 }

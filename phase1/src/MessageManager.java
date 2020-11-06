@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.io.Serializable;
+import java.util.List;
 
 public class MessageManager implements Serializable{
 
@@ -24,6 +25,11 @@ public class MessageManager implements Serializable{
     }
 
     public void sendEventMessage(User sender, ArrayList<User> receivers, String content){
+        for (User receiver : receivers)
+            this.messageList.add(addMessage(sender, receiver, content));
+    }
+    public void sendEventMessage(User sender, Event event, String content){
+       List<User> receivers = event.getAttendees();
         for (User receiver : receivers)
             this.messageList.add(addMessage(sender, receiver, content));
     }

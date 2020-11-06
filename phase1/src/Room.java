@@ -2,7 +2,7 @@ import java.util.List;
 
 public class Room {
     private int roomNumber;
-    private int roomCapacity;
+    private int roomCapacity=2;
     private List<Event> roomSchedule;
 
     public void setRoomNumber(int num){
