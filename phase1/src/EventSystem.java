@@ -39,9 +39,7 @@ public class EventSystem {
     public void signOut() throws IOException {
 
         //saves all the managers when an User logs off.
-        g.saveAccountManagerToFile(am,"AccountManagerSave.ser");
-        g.saveEventManagerToFile(em,"EventManagerSave.ser");
-        g.saveMessageManagerToFile(mm,"MessageManagerSave.ser");
+        saveAll();
     }
 
     public void createAccount(String username, String password) {}
@@ -274,6 +272,16 @@ public class EventSystem {
 
             private void exit () {
                 //saveAccount
+            }
+
+    /**
+     * Saves all the managers.
+     * @throws IOException if there is no file with the specified name. It will create a new file should this happen.
+     */
+    private void saveAll() throws IOException {
+                g.saveAccountManagerToFile(am,"AccountManagerSave.ser");
+                g.saveEventManagerToFile(em,"EventManagerSave.ser");
+                g.saveMessageManagerToFile(mm,"MessageManagerSave.ser");
             }
 
 
