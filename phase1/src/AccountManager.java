@@ -131,6 +131,12 @@ public class AccountManager implements Serializable{
         }
         return userNameList.toString();
     }
+
+    /**
+     * Returns the User object given by the username.
+     * @param username A String representing the username of the User
+     * @return An instance of User that has the username
+     */
     public User getUser(String username){
         for (User currentUser : userList){
             if (currentUser.getUsername().equals(username)){

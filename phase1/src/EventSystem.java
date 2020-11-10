@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,19 +9,21 @@ import java.util.Scanner;
 
 public class EventSystem {
 
-    //TODO(Using Gateway): Can use read from file method. If no existing manager, read from file will create a new one.
-    private AccountManager am = new AccountManager();
-    private EventManager em = new EventManager();
-    private MessageManager mm= new MessageManager();
-    /** Add MessageManager when ready. */
+    private Gateway g = new Gateway();
+    private AccountManager am = g.readAccountManagerFromFile("AccountManagerSave.ser");
+    private EventManager em = g.readEventManagerFromFile("EventManagerSave.ser");
+    private MessageManager mm= g.readMessageManagerFromFile("MessageManagerSave.ser");
     private String currentUser;
+
+    public EventSystem() throws ClassNotFoundException {
+    }
 
     public void run() {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         }
 
     private void method(String input) {
-        if (input == "main") {
+        if (input.equals("main")) {
             //main();
         }
     }
@@ -33,7 +36,13 @@ public class EventSystem {
         }
     } //Want this to return a boolean
 
-    public void signOut() {}
+    public void signOut() throws IOException {
+
+        //saves all the managers when an User logs off.
+        g.saveAccountManagerToFile(am,"AccountManagerSave.ser");
+        g.saveEventManagerToFile(em,"EventManagerSave.ser");
+        g.saveMessageManagerToFile(mm,"MessageManagerSave.ser");
+    }
 
     public void createAccount(String username, String password) {}
 
@@ -48,7 +57,7 @@ public class EventSystem {
     public void sendMessage(String message, String recipient) {}
 
     public void seeMessages() {}
-    private void addEvent(Scanner in)  {
+    private void addEvent(Scanner in) throws IOException {
         System.out.println("Enter Name");
         String name= in.nextLine();
         System.out.println("Enter Start Date for Event");
@@ -122,7 +131,7 @@ public class EventSystem {
     }
 
 
-            public void welcome () {
+            public void welcome () throws IOException {
                 // Call in file
                 Scanner in = new Scanner(System.in);
 
@@ -150,7 +159,7 @@ public class EventSystem {
                 return arr;
             }
 
-            private void mainMenu (Scanner in){
+            private void mainMenu (Scanner in) throws IOException {
                 System.out.println("Main Menu\n");
                 System.out.println("Events (E)\nMessages (M)\nAccount (A)\nSign out (S)\nEvents");
                 System.out.println("Please enter a one-letter input selection.");
@@ -171,7 +180,7 @@ public class EventSystem {
 
             }
 
-            public void eventMenu (Scanner in){ //Raj //List of events
+            public void eventMenu (Scanner in) throws IOException { //Raj //List of events
                 System.out.println("Event Menu\n");
                 System.out.println(
                         "Add event (1)\n" +
@@ -204,7 +213,7 @@ public class EventSystem {
                     mainMenu(in);
                 }
             }
-            public void specificEventMenu (Scanner in, Event e){
+            public void specificEventMenu (Scanner in, Event e) throws IOException {
                 System.out.println("Cancel Event(1)\n" +
                         "Add self to event (2)\n" +
                         "Add user to event(3)\n" +
