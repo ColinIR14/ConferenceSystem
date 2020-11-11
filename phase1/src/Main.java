@@ -32,6 +32,9 @@ public class Main {
         //Scanner in = new Scanner(System.in);
         //eventsystem.eventMenu(in);
 
+        //EventSystem es = new EventSystem();
+        //System.out.println(es.am);
+
 
 
 

@@ -26,12 +26,11 @@ public class Gateway {
             InputStream buffer = new BufferedInputStream(file);
             ObjectInput input = new ObjectInputStream(buffer);
 
-            // deserialize the StudentManager
             AccountManager am = (AccountManager) input.readObject();
             input.close();
             return am;
         } catch (IOException ex) {
-            logger.log(Level.SEVERE, "Cannot read from input file, returning" + "a new AccountManager.", ex);
+            logger.log(Level.INFO, "Cannot read from input file, returning" + " a new AccountManager.", ex);
             AccountManager am = new AccountManager();
             am.addNewUser("admin", "prime", "organizer");
             return am;
@@ -64,12 +63,11 @@ public class Gateway {
             InputStream buffer = new BufferedInputStream(file);
             ObjectInput input = new ObjectInputStream(buffer);
 
-            // deserialize the StudentManager
             EventManager em = (EventManager) input.readObject();
             input.close();
             return em;
         } catch (IOException ex) {
-            logger.log(Level.SEVERE, "Cannot read from input file, returning" + "a new EventManager.", ex);
+            logger.log(Level.INFO, "Cannot read from input file, returning" + " a new EventManager.", ex);
             return new EventManager();
         }
     }
@@ -104,7 +102,7 @@ public class Gateway {
             input.close();
             return mm;
         } catch (IOException ex) {
-            logger.log(Level.SEVERE, "Cannot read from input file, returning" + "a new MessageManager.", ex);
+            logger.log(Level.INFO, "Cannot read from input file, returning" + " a new MessageManager.", ex);
             return new MessageManager();
         }
     }
