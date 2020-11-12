@@ -3,6 +3,8 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws IOException, ClassNotFoundException{
+        EventSystem es = new EventSystem();
+        es.run();
         //Usage of gateway and serialized objects
 
         //To save an AccountManger:
