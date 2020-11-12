@@ -19,13 +19,8 @@ public class EventSystem {
     }
 
     public void run() {
-        try {
-            welcome();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     private void method(String input) {
         if (input.equals("main")) {
@@ -42,11 +37,6 @@ public class EventSystem {
     } //Want this to return a boolean
 
     public void signOut() throws IOException {
-
-        welcome();
-    }
-
-    public void closeProgram() throws IOException {
 
         //saves all the managers when an User logs off.
         saveAll();
@@ -143,7 +133,7 @@ public class EventSystem {
                 // Call in file
                 Scanner in = new Scanner(System.in);
 
-                System.out.println("Welcome to the Conference Manager program!\n\nType 'L' to log in.\nType 'N' to create a new attendee account.\nType 'C' to close the program.");
+                System.out.println("Welcome to the Conference Manager program! Type 'L' to log in or 'N' to create a new attendee account.");
                 String next = in.nextLine();
 
                 if (next.equals("L")) {
@@ -153,10 +143,7 @@ public class EventSystem {
                 } else if (next.equals("N")) {
                     String[] arr = promptLoginInfo(in);
                     createAccount(arr[0], arr[1]);
-                } else if (next.equals("C")) {
-                    closeProgram();
                 }
-                // How to handle wrong input (either call welcome again or terminate program)
             }
 
             private String[] promptLoginInfo (Scanner in){

@@ -70,7 +70,7 @@ public class Event implements Serializable{
     if (! (e instanceof  Event)) return false;
     else {
       Event q =  (Event) e;
-      return ((this.eventRoom== q.eventRoom & this.eventTime==q.eventTime)||(this.eventTime==q.eventTime & this.eventSpeaker==q.eventSpeaker)||(this.eventName.equals(q.eventName)));
+      return (((this.eventRoom.getRoomNumber()== q.eventRoom.getRoomNumber()) & (this.eventTime.equals(q.eventTime)))||((this.eventTime.equals(q.eventTime)) & (this.eventSpeaker.getUsername().equals(q.eventSpeaker.getUsername())))||(this.eventName.equals(q.eventName)));
     }
   }
 
