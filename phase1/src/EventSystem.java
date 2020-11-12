@@ -79,7 +79,14 @@ public class EventSystem {
             if(!u.getAccountType().equals("speaker")){
                 System.out.println("This isn't a speaker sorry!");
             }
-            em.addNewEvent(name,date1,room,u);}
+            if(!em.addNewEvent(name,date1,room,u)){
+                System.out.println("This Event overlaps with a previous one, so it cannot be added");
+
+            }
+            else{
+                System.out.println("Successfully added");
+            }
+        }
         catch (ParseException e) {
             System.out.println("Invalid Date sorry!");
         }
@@ -220,6 +227,7 @@ public class EventSystem {
                 if(input.equals("4")){
                     mainMenu(in);
                 }
+                mainMenu(in);
             }
             public void specificEventMenu (Scanner in, Event e) throws IOException {
                 System.out.println("Cancel Event(1)\n" +
