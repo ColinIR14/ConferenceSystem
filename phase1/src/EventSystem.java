@@ -319,7 +319,7 @@ public class EventSystem {
                     case "3":
                         System.out.println("Please enter the user(username) you want to add to contact:");
                         String usern = in.nextLine();
-                        us.addMessageable(am.getUser(usern));
+                        mm.addMessagable(us, am.getUser(usern));
                         break;
                     //case "4":
                     //    System.out.println("Please enter the user(username) you want to remove from your contact:");
@@ -343,7 +343,6 @@ public class EventSystem {
                 ArrayList<String> repeat = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5", "6"));
                 if (repeat.contains(input))
                     messageMenu(in);
-
             }
 
             private void accountMenu () { // Daisy
