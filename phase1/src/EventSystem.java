@@ -37,8 +37,8 @@ public class EventSystem {
 
     public void signOut() throws IOException {
 
-//        am.logOffUser(am.currentUser);
-//        currentUser = null;
+        am.logOffUser(am.currentUser);
+        currentUser = null;
         welcome();
     }
 
@@ -194,7 +194,7 @@ public class EventSystem {
                     String[] arr = promptLoginInfo();
                     createAccount(arr[0], arr[1], "attendee");
                     System.out.println("Welcome new attendee! \n");
-                    mainMenu();
+                    welcome();
                 } else if (next.equals("C")) {
                     closeProgram();
                 }
