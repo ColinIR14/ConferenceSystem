@@ -53,7 +53,7 @@ public class EventSystem {
         saveAll();
     }
 
-    private void addAccount(Scanner in, String accountType) {
+    private void addAccount(String accountType) {
         System.out.println("Please create your user name");
         String username = in.nextLine();
         System.out.println("Please create your password");
@@ -66,7 +66,7 @@ public class EventSystem {
         }
     }
 
-    private void removeAccount(Scanner in) {
+    private void removeAccount() {
         System.out.println("Please enter your user name");
         String username = in.nextLine();
         System.out.println("Please enter your password");
@@ -79,7 +79,7 @@ public class EventSystem {
         }
     }
 
-    private void changePassword(Scanner in) {
+    private void changePassword() {
         System.out.println("Please enter your new password");
         String password = in.nextLine();
         User u = am.getUser(currentUser);
@@ -129,7 +129,7 @@ public class EventSystem {
             System.out.println("Success");}
         saveAll();
     }
-    private void addUserToEvent(Scanner in,Event e) throws IOException {
+    private void addUserToEvent(Event e) throws IOException {
         System.out.println("Enter username you wish to add");
         String username= in.nextLine();
         User u = am.getUser(username);
@@ -146,7 +146,7 @@ public class EventSystem {
         }
         saveAll();
     }
-    private void removeUserFromEvent(Scanner in,Event e) throws IOException {
+    private void removeUserFromEvent(Event e) throws IOException {
         System.out.println("Enter username you want to remove");
         String username=in.nextLine();
         User u = am.getUser(username);
@@ -157,7 +157,7 @@ public class EventSystem {
             System.out.println("Failed to remove user");}
         saveAll();
     }
-    private void changeSpeaker(Scanner in,Event e) throws IOException {
+    private void changeSpeaker(Event e) throws IOException {
         System.out.println("Enter username of new speaker");
         String username =in.nextLine();
         User speaker = am.getUser(username);
@@ -169,7 +169,7 @@ public class EventSystem {
         }
         saveAll();
     }
-    private void sendMessageToEventMembers(Scanner in,Event e) throws IOException {
+    private void sendMessageToEventMembers(Event e) throws IOException {
         System.out.println("Enter message you wish to send");
         String message= in.nextLine();
         User u = am.getUser(currentUser);
@@ -315,15 +315,15 @@ public class EventSystem {
                 } else if (next.equals("2")) {
                     addSelfToEvent(e);
                 } else if (next.equals("3")) {
-                    addUserToEvent(in,e);
+                    addUserToEvent(e);
                 } else if (next.equals("4")) {
-                    changeSpeaker(in,e);
+                    changeSpeaker(e);
                 } else if (next.equals("5")) {
-                    removeUserFromEvent(in,e);
+                    removeUserFromEvent(e);
                 } else if (next.equals("6")) {
                     removeSelfFromEvent(e);
                 } else if (next.equals("7")) {
-                    sendMessageToEventMembers(in,e);
+                    sendMessageToEventMembers(e);
                 } else if (next.equals("8")) {
                     mainMenu();
                 } else{
@@ -385,7 +385,7 @@ public class EventSystem {
                         System.out.println("Enter Number of Event you want to manipulate");
                         int i = Integer.parseInt(in.nextLine());
                         Event ev = em.indexEvent(i);
-                        sendMessageToEventMembers(in, ev);
+                        sendMessageToEventMembers(ev);
                         break;
                     case "7":
                         mainMenu();
@@ -410,16 +410,16 @@ public class EventSystem {
                 String next = in.nextLine();
 
                 if (next.equals("1")) {
-                    addAccount(in, "organizer");
+                    addAccount("organizer");
                     accountMenu();
                 } else if (next.equals("2")) {
-                    addAccount(in, "speaker");
+                    addAccount("speaker");
                     accountMenu();
                 } else if (next.equals("3")) {
-                    removeAccount(in);
+                    removeAccount();
                     accountMenu();
                 } else if (next.equals("4")) {
-                    changePassword(in);
+                    changePassword();
                     accountMenu();
                 } else if (next.equals("5")) {
                     mainMenu();
