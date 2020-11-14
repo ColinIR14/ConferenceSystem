@@ -67,8 +67,18 @@ public class User implements Serializable{
         messageable.add(u);
     }
 
+    public void removeMessageable(User u) { messageable.remove(u); }
+
     public List<User> getMessageable() {
         return messageable;
+    }
+
+    public String messageableToString(){
+        StringBuilder userNameList = new StringBuilder("Contact list:");
+        for(User u : messageable){
+            userNameList.append(u.getUsername()).append("\n");
+        }
+        return userNameList.toString();
     }
 
     public List<Event> getEventsAttending() {
@@ -82,6 +92,7 @@ public class User implements Serializable{
     public void addEventAttending(Event e) {
         eventsAttending.add(e);
     }
+
 
 
 }
