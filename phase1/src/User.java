@@ -10,11 +10,23 @@ public class User implements Serializable{
     private List<Event> eventsAttending;
     private String accountType;
 
+
+    /**
+     * Constructor for creating User.
+     * @param username String of the new user's username
+     * @param password String of the new user's password
+     * @param accountType String of the user's account type: must be one of "presenter", "organizer", or "attendee".
+     */
     public User(String username, String password, String accountType) {
         this.username = username;
         this.password = password;
-        this.accountType = accountType; // Ensure this is one of "presenter" "organizer" "attendee" in use cases
+        this.accountType = accountType;
+        this.messageable = new ArrayList<>();
+        this.eventsAttending = new ArrayList<>();
     }
+
+    /**
+     * Getters and Setters for username, password, accountType, and LoginStatus. (All strings) */
 
     public void setPassword(String newPassword) {
         this.password = newPassword;
@@ -40,9 +52,12 @@ public class User implements Serializable{
         return logInStatus;
     }
 
-    public List<Object> getMessages() {
-        return new ArrayList<>();
+    public String getAccountType() {
+        return accountType;
     }
+
+    /**
+     * Getters, Setters, and Adders for Messageable and eventsAttending. (All list-related) */
 
     public void setMessageable(List<User> users) {
         messageable = users;
@@ -68,7 +83,5 @@ public class User implements Serializable{
         eventsAttending.add(e);
     }
 
-    public String getAccountType() {
-        return accountType;
-    }
+
 }
