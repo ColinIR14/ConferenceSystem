@@ -287,13 +287,13 @@ public class EventSystem {
     private void eventMenu () throws IOException { //Raj //List of events
         System.out.println("Event Menu\n");
         User u = am.getUser(currentUser);
-        if(u.getUsername().equals("Organiser")) {
+        if(am.checkAccountType(currentUser).equals("organizer")) {
             System.out.println(
                     "Select event (1)\n" +
-                            "Add event(2)" +
-                            "Add room(3)" +
-                            "Remove room(4)" +
-                            "Main Menu(5)");
+                            "Add event(2)\n" +
+                            "Add room(3)\n" +
+                            "Remove room(4)\n" +
+                            "Main Menu(5)\n");
             System.out.println("Please enter a one-character input selection.");
             String input = in.nextLine();
             switch (input) {
@@ -330,6 +330,7 @@ public class EventSystem {
                     System.out.println("Invalid input. Please try again.");
                     break;
             }
+            saveAll();
         }
         else{
             System.out.println("Current event list:\n");
@@ -358,7 +359,10 @@ public class EventSystem {
                       System.out.println("Invalid input. Please try again.");
                   }
             }
+
         }
+        saveAll();
+        eventMenu();
     }
     private void specificEventMenu (Event e) throws IOException {
         System.out.println("Cancel Event(1)\n" +
