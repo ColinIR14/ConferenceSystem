@@ -1,5 +1,8 @@
 import java.io.Serializable;
 
+/**
+ * A Message class. Used for storing and passing user messages.
+ */
 public class Message implements Serializable{
     private User sender;
     private User receiver;
