@@ -91,9 +91,30 @@ public class EventSystem {
 
     public void cancelAttendEvent(String eventName) throws IOException {saveAll();}
 
-    public void sendMessage(String message, String recipient) throws IOException {saveAll();}
+    public void sendMessage(User us) throws IOException {
+        System.out.println("Please enter your message:");
+        String content = in.nextLine();
+        System.out.println("Please enter the user you want to message:(your contact is listed below," +
+                "if the user is not in your contact your message will not be sent");
+        StringBuilder users = new StringBuilder();
+        for (User m : us.getMessageable()) {
+            users.append(m.getUsername());
+            users.append("|");
+        }
+        System.out.println(users.substring(0, Math.max(users.length() - 2, 0)));
+        String receiver = in.nextLine();
+        User re = am.getUser(receiver);
+        mm.sendMessage(us, re, content);
+        saveAll();
+    }
 
-    public void seeMessages() {}
+    public void seeMessages(User us) {
+        ArrayList<Message> messages = mm.getUserMessages(us);
+        for (Message m : messages) {
+            System.out.println(m.getContentToString());
+        }
+    }
+
     private void addEvent(Scanner in) throws IOException {
         System.out.println("Enter Name");
         String name= in.nextLine();
@@ -339,9 +360,8 @@ public class EventSystem {
                         "Send message (2)\n" +
                         "Add contact (3)\n" +
                         "Remove contact (4)\n" +
-                        "Create a message (5)\n" +
-                        "Send event message (6)\n" +
-                        "Main menu (7)\n");
+                        "Send event message (5)\n" +
+                        "Main menu (6)\n");
                 //System.out.println("Input your username:");
                 //String username = in.nextLine();
                 User us = am.getUser(currentUser);
@@ -349,25 +369,10 @@ public class EventSystem {
                 String input = in.nextLine();
                 switch (input) {
                     case "1":
-                        ArrayList<Message> messages = mm.getUserMessages(us);
-                        for (Message m : messages) {
-                            System.out.println(m.getContentToString());
-                        }
+                        seeMessages(us);
                         break;
                     case "2":
-                        System.out.println("Please enter your message:");
-                        String content = in.nextLine();
-                        System.out.println("Please enter the user you want to message:(your contact is listed below," +
-                                "if the user is not in your contact your message will not be sent");
-                        StringBuilder users = new StringBuilder();
-                        for (User m : us.getMessageable()) {
-                            users.append(m.getUsername());
-                            users.append("|");
-                        }
-                        System.out.println(users.substring(0, Math.max(users.length() - 2, 0)));
-                        String receiver = in.nextLine();
-                        User re = am.getUser(receiver);
-                        mm.sendMessage(us, re, content);
+                        sendMessage(us);
                         break;
                     case "3":
                         System.out.println("Please enter the user(username) you want to add to contact:");
@@ -379,7 +384,7 @@ public class EventSystem {
                     //    String usern = in.nextLine();
                     //    us.
                     //    break;
-                    case "6":
+                    case "5":
                         System.out.println("Current event list:\n");
                         System.out.println(em.eventdetails());
                         System.out.println("Enter Number of Event you want to manipulate");
@@ -387,7 +392,7 @@ public class EventSystem {
                         Event ev = em.indexEvent(i);
                         sendMessageToEventMembers(ev);
                         break;
-                    case "7":
+                    case "6":
                         mainMenu();
                         break;
                     default:

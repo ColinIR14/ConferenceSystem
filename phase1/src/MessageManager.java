@@ -62,20 +62,6 @@ public class MessageManager implements Serializable{
     }
 
     /**
-     * Takes in sender, receivers, content, and if messageable the message will be added to messageList with receiver
-     * from the given list.
-     * The sender needs to be an existing organizer or speaker.
-     * Returns nothing.
-     * @param sender User that is either an organizer or speaker
-     * @param receivers User that is attandees attending a certain event
-     * @param content String of message
-     */
-    public void sendEventMessage(User sender, ArrayList<User> receivers, String content){
-        for (User receiver : receivers)
-            this.messageList.add(addMessage(sender, receiver, content));
-    }
-
-    /**
      * Takes in sender, even, content, and if messageable the message will be added to messageList with receiver being
      * all attandees from a given event.
      * The sender needs to be an existing organizer or speaker.
