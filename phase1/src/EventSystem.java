@@ -53,38 +53,58 @@ public class EventSystem {
         saveAll();
     }
 
-    private void addAccount(String accountType) {
-        System.out.println("Please create your user name");
-        String username = in.nextLine();
-        System.out.println("Please create your password");
-        String password = in.nextLine();
-        if (am.addNewUser(username, password, accountType)){
-            System.out.println("Success!");
+    private void addAccount(String accountType) throws IOException{
+        if (am.checkAccountType(currentUser).equals("organizer")){
+            System.out.println("Please create your user name");
+            String username = in.nextLine();
+            System.out.println("Please create your password");
+            String password = in.nextLine();
+            if (am.addNewUser(username, password, accountType)){
+                System.out.println("Success!");
+            }
+            else{
+                System.out.println("Sorry, the user name has already been taken.");
+            }
         }
         else{
-            System.out.println("Sorry, the user name has already been taken.");
+            System.out.println(("Sorry, you don't have access to it."));
         }
+        saveAll();
     }
 
-    private void removeAccount() {
-        System.out.println("Please enter your user name");
-        String username = in.nextLine();
-        System.out.println("Please enter your password");
-        String password = in.nextLine();
-        if (am.deleteUser(username, password)){
-            System.out.println("Success!");
+    private void removeAccount() throws IOException{
+        if (am.checkAccountType(currentUser).equals("organizer")){
+            System.out.println("Please enter the user name you want to remove");
+            String username = in.nextLine();
+            if (am.deleteUser(username, am.getUser(username).getPassword())){
+                System.out.println("Success!");
+            }
+            else{
+                System.out.println("Sorry, your user name is not correct.");
+            }
         }
         else{
-            System.out.println("Sorry, your user name or password is not correct.");
+            System.out.println("Please enter your name you want to remove");
+            String username = in.nextLine();
+            System.out.println("Please enter your name you want to remove");
+            String password = in.nextLine();
+            if (am.deleteUser(username, password)){
+                System.out.println("Success!");
+            }
+            else{
+                System.out.println("Sorry, your user name or password is not correct.");
+            }
         }
+        saveAll();
     }
 
-    private void changePassword() {
+    private void changePassword() throws IOException{
         System.out.println("Please enter your new password");
         String password = in.nextLine();
         User u = am.getUser(currentUser);
         am.resetPassword(u, password);
         System.out.println("Success!");
+        saveAll();
     }
 
     public void attendEvent(String eventName) throws IOException {saveAll();}
