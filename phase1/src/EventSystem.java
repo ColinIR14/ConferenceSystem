@@ -383,11 +383,11 @@ public class EventSystem {
                         String usern = in.nextLine();
                         mm.addMessagable(us, am.getUser(usern));
                         break;
-                    //case "4":
-                    //    System.out.println("Please enter the user(username) you want to remove from your contact:");
-                    //    String usern = in.nextLine();
-                    //    us.
-                    //    break;
+                    case "4":
+                        System.out.println("Please enter the user(username) you want to remove from your contact:");
+                        String username = in.nextLine();
+                        us.removeMessageable(am.getUser(username));
+                        break;
                     case "5":
                         System.out.println("Current event list:\n");
                         System.out.println(em.eventdetails());
