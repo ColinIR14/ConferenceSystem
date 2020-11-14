@@ -330,25 +330,35 @@ public class EventSystem {
                     }
                     }
                 case "3": {
-                    try{
-                       Room r = new Room();
-                    System.out.println("Enter Room Number( do not enter 0 as room number please)");
-                    int i = Integer.parseInt(in.nextLine());
-                    if (i==0){
-                        System.out.println("Cannot add room number zero sorry");
+                    try {
+                        Room r = new Room();
+                        System.out.println("Enter Room Number( do not enter 0 as room number please)");
+                        int i = Integer.parseInt(in.nextLine());
+                        if (i == 0) {
+                            System.out.println("Cannot add room number zero sorry");
+                            eventMenu();
+                        }
+                        r.setRoomNumber(i);
+                        em.addRoom(r);
+                        break;
+                    }
+                    catch(NumberFormatException e){
+                        System.out.println("Enter number please");
                         eventMenu();
                     }
-                    r.setRoomNumber(i);
-                    em.addRoom(r);
-                    break;
-                }
                 }
                 case "4":
-                    System.out.println(em.listOfRooms());
-                    System.out.println("Enter Number of Room to be deleted");
-                    int room = Integer.parseInt(in.nextLine());
-                    em.removeRoom(room);
-                    break;
+                    try {
+                        System.out.println(em.listOfRooms());
+                        System.out.println("Enter Number of Room to be deleted");
+                        int room = Integer.parseInt(in.nextLine());
+                        em.removeRoom(room);
+                        break;
+                    }
+                    catch(NumberFormatException e){
+                        System.out.println("Enter a number please");
+                        eventMenu();
+                    }
                 case "5":
                     mainMenu();
                     break;

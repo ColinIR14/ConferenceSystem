@@ -120,8 +120,18 @@ public class EventManager implements Serializable {
     }
 
     public void addRoom(Room r) {
-        roomList.add(r);
-    }
+        Boolean t = false;
+        for(Room room:roomList){
+            if (room.getRoomNumber() == r.getRoomNumber()){
+                System.out.println("Room already added!");
+                t = true;
+            }
+        }
+        if(!t){
+            roomList.add(r);
+        }
+        }
+
 
     public StringBuilder listOfRooms() {
         StringBuilder s = new StringBuilder();
