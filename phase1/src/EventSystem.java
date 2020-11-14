@@ -46,11 +46,6 @@ public class EventSystem {
         saveAll();
     }
 
-    private void createAccount(String username, String password, String accountType) throws IOException {
-        am.addNewUser(username, password, accountType);
-        saveAll();
-    }
-
     private void addAccount(String accountType) throws IOException{
         if (am.checkAccountType(currentUser).equals("organizer")){
             System.out.println("Please create your user name");
@@ -241,7 +236,9 @@ public class EventSystem {
             }
             case "N": {
                 String[] arr = promptLoginInfo();
-                createAccount(arr[0], arr[1], "attendee");
+                //createAccount(arr[0], arr[1], "attendee");
+                am.addNewUser(arr[0], arr[1]);
+                saveAll();
                 System.out.println("Welcome new attendee! \n");
                 welcome();
                 break;
