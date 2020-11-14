@@ -36,7 +36,7 @@ public class UnitTests {
         tester.signUpUsertoEvent(tester.indexEvent(0), testattendee);
         assertEquals(false, tester.signUpUsertoEvent(tester.indexEvent(0), testattendee), "User not able to be added, already in the list");
         assertEquals(true, tester.cancelUseratEvent(tester.indexEvent(0), testattendee), "User not able to be removed");
-        tester.signUpUsertoEvent(tester.indexEvent(0), testattendee);
+        tester.cancelUseratEvent(tester.indexEvent(0), testattendee);
         assertEquals(false, tester.cancelUseratEvent(tester.indexEvent(0), testattendee), "User not able to be removed, user not present");
     }
 
