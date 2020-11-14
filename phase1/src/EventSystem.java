@@ -232,9 +232,14 @@ public class EventSystem {
             }
             case "N": {
                 String[] arr = promptLoginInfo();
-                //createAccount(arr[0], arr[1], "attendee");
-                am.addNewUser(arr[0], arr[1]);
-                saveAll();
+                if (am.addNewUser(arr[0], arr[1])){
+                    System.out.println("Success!");
+                    saveAll();
+                }
+                else{
+                    System.out.println("Sorry, the user name has already been taken.");
+                    welcome();
+                }
                 System.out.println("Welcome new attendee! \n");
                 welcome();
                 break;
