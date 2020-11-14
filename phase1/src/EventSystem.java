@@ -554,6 +554,7 @@ public class EventSystem {
                 } else {
                     System.out.println("Sorry, you do not have permission to access this.");
                 }
+                accountMenu();
                 break;
             case "6":
                 mainMenu();
