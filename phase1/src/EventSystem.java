@@ -233,7 +233,7 @@ public class EventSystem {
 
     private void welcome() throws IOException {
 
-        System.out.println("Welcome to the Conference Manager program!\n\nType 'L' to log in.\nType 'N' to create a new attendee account (Contact a current admin if you need an admin account, or use the default admin login).\nType 'C' to close the program.");
+        System.out.println("Welcome to the Conference Manager program!\n\nType 'L' to log in.\nType 'N' to create a new attendee account (Contact a current admin if you need an organizer account, or use the default admin login).\nType 'C' to close the program.");
         String next = in.nextLine();
 
         switch (next) {
@@ -263,6 +263,9 @@ public class EventSystem {
             case "C":
                 closeProgram();
                 break;
+            default:
+                System.out.println("Invalid input. Please try again.");
+                welcome();
         }
     }
 
