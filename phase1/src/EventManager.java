@@ -88,8 +88,18 @@ public class EventManager implements Serializable {
         return true;
     }
 
-    public boolean addNewEvent(String EventName, Date EventTime, int EventRoomIndex, User EventSpeaker) {
-        Event tempevent = new Event(nextId, EventName, EventTime, roomList.get(EventRoomIndex), EventSpeaker);
+    public boolean addNewEvent(String EventName, Date EventTime, int EventRoomNumber, User EventSpeaker) {
+        Room room = new Room();
+        room.setRoomNumber(0);
+        for (Room x:roomList){
+            if (x.getRoomNumber() == EventRoomNumber){
+                room=x;
+            }
+        if (room.getRoomNumber() ==0){
+            return false;
+        }
+        }
+        Event tempevent = new Event(nextId, EventName, EventTime, room, EventSpeaker);
         nextId += 1;
         for (Event x : eventList) {
             if (x.equals(tempevent)) {
@@ -162,7 +172,7 @@ public class EventManager implements Serializable {
         }
     }
     public void removeRoom(int room){
-        roomList.remove(room);
+        roomList.removeIf(x -> x.getRoomNumber() == room);
     }
     public StringBuilder getAttendees(Event e){
         StringBuilder s = new StringBuilder();

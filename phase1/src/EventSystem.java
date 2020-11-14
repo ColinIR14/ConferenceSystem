@@ -131,12 +131,12 @@ public class EventSystem {
     private void addEvent(Scanner in) throws IOException {
         System.out.println("Enter Name");
         String name= in.nextLine();
-        System.out.println("Enter Start Date for Event");
+        System.out.println("Enter Start Date for Event(format yyyy/MM/dd hh:mm:ss");
         String date = in.nextLine();
         try{
-            Date date1 = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").parse(date);
+            Date date1 = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss)").parse(date);
             System.out.println(em.listOfRooms());
-            System.out.println("Enter Index of desired Room");
+            System.out.println("Enter Number of desired Room");
             int room = Integer.parseInt(in.nextLine());
             System.out.println("Enter Speaker username");
             String speaker = in.nextLine();
@@ -144,11 +144,23 @@ public class EventSystem {
             if(!u.getAccountType().equals("speaker")){
                 System.out.println("This isn't a speaker sorry!");
             }
-            em.addNewEvent(name,date1,room,u);}
+            if(em.addNewEvent(name,date1,room,u)){
+                System.out.println("Successfully Added");
+            }
+            else {
+                System.out.println("Failed to add");
+            }
+
+        }
         catch (ParseException e) {
             System.out.println("Invalid Date sorry!");
+            eventMenu();
         }
-        mainMenu();
+        catch(NumberFormatException e){
+            System.out.println("Enter a number for room please");
+            eventMenu();
+        }
+        eventMenu();
     }
 
     private void cancelEvent(Event e) throws IOException {
@@ -301,24 +313,39 @@ public class EventSystem {
 
                     break;
                 case "1": {
-                    System.out.println(em.eventdetails());
-                    System.out.println("Enter Number of Event you want to manipulate");
-                    int i = Integer.parseInt(in.nextLine());
-                    Event e = em.indexEvent(i);
-                    specificEventMenu(e);
-                    break;
-                }
+                    try{
+                       System.out.println(em.eventdetails());
+                       System.out.println("Enter Number of Event you want to manipulate");
+                       int i = Integer.parseInt(in.nextLine());
+                       Event e = em.indexEvent(i);
+                       specificEventMenu(e);
+                       break;}
+                    catch (IndexOutOfBoundsException e){
+                       System.out.println("Invalid index please try again");
+                       eventMenu();
+                    }
+                    catch(NumberFormatException e){
+                       System.out.println("Please enter a number!");
+                       eventMenu();
+                    }
+                    }
                 case "3": {
-                    Room r = new Room();
-                    System.out.println("Enter Room Number");
+                    try{
+                       Room r = new Room();
+                    System.out.println("Enter Room Number( do not enter 0 as room number please)");
                     int i = Integer.parseInt(in.nextLine());
+                    if (i==0){
+                        System.out.println("Cannot add room number zero sorry");
+                        eventMenu();
+                    }
                     r.setRoomNumber(i);
                     em.addRoom(r);
                     break;
                 }
+                }
                 case "4":
                     System.out.println(em.listOfRooms());
-                    System.out.println("Enter Index of desired Room");
+                    System.out.println("Enter Number of Room to be deleted");
                     int room = Integer.parseInt(in.nextLine());
                     em.removeRoom(room);
                     break;
@@ -370,8 +397,8 @@ public class EventSystem {
                 "Change speaker of event(4)\n+" +
                 "Remove user from event(5)\n+" +
                 "Remove self from event(6)\n" +
-                "Send messages to all attendees of event(7)"+
-                "See All users in event(8)"+
+                "Send messages to all attendees of event(7)\n"+
+                "See All users in event(8)\n"+
                 "Main menu(9)");
         System.out.println("Enter the number corresponding to the desired action");
         String next = in.nextLine();
