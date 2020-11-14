@@ -162,4 +162,12 @@ public class EventManager implements Serializable {
     public void removeRoom(int room){
         roomList.remove(room);
     }
+    public StringBuilder getAttendees(Event e){
+        StringBuilder s = new StringBuilder();
+        for(User x:e.getAttendees()){
+            s.append(x.getUsername());
+            s.append("\n");
+        }
+        return s;
+    }
 }

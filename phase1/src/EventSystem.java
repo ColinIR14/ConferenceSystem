@@ -306,7 +306,8 @@ public class EventSystem {
                         "Change speaker of event(4)\n+" +
                         "Remove user from event(5)\n+" +
                         "Remove self from event(6)\n" +
-                        "Send messages to all attendees of event(7)" +
+                        "Send messages to all attendees of event(7)"+
+                        "See All users in event(8)"+
                         "Main menu(8)");
                 System.out.println("Enter the number corresponding to the desired action");
                 String next = in.nextLine();
@@ -325,6 +326,9 @@ public class EventSystem {
                 } else if (next.equals("7")) {
                     sendMessageToEventMembers(e);
                 } else if (next.equals("8")) {
+                    System.out.println(em.getAttendees(e));
+
+                }else if (next.equals("9")) {
                     mainMenu();
                 } else{
                         System.out.println("Invalid input. Please try again.");
