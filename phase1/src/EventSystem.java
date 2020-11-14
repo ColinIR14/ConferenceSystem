@@ -108,6 +108,8 @@ public class EventSystem {
     private void sendMessage(User us) throws IOException {
         System.out.println("Please enter your message:");
         String content = in.nextLine();
+        if (content.equals("0"))
+            messageMenu();
         System.out.println("Please enter the user you want to message:(your contact is listed below," +
                 "if the user is not in your contact your message will not be sent");
         StringBuilder users = new StringBuilder();
@@ -117,6 +119,8 @@ public class EventSystem {
         }
         System.out.println(users.substring(0, Math.max(users.length() - 2, 0)));
         String receiver = in.nextLine();
+        if (content.equals("0"))
+            messageMenu();
         User re = am.getUser(receiver);
         mm.sendMessage(us, re, content);
         saveAll();
@@ -452,8 +456,13 @@ public class EventSystem {
                 System.out.println(em.eventdetails());
                 System.out.println("Enter Number of Event you want to manipulate");
                 int i = Integer.parseInt(in.nextLine());
-                Event ev = em.indexEvent(i);
-                sendMessageToEventMembers(ev);
+                if (i == 0) {
+                    messageMenu();
+                }
+                else {
+                    Event ev = em.indexEvent(i);
+                    sendMessageToEventMembers(ev);
+                }
                 break;
             case "6":
                 mainMenu();
