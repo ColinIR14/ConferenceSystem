@@ -207,7 +207,6 @@ public class EventSystem {
         else{
             em.changeSpeaker(e,speaker);
         }
-        saveAll();
     }
 
     private void sendMessageToEventMembers(Event e) throws IOException {
@@ -215,7 +214,6 @@ public class EventSystem {
         String message= in.nextLine();
         User u = am.getUser(currentUser);
         mm.sendEventMessage(u,e,message);
-        saveAll();
     }
 
     private void welcome() throws IOException {
@@ -413,7 +411,7 @@ public class EventSystem {
     }
 
     private void messageMenu () throws IOException { //Lan
-        System.out.println("Event Menu\n");
+        System.out.println("Event Menu:\n");
         System.out.println("View messages (1)\n" +
                 "Send message (2)\n" +
                 "Add contact (3)\n" +
@@ -421,7 +419,8 @@ public class EventSystem {
                 "Send event message (5)\n" +
                 "Main menu (6)\n");
         User us = am.getUser(currentUser);
-        System.out.println("Please enter an one-character input selection.");
+        System.out.println("Please enter an one-character input selection. (Enter 0 at anypoint if you want to go " +
+                "cancel action in further steps)");
         String input = in.nextLine();
         switch (input) {
             case "1":
@@ -433,12 +432,20 @@ public class EventSystem {
             case "3":
                 System.out.println("Please enter the user(username) you want to add to contact:");
                 String usern = in.nextLine();
-                mm.addMessagable(us, am.getUser(usern));
+                if (usern.equals("0"))
+                    messageMenu();
+                else {
+                    mm.addMessagable(us, am.getUser(usern));
+                }
                 break;
             case "4":
                 System.out.println("Please enter the user(username) you want to remove from your contact:");
                 String username = in.nextLine();
-                us.removeMessageable(am.getUser(username));
+                if (username.equals("0"))
+                    messageMenu();
+                else {
+                    us.removeMessageable(am.getUser(username));
+                }
                 break;
             case "5":
                 System.out.println("Current event list:\n");
@@ -455,6 +462,7 @@ public class EventSystem {
                 System.out.println("Invalid input, please retry");
                 messageMenu();
         }
+        saveAll();
         ArrayList<String> repeat = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5", "6"));
         if (repeat.contains(input))
             messageMenu();
