@@ -14,7 +14,7 @@ public class EventManager implements Serializable {
      */
     public EventManager() {
         eventList = new ArrayList<>();
-        nextId = 0;
+        nextId = 1;
         roomList = new ArrayList<>();
     }
 
