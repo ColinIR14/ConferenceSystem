@@ -8,7 +8,7 @@ import java.util.*;
 public class EventSystem {
 
     private Gateway g = new Gateway();
-    private AccountManager am = g.readAccountManagerFromFile("AccountManagerSave.ser");
+    public AccountManager am = g.readAccountManagerFromFile("AccountManagerSave.ser");
     private EventManager em = g.readEventManagerFromFile("EventManagerSave.ser");
     private MessageManager mm= g.readMessageManagerFromFile("MessageManagerSave.ser");
     private String currentUser;
@@ -17,8 +17,12 @@ public class EventSystem {
     }
 
     public void run() {
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        try {
+            welcome();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
+    }
 
     private void method(String input) {
         //if (input.equals("main")) {
@@ -36,21 +40,33 @@ public class EventSystem {
 
     public void signOut() throws IOException {
 
+//        am.logOffUser(am.currentUser);
+//        currentUser = null;
+        welcome();
+    }
+
+    public void closeProgram() throws IOException {
+
         //saves all the managers when an User logs off.
         saveAll();
     }
 
-    public void createAccount(String username, String password) {}
+    public void createAccount(String username, String password, String accountType) throws IOException {
+        am.addNewUser(username, password, accountType);
+        saveAll();
+    }
 
-    public void changePassword(String password) {}
+    public void changePassword(String password) {
+        am.resetPassword(am.currentUser, password);
+    }
 
     public void getListOfEvents() {}
 
-    public void attendEvent(String eventName) {}
+    public void attendEvent(String eventName) throws IOException {saveAll();}
 
-    public void cancelAttendEvent(String eventName) {}
+    public void cancelAttendEvent(String eventName) throws IOException {saveAll();}
 
-    public void sendMessage(String message, String recipient) {}
+    public void sendMessage(String message, String recipient) throws IOException {saveAll();}
 
     public void seeMessages() {}
     private void addEvent(Scanner in) throws IOException {
@@ -76,30 +92,36 @@ public class EventSystem {
         mainMenu(in);
 
     }
-    private void cancelEvent(Event e){
+    private void cancelEvent(Event e) throws IOException {
         em.cancelEvent(e);
+        saveAll();
     }
-    private void addSelfToEvent(Event e) {
+    private void addSelfToEvent(Event e) throws IOException {
         User u = am.getUser(currentUser);
         if (!em.signUpUsertoEvent(e, u)) {
             System.out.println("Failed");
         } else {
-            System.out.println("Success");}}
-    private void addUserToEvent(Scanner in,Event e){
+            System.out.println("Success");}
+        saveAll();
+    }
+    private void addUserToEvent(Scanner in,Event e) throws IOException {
         System.out.println("Enter username you wish to add");
         String username= in.nextLine();
         User u = am.getUser(username);
         if(!em.signUpUsertoEvent(e,u)){System.out.println("Failed");}
-        else{System.out.println("Success");}}
-    private void removeSelfFromEvent(Event e){
+        else{System.out.println("Success");}
+        saveAll();
+    }
+    private void removeSelfFromEvent(Event e) throws IOException {
         User u=am.getUser(currentUser);
         if(em.cancelUseratEvent(e,u)){
             System.out.println("Successfully Removed");}
         else{
             System.out.println("Failed to remove user");
         }
+        saveAll();
     }
-    private void removeUserFromEvent(Scanner in,Event e){
+    private void removeUserFromEvent(Scanner in,Event e) throws IOException {
         System.out.println("Enter username you want to remove");
         String username=in.nextLine();
         User u = am.getUser(username);
@@ -107,8 +129,10 @@ public class EventSystem {
             if(em.cancelUseratEvent(e,u)){
                 System.out.println("Successfully Removed");}}
         else{
-            System.out.println("Failed to remove user");}}
-    private void changeSpeaker(Scanner in,Event e){
+            System.out.println("Failed to remove user");}
+        saveAll();
+    }
+    private void changeSpeaker(Scanner in,Event e) throws IOException {
         System.out.println("Enter username of new speaker");
         String username =in.nextLine();
         User speaker = am.getUser(username);
@@ -118,12 +142,14 @@ public class EventSystem {
         else{
             em.changeSpeaker(e,speaker);
         }
+        saveAll();
     }
-    private void sendMessageToEventMembers(Scanner in,Event e){
+    private void sendMessageToEventMembers(Scanner in,Event e) throws IOException {
         System.out.println("Enter message you wish to send");
         String message= in.nextLine();
         User u = am.getUser(currentUser);
         mm.sendEventMessage(u,e,message);
+        saveAll();
     }
 
 
@@ -131,7 +157,7 @@ public class EventSystem {
                 // Call in file
                 Scanner in = new Scanner(System.in);
 
-                System.out.println("Welcome to the Conference Manager program! Type 'L' to log in or 'N' to create a new attendee account.");
+                System.out.println("Welcome to the Conference Manager program!\n\nType 'L' to log in.\nType 'N' to create a new attendee account.\nType 'C' to close the program.");
                 String next = in.nextLine();
 
                 if (next.equals("L")) {
@@ -140,7 +166,9 @@ public class EventSystem {
                     mainMenu(in);
                 } else if (next.equals("N")) {
                     String[] arr = promptLoginInfo(in);
-                    createAccount(arr[0], arr[1]);
+                    createAccount(arr[0], arr[1], "attendee");
+                } else if (next.equals("C")) {
+                    closeProgram();
                 }
             }
 
