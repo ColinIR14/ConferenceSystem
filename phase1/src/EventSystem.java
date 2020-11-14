@@ -110,19 +110,23 @@ public class EventSystem {
         String content = in.nextLine();
         if (content.equals("0"))
             messageMenu();
-        System.out.println("Please enter the user you want to message:(your contact is listed below," +
-                "if the user is not in your contact your message will not be sent");
-        StringBuilder users = new StringBuilder();
-        for (User m : us.getMessageable()) {
-            users.append(m.getUsername());
-            users.append("|");
+        else {
+            System.out.println("Please enter the user you want to message:(your contact is listed below," +
+                    "if the user is not in your contact your message will not be sent");
+            StringBuilder users = new StringBuilder();
+            for (User m : us.getMessageable()) {
+                users.append(m.getUsername());
+                users.append("|");
+            }
+            System.out.println(users.substring(0, Math.max(users.length() - 2, 0)));
+            String receiver = in.nextLine();
+            if (content.equals("0"))
+                messageMenu();
+            else {
+                User re = am.getUser(receiver);
+                mm.sendMessage(us, re, content);
+            }
         }
-        System.out.println(users.substring(0, Math.max(users.length() - 2, 0)));
-        String receiver = in.nextLine();
-        if (content.equals("0"))
-            messageMenu();
-        User re = am.getUser(receiver);
-        mm.sendMessage(us, re, content);
         saveAll();
     }
 
