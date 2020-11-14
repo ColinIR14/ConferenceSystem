@@ -132,7 +132,7 @@ public class EventSystem {
         }
     }
 
-    private void addEvent(Scanner in) throws IOException {
+    private void addEvent() throws IOException {
         System.out.println("Enter Name");
         String name= in.nextLine();
         System.out.println("Enter Start Date for Event");
@@ -318,7 +318,7 @@ public class EventSystem {
             String input = in.nextLine();
             switch (input) {
                 case "2":
-                    addEvent(in);
+                    addEvent();
 
                     break;
                 case "1": {
