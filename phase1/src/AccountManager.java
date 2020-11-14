@@ -127,7 +127,7 @@ public class AccountManager implements Serializable{
     public String toString(){
         StringBuilder userNameList = new StringBuilder("Users in the system:");
         for(User u : userList){
-            userNameList.append(u.getUsername()).append(", ");
+            userNameList.append(u.getUsername()).append(" ").append(u.getAccountType()).append("\n");
         }
         return userNameList.toString();
     }

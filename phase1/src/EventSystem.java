@@ -135,12 +135,12 @@ public class EventSystem {
     private void addEvent(Scanner in) throws IOException {
         System.out.println("Enter Name");
         String name= in.nextLine();
-        System.out.println("Enter Start Date for Event(format yyyy/MM/dd hh:mm:ss");
+        System.out.println("Enter Start Date for Event");
         String date = in.nextLine();
         try{
-            Date date1 = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss)").parse(date);
+            Date date1 = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").parse(date);
             System.out.println(em.listOfRooms());
-            System.out.println("Enter Number of desired Room");
+            System.out.println("Enter Index of desired Room");
             int room = Integer.parseInt(in.nextLine());
             System.out.println("Enter Speaker username");
             String speaker = in.nextLine();
@@ -418,7 +418,7 @@ public class EventSystem {
                 "Remove self from event(6)\n" +
                 "Send messages to all attendees of event(7)\n"+
                 "See All users in event(8)\n"+
-                "Main menu(9)");
+                "Main menu(9)\n");
         System.out.println("Enter the number corresponding to the desired action");
         String next = in.nextLine();
         switch (next) {
@@ -466,7 +466,7 @@ public class EventSystem {
                 "Send event message (5)\n" +
                 "Main menu (6)\n");
         User us = am.getUser(currentUser);
-        System.out.println("Please enter an one-character input selection. (Enter 0 at anypoint if you want to " +
+        System.out.println("Please enter an one-character input selection. (Enter 0 at anypoint if you want to go " +
                 "cancel action in further steps)");
         String input = in.nextLine();
         switch (input) {
@@ -526,7 +526,8 @@ public class EventSystem {
                 "Add Speaker account (2)\n" +
                 "Remove account (3)\n" +
                 "Reset password (4)\n" +
-                "Main menu (5)\n");
+                "List users (5)\n" +
+                "Main menu (6)\n");
         System.out.println("Please enter a one-character input selection.");
         String next = in.nextLine();
 
@@ -548,6 +549,13 @@ public class EventSystem {
                 accountMenu();
                 break;
             case "5":
+                if(am.checkAccountType(currentUser).equals("organizer")) {
+                    System.out.println(am.toString());
+                } else {
+                    System.out.println("Sorry, you do not have permission to access this.");
+                }
+                break;
+            case "6":
                 mainMenu();
                 break;
             default:
