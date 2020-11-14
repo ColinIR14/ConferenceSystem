@@ -105,19 +105,23 @@ public class EventSystem {
         String content = in.nextLine();
         if (content.equals("0"))
             messageMenu();
-        System.out.println("Please enter the user you want to message:(your contact is listed below," +
-                "if the user is not in your contact your message will not be sent");
-        StringBuilder users = new StringBuilder();
-        for (User m : us.getMessageable()) {
-            users.append(m.getUsername());
-            users.append("|");
+        else {
+            System.out.println("Please enter the user you want to message:(your contact is listed below," +
+                    "if the user is not in your contact your message will not be sent");
+            StringBuilder users = new StringBuilder();
+            for (User m : us.getMessageable()) {
+                users.append(m.getUsername());
+                users.append("|");
+            }
+            System.out.println(users.substring(0, Math.max(users.length() - 2, 0)));
+            String receiver = in.nextLine();
+            if (receiver.equals("0"))
+                messageMenu();
+            else {
+                User re = am.getUser(receiver);
+                mm.sendMessage(us, re, content);
+            }
         }
-        System.out.println(users.substring(0, Math.max(users.length() - 2, 0)));
-        String receiver = in.nextLine();
-        if (content.equals("0"))
-            messageMenu();
-        User re = am.getUser(receiver);
-        mm.sendMessage(us, re, content);
         saveAll();
     }
 
@@ -244,9 +248,14 @@ public class EventSystem {
             }
             case "N": {
                 String[] arr = promptLoginInfo();
-                //createAccount(arr[0], arr[1], "attendee");
-                am.addNewUser(arr[0], arr[1]);
-                saveAll();
+                if (am.addNewUser(arr[0], arr[1])){
+                    System.out.println("Success!");
+                    saveAll();
+                }
+                else{
+                    System.out.println("Sorry, the user name has already been taken.");
+                    welcome();
+                }
                 System.out.println("Welcome new attendee! \n");
                 welcome();
                 break;
@@ -457,7 +466,7 @@ public class EventSystem {
                 "Send event message (5)\n" +
                 "Main menu (6)\n");
         User us = am.getUser(currentUser);
-        System.out.println("Please enter an one-character input selection. (Enter 0 at anypoint if you want to go " +
+        System.out.println("Please enter an one-character input selection. (Enter 0 at anypoint if you want to " +
                 "cancel action in further steps)");
         String input = in.nextLine();
         switch (input) {
