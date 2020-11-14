@@ -3,9 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.Scanner;
+import java.util.*;
 
 public class EventSystem {
 
@@ -23,9 +21,9 @@ public class EventSystem {
         }
 
     private void method(String input) {
-        if (input.equals("main")) {
+        //if (input.equals("main")) {
             //main();
-        }
+        //}
     }
 
     public void logIn(String username, String password) {
@@ -166,7 +164,7 @@ public class EventSystem {
                 if (next.equals("E")) {
                     eventMenu(in);
                 } else if (next.equals("M")) {
-                    messageMenu();
+                    messageMenu(in);
                 } else if (next.equals("A")) {
                     accountMenu();
                 } else if (next.equals("S")) {
@@ -282,7 +280,7 @@ public class EventSystem {
 
             }
 
-            private void messageMenu () { //Lan
+            private void messageMenu (Scanner in) throws IOException { //Lan
                 System.out.println("Event Menu\n");
                 System.out.println("View messages (1)\n" +
                         "Send message (2)\n" +
@@ -291,7 +289,61 @@ public class EventSystem {
                         "Create a message (5)\n" +
                         "Send event message (6)\n" +
                         "Main menu (7)\n");
-                System.out.println("Please enter a one-character input selection.");
+                System.out.println("Input your username:");
+                String username = in.nextLine();
+                User us = am.getUser(username);
+                System.out.println("Please enter an one-character input selection.");
+                String input = in.nextLine();
+                switch (input) {
+                    case "1":
+                        ArrayList<Message> messages = mm.getUserMessages(us);
+                        for (Message m : messages) {
+                            System.out.println(m.getContentToString());
+                        }
+                        break;
+                    case "2":
+                        System.out.println("Please enter your message:");
+                        String content = in.nextLine();
+                        System.out.println("Please enter the user you want to message:(your contact is listed below," +
+                                "if the user is not in your contact your message will not be sent");
+                        StringBuilder users = new StringBuilder();
+                        for (User m : us.getMessageable()) {
+                            users.append(m.getUsername());
+                            users.append("|");
+                        }
+                        System.out.println(users.substring(0, users.length() - 2));
+                        String receiver = in.nextLine();
+                        User re = am.getUser(receiver);
+                        mm.sendMessage(us, re, content);
+                        break;
+                    case "3":
+                        System.out.println("Please enter the user(username) you want to add to contact:");
+                        String usern = in.nextLine();
+                        us.addMessageable(am.getUser(usern));
+                        break;
+                    //case "4":
+                    //    System.out.println("Please enter the user(username) you want to remove from your contact:");
+                    //    String usern = in.nextLine();
+                    //    us.
+                    //    break;
+                    case "6":
+                        System.out.println(em.eventdetails());
+                        System.out.println("Enter Number of Event you want to manipulate");
+                        int i = Integer.parseInt(in.nextLine());
+                        Event ev = em.indexEvent(i);
+                        sendMessageToEventMembers(in, ev);
+                        break;
+                    case "7":
+                        mainMenu(in);
+                        break;
+                    default:
+                        System.out.println("Invalid input, please retry");
+                        messageMenu(in);
+                }
+                ArrayList<String> repeat = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5", "6"));
+                if (repeat.contains(input))
+                    messageMenu(in);
+
             }
 
             private void accountMenu () { // Daisy
