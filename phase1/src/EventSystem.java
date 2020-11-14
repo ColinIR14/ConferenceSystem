@@ -259,7 +259,7 @@ public class EventSystem {
 
     private void mainMenu () throws IOException {
         System.out.println("Main Menu\n");
-        System.out.println("Events (E)\nMessages (M)\nAccount (A)\nSign out (S)\nEvents (E)");
+        System.out.println("Events (E)\nMessages (M)\nAccount (A)\nSign out (S)\n");
         System.out.println("Please enter a one-letter input selection.");
         String next = in.nextLine();
 
