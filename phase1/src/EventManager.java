@@ -159,4 +159,7 @@ public class EventManager implements Serializable {
             }
         }
     }
+    public void removeRoom(int room){
+        roomList.remove(room);
+    }
 }

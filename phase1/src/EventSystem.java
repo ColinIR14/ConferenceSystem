@@ -10,7 +10,7 @@ import java.util.Scanner;
 public class EventSystem {
 
     private Gateway g = new Gateway();
-    public AccountManager am = g.readAccountManagerFromFile("AccountManagerSave.ser");
+    private AccountManager am = g.readAccountManagerFromFile("AccountManagerSave.ser");
     private EventManager em = g.readEventManagerFromFile("EventManagerSave.ser");
     private MessageManager mm= g.readMessageManagerFromFile("MessageManagerSave.ser");
     private String currentUser;
@@ -19,12 +19,8 @@ public class EventSystem {
     }
 
     public void run() {
-        try {
-            welcome();
-        } catch (IOException e) {
-            e.printStackTrace();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         }
-    }
 
     private void method(String input) {
         if (input.equals("main")) {
@@ -42,33 +38,21 @@ public class EventSystem {
 
     public void signOut() throws IOException {
 
-        am.logOffUser(am.currentUser);
-        currentUser = null;
-        welcome();
-    }
-
-    public void closeProgram() throws IOException {
-
         //saves all the managers when an User logs off.
         saveAll();
     }
 
-    public void createAccount(String username, String password, String accountType) throws IOException {
-        am.addNewUser(username, password, accountType);
-        saveAll();
-    }
+    public void createAccount(String username, String password) {}
 
-    public void changePassword(String password) {
-        am.resetPassword(am.currentUser, password);
-    }
+    public void changePassword(String password) {}
 
     public void getListOfEvents() {}
 
-    public void attendEvent(String eventName) throws IOException {saveAll();}
+    public void attendEvent(String eventName) {}
 
-    public void cancelAttendEvent(String eventName) throws IOException {saveAll();}
+    public void cancelAttendEvent(String eventName) {}
 
-    public void sendMessage(String message, String recipient) throws IOException {saveAll();}
+    public void sendMessage(String message, String recipient) {}
 
     public void seeMessages() {}
     private void addEvent(Scanner in) throws IOException {
@@ -87,51 +71,37 @@ public class EventSystem {
             if(!u.getAccountType().equals("speaker")){
                 System.out.println("This isn't a speaker sorry!");
             }
-            if(!em.addNewEvent(name,date1,room,u)){
-                System.out.println("This Event overlaps with a previous one, so it cannot be added");
-
-            }
-            else{
-                System.out.println("Successfully added");
-            }
-        }
+            em.addNewEvent(name,date1,room,u);}
         catch (ParseException e) {
             System.out.println("Invalid Date sorry!");
         }
         mainMenu(in);
-        saveAll();
 
     }
-    private void cancelEvent(Event e) throws IOException {
+    private void cancelEvent(Event e){
         em.cancelEvent(e);
-        saveAll();
     }
-    private void addSelfToEvent(Event e) throws IOException {
+    private void addSelfToEvent(Event e) {
         User u = am.getUser(currentUser);
         if (!em.signUpUsertoEvent(e, u)) {
             System.out.println("Failed");
         } else {
-            System.out.println("Success");}
-        saveAll();
-    }
-    private void addUserToEvent(Scanner in,Event e) throws IOException {
+            System.out.println("Success");}}
+    private void addUserToEvent(Scanner in,Event e){
         System.out.println("Enter username you wish to add");
         String username= in.nextLine();
         User u = am.getUser(username);
         if(!em.signUpUsertoEvent(e,u)){System.out.println("Failed");}
-        else{System.out.println("Success");}
-        saveAll();
-    }
-    private void removeSelfFromEvent(Event e) throws IOException {
+        else{System.out.println("Success");}}
+    private void removeSelfFromEvent(Event e){
         User u=am.getUser(currentUser);
         if(em.cancelUseratEvent(e,u)){
             System.out.println("Successfully Removed");}
         else{
             System.out.println("Failed to remove user");
         }
-        saveAll();
     }
-    private void removeUserFromEvent(Scanner in,Event e) throws IOException {
+    private void removeUserFromEvent(Scanner in,Event e){
         System.out.println("Enter username you want to remove");
         String username=in.nextLine();
         User u = am.getUser(username);
@@ -139,10 +109,8 @@ public class EventSystem {
             if(em.cancelUseratEvent(e,u)){
                 System.out.println("Successfully Removed");}}
         else{
-            System.out.println("Failed to remove user");}
-        saveAll();
-    }
-    private void changeSpeaker(Scanner in,Event e) throws IOException {
+            System.out.println("Failed to remove user");}}
+    private void changeSpeaker(Scanner in,Event e){
         System.out.println("Enter username of new speaker");
         String username =in.nextLine();
         User speaker = am.getUser(username);
@@ -152,14 +120,12 @@ public class EventSystem {
         else{
             em.changeSpeaker(e,speaker);
         }
-        saveAll();
     }
-    private void sendMessageToEventMembers(Scanner in,Event e) throws IOException {
+    private void sendMessageToEventMembers(Scanner in,Event e){
         System.out.println("Enter message you wish to send");
         String message= in.nextLine();
         User u = am.getUser(currentUser);
         mm.sendEventMessage(u,e,message);
-        saveAll();
     }
 
 
@@ -167,7 +133,7 @@ public class EventSystem {
                 // Call in file
                 Scanner in = new Scanner(System.in);
 
-                System.out.println("Welcome to the Conference Manager program!\n\nType 'L' to log in.\nType 'N' to create a new attendee account.\nType 'C' to close the program.");
+                System.out.println("Welcome to the Conference Manager program! Type 'L' to log in or 'N' to create a new attendee account.");
                 String next = in.nextLine();
 
                 if (next.equals("L")) {
@@ -176,9 +142,7 @@ public class EventSystem {
                     mainMenu(in);
                 } else if (next.equals("N")) {
                     String[] arr = promptLoginInfo(in);
-                    createAccount(arr[0], arr[1], "attendee");
-                } else if (next.equals("C")) {
-                    closeProgram();
+                    createAccount(arr[0], arr[1]);
                 }
             }
 
@@ -216,37 +180,71 @@ public class EventSystem {
 
             public void eventMenu (Scanner in) throws IOException { //Raj //List of events
                 System.out.println("Event Menu\n");
-                System.out.println(
-                        "Add event (1)\n" +
-                                "Select event(2)" +
-                                "Add room(3)"+
-                                "Main Menu(4)");
-                System.out.println("Please enter a one-character input selection.");
-                String input = in.nextLine();
-                if (input.equals("1")) {
-                    addEvent(in);
+                User u = am.getUser(currentUser);
+                if(u.getUsername().equals("Organiser")) {
+                    System.out.println(
+                            "Select event (1)\n" +
+                                    "Add event(2)" +
+                                    "Add room(3)" +
+                                    "Remove room(4)" +
+                                    "Main Menu(5)");
+                    System.out.println("Please enter a one-character input selection.");
+                    String input = in.nextLine();
+                    if (input.equals("2")) {
+                        addEvent(in);
 
+                    }
+                    if (input.equals("1")) {
+                        System.out.println(em.eventdetails());
+                        System.out.println("Enter Number of Event you want to manipulate");
+                        int i = Integer.parseInt(in.nextLine());
+                        Event e = em.indexEvent(i);
+                        specificEventMenu(in, e);
+                    }
+                    if (input.equals("3")) {
+                        Room r = new Room();
+                        System.out.println("Enter Room Number");
+                        int i = Integer.parseInt(in.nextLine());
+                        r.setRoomNumber(i);
+                        em.addRoom(r);
+
+
+                    }
+                    if (input.equals("4")) {
+                        System.out.println(em.listOfRooms());
+                        System.out.println("Enter Index of desired Room");
+                        int room = Integer.parseInt(in.nextLine());
+                        em.removeRoom(room);
+                    }
+                    if (input.equals("5")) {
+                        mainMenu(in);
+                    }
                 }
-                if (input.equals("2")) {
+                else{
                     System.out.println(em.eventdetails());
-                    System.out.println("Enter Number of Event you want to manipulate");
+                    System.out.println("Enter Number of Event you want to manipulate(-1 for main menu)");
                     int i = Integer.parseInt(in.nextLine());
-                    Event e = em.indexEvent(i);
-                    specificEventMenu(in, e);
-                }
-                if (input.equals("3")){
-                    Room r = new Room();
-                    System.out.println("Enter Room Number");
-                    int i =Integer.parseInt(in.nextLine());
-                    r.setRoomNumber(i);
-                    em.addRoom(r);
+                    if (i==-1){
+                        mainMenu(in);
 
-
+                    }
+                    else {
+                          Event e = em.indexEvent(i);
+                          System.out.println("Add self to event(1)\n"+
+                                  "Remove self from event(2)");
+                          System.out.println("Enter number you want to do(-1 for main menu)");
+                          int j =Integer.parseInt(in.nextLine());
+                          if(j==-1){
+                              mainMenu(in);
+                          }
+                          else if (j==1){
+                              addSelfToEvent(e);
+                          }
+                          else if (j==2){
+                              removeSelfFromEvent(e);
+                          }
+                    }
                 }
-                if(input.equals("4")){
-                    mainMenu(in);
-                }
-                mainMenu(in);
             }
             public void specificEventMenu (Scanner in, Event e) throws IOException {
                 System.out.println("Cancel Event(1)\n" +
