@@ -42,7 +42,7 @@ public class Event implements Serializable{
   }
 
   public boolean addAttendee(User NewAttendee){
-    if(attendees.size()<eventRoom.getRoomCapacity()){
+    if(attendees.size()<eventRoom.getRoomCapacity() && !attendees.contains(NewAttendee)){
       attendees.add(NewAttendee);
       return true;}
     return false;

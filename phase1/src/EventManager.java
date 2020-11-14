@@ -149,7 +149,9 @@ public class EventManager implements Serializable {
     }
 
     public void cancelEvent(Event e) {
-        eventList.remove(e);//iwhat if e not in eventlist?
+        if (!eventList.remove(e)) {
+            System.out.println("Error: event not found.");
+        }
     }
 
     public void changeSpeaker(Event e, User speaker) {
