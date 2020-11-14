@@ -53,8 +53,38 @@ public class EventSystem {
         saveAll();
     }
 
-    public void changePassword(String password) {
-        am.resetPassword(am.currentUser, password);
+    private void addAccount(Scanner in, String accountType) {
+        System.out.println("Please create your user name");
+        String username = in.nextLine();
+        System.out.println("Please create your password");
+        String password = in.nextLine();
+        if (am.addNewUser(username, password, accountType)){
+            System.out.println("Success!");
+        }
+        else{
+            System.out.println("Sorry, the user name has already been taken.");
+        }
+    }
+
+    private void removeAccount(Scanner in) {
+        System.out.println("Please enter your user name");
+        String username = in.nextLine();
+        System.out.println("Please enter your password");
+        String password = in.nextLine();
+        if (am.deleteUser(username, password)){
+            System.out.println("Success!");
+        }
+        else{
+            System.out.println("Sorry, your user name or password is not correct.");
+        }
+    }
+
+    private void changePassword(Scanner in) {
+        System.out.println("Please enter your new password");
+        String password = in.nextLine();
+        User u = am.getUser(currentUser);
+        am.resetPassword(u, password);
+        System.out.println("Success!");
     }
 
     public void attendEvent(String eventName) throws IOException {saveAll();}
@@ -301,8 +331,6 @@ public class EventSystem {
                         specificEventMenu(e);
                 }
                 eventMenu();
-
-
             }
 
             private void messageMenu () throws IOException { //Lan
@@ -371,7 +399,7 @@ public class EventSystem {
                     messageMenu();
             }
 
-            private void accountMenu () { // Daisy
+            private void accountMenu () throws IOException { // Daisy
                 System.out.println("Account Menu\n");
                 System.out.println("Add Organizer account (1)\n" +
                         "Add Speaker account (2)\n" +
@@ -379,7 +407,29 @@ public class EventSystem {
                         "Reset password (4)\n" +
                         "Main menu (5)\n");
                 System.out.println("Please enter a one-character input selection.");
+                String next = in.nextLine();
+
+                if (next.equals("1")) {
+                    addAccount(in, "organizer");
+                    accountMenu();
+                } else if (next.equals("2")) {
+                    addAccount(in, "speaker");
+                    accountMenu();
+                } else if (next.equals("3")) {
+                    removeAccount(in);
+                    accountMenu();
+                } else if (next.equals("4")) {
+                    changePassword(in);
+                    accountMenu();
+                } else if (next.equals("5")) {
+                    mainMenu();
+                }
+                else {
+                    System.out.println("Invalid input");
+                    mainMenu();
+                }
             }
+
 
 
     /**
