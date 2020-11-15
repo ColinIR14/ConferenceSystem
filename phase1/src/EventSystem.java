@@ -46,6 +46,12 @@ public class EventSystem {
         saveAll();
     }
 
+    /**
+     * Add a certain type account by creating the user name and passowrd if the user logged in is an organizer,
+     * otherwise the request is refused
+     * @param accountType the type of teh added account
+     * @throws IOException in order to call the saveAll() method and save all the changes
+     */
     private void addAccount(String accountType) throws IOException {
         if (am.checkAccountType(currentUser).equals("organizer")) {
             System.out.println("Please create your user name");
@@ -69,6 +75,13 @@ public class EventSystem {
         saveAll();
     }
 
+    /**
+     * If the user logged in is an organizer, remove a certain account by entering the user name when the user name
+     * entered exists, otherwise the request is refused.
+     * If the user logged in is a speaker or attendee, remove the logged in account by entering user name and password,
+     * otherwise the request is refused.
+     * @throws IOException in order to call the saveAll() method and save all the changes
+     */
     private void removeAccount() throws IOException {
         if (am.checkAccountType(currentUser).equals("organizer")) {
             System.out.println("Please enter the user name you want to remove");
@@ -82,12 +95,12 @@ public class EventSystem {
                 System.out.println("Sorry, your user name is not correct.");
             }
         } else {
-            System.out.println("Please enter your name you want to remove");
+            System.out.println("Please enter your user name");
             String username = in.nextLine();
             if (username.equals("back")){
                 accountMenu();
             }
-            System.out.println("Please enter your name you want to remove");
+            System.out.println("Please enter your password");
             String password = in.nextLine();
             if (password.equals("back")){
                 accountMenu();
@@ -101,6 +114,10 @@ public class EventSystem {
         saveAll();
     }
 
+    /**
+     * Change the password of the logged in account into the newly entered password
+     * @throws IOException in order to call the saveAll() method and save all the changes
+     */
     private void changePassword() throws IOException {
         System.out.println("Please enter your new password");
         String password = in.nextLine();
@@ -528,6 +545,16 @@ public class EventSystem {
             messageMenu();
     }
 
+    /**
+     * If the logged in user is an organizer, allows the user to enter a single-digit input between 1-6 to select the
+     * operation they want to take.
+     * (1.Add Organizer account  2.delete account  3.Reset account  4.Reset password  5.List users  6.Main menu)
+     * If the logged in user is an attendee or a speaker, allows the user to enter a single-digit input between 1-3
+     * to select the operation they want to take.
+     * (1.delete account  2.Reset account 3.Main menu)
+     * Each option selected redirects to a corresponding private method previously defined.
+     * @throws IOException in order to call the saveAll() method and save all the changes
+     */
     private void accountMenu() throws IOException { // Daisy
         System.out.println("Account Menu\n");
         if (am.checkAccountType(currentUser).equals("organizer")) {
