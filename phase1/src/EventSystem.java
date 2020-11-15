@@ -440,19 +440,25 @@ public class EventSystem {
                 mainMenu();
 
             } else {
-                Event e = em.indexEvent(i);
-                System.out.println("Add self to event(1)\n" +
-                        "Remove self from event(2)");
-                System.out.println("Enter number you want to do(\"back\" for main menu)");
-                int j = Integer.parseInt(in.nextLine());
-                if (j == -1) {
-                    mainMenu();
-                } else if (j == 1) {
-                    addSelfToEvent(e);
-                } else if (j == 2) {
-                    removeSelfFromEvent(e);
-                } else {
-                    System.out.println("Invalid input. Please try again.");
+                try {
+                    Event e = em.indexEvent(i);
+                    System.out.println("Add self to event(1)\n" +
+                            "Remove self from event(2)");
+                    System.out.println("Enter number you want to do(\"back\" for main menu)");
+                    int j = Integer.parseInt(in.nextLine());
+                    if (j == -1) {
+                        mainMenu();
+                    } else if (j == 1) {
+                        addSelfToEvent(e);
+                    } else if (j == 2) {
+                        removeSelfFromEvent(e);
+                    } else {
+                        System.out.println("Invalid input. Please try again.");
+                    }
+                }
+                catch(NumberFormatException e){
+                    System.out.println("Enter number please");
+                    eventMenu();
                 }
             }
 
@@ -548,23 +554,33 @@ public class EventSystem {
                 saveAll();
                 break;
             case "5":
-                if (!am.checkAccountType(currentUser).equals("organizer")){
-                    System.out.println("You're not an organizer");
-                    messageMenu();
-                    break;
+                try {
+                    if (!am.checkAccountType(currentUser).equals("organizer")) {
+                        System.out.println("You're not an organizer");
+                        messageMenu();
+                        break;
+                    }
+                    System.out.println("Current event list:\n");
+                    System.out.println(em.eventdetails());
+                    System.out.println("Enter Number of Event you want to manipulate");
+                    String in2 = in.nextLine();
+                    if (in2.equals("back")) {
+                        messageMenu();
+                        break;
+                    }
+                    int i = Integer.parseInt(in2);
+                    Event ev = em.indexEvent(i);
+                    sendMessageToEventMembers(ev);
+                    saveAll();
                 }
-                System.out.println("Current event list:\n");
-                System.out.println(em.eventdetails());
-                System.out.println("Enter Number of Event you want to manipulate");
-                String in2 = in.nextLine();
-                if (in2.equals("back")) {
+                catch(NumberFormatException e){
+                    System.out.println("Enter a number please");
                     messageMenu();
-                    break;
                 }
-                int i = Integer.parseInt(in2);
-                Event ev = em.indexEvent(i);
-                sendMessageToEventMembers(ev);
-                saveAll();
+                catch(IndexOutOfBoundsException e){
+                    System.out.println("Enter a valid index please");
+                    messageMenu();
+                }
                 break;
             case "6":
                 saveAll();

@@ -80,7 +80,9 @@ public class Event implements Serializable{
    * @return true iff the event can accept the user and the user isn't already added(if it can it adds the user)
    */
   public boolean addAttendee(User NewAttendee){
-    if(attendees.size()<eventRoom.getRoomCapacity() && !attendees.contains(NewAttendee)){
+    ArrayList<String> attendeesUsernames = new ArrayList<>();
+    for (User x:attendees) attendeesUsernames.add(x.getUsername());
+    if(attendees.size()<eventRoom.getRoomCapacity() && !attendeesUsernames.contains(NewAttendee.getUsername())){
       attendees.add(NewAttendee);
       return true;}
     return false;
@@ -92,7 +94,7 @@ public class Event implements Serializable{
    */
 
   public void removeAttendee(User NewAttendee){
-    attendees.remove(NewAttendee);
+    attendees.removeIf(x -> x.getUsername().equals(NewAttendee.getUsername()));
   }
 
   /**

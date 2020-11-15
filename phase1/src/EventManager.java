@@ -54,12 +54,13 @@ public class EventManager implements Serializable {
     public boolean cancelUseratEvent(Event event, User user) {
         for (Event x : eventList) {
             if (x.equals(event)) {
-                if (x.getAttendees().contains(user)) {
+                ArrayList<String> attendeesUsernames = new ArrayList<>();
+                for (User y:x.getAttendees()) attendeesUsernames.add(y.getUsername());
+                if (attendeesUsernames.contains(user.getUsername())) {
                     x.removeAttendee(user);
                     return true;
-                } else {
-                    return false;
                 }
+                else return false;
             }
         }
         return false;
