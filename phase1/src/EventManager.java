@@ -150,7 +150,7 @@ public class EventManager implements Serializable {
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < eventList.size(); i++) {
             s.append("Event Number-");
-            s.append(i);
+            s.append(i+1);
             s.append("  Event Name-");
             s.append(eventList.get(i).getEventName());
             s.append("  Room Number-");
