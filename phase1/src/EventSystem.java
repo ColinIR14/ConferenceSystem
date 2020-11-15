@@ -48,10 +48,16 @@ public class EventSystem {
 
     private void addAccount(String accountType) throws IOException{
         if (am.checkAccountType(currentUser).equals("organizer")){
-            System.out.println("Please create your user name");
+            System.out.println("Please create your user name [Enter '0' to go back]");
             String username = in.nextLine();
-            System.out.println("Please create your password");
+            if (username.equals("0")){
+                accountMenu();
+            }
+            System.out.println("Please create your password [Enter '0' to go back]");
             String password = in.nextLine();
+            if (password.equals("0")){
+                accountMenu();
+            }
             if (am.addNewUser(username, password, accountType)){
                 System.out.println("Success!");
             }
@@ -67,8 +73,11 @@ public class EventSystem {
 
     private void removeAccount() throws IOException{
         if (am.checkAccountType(currentUser).equals("organizer")){
-            System.out.println("Please enter the user name you want to remove");
+            System.out.println("Please enter the user name you want to remove [Enter '0' to go back]");
             String username = in.nextLine();
+            if (username.equals("0")){
+                accountMenu();
+            }
             if (am.deleteUser(username, am.getUser(username).getPassword())){
                 System.out.println("Success!");
             }
@@ -77,10 +86,16 @@ public class EventSystem {
             }
         }
         else{
-            System.out.println("Please enter your name you want to remove");
+            System.out.println("Please enter your name you want to remove [Enter '0' to go back]");
             String username = in.nextLine();
-            System.out.println("Please enter your name you want to remove");
+            if (username.equals("0")){
+                accountMenu();
+            }
+            System.out.println("Please enter your name you want to remove [Enter '0' to go back]");
             String password = in.nextLine();
+            if (password.equals("0")){
+                accountMenu();
+            }
             if (am.deleteUser(username, password)){
                 System.out.println("Success!");
             }
@@ -92,8 +107,11 @@ public class EventSystem {
     }
 
     private void changePassword() throws IOException{
-        System.out.println("Please enter your new password");
+        System.out.println("Please enter your new password [Enter '0' to go back]");
         String password = in.nextLine();
+        if (password.equals("0")){
+            accountMenu();
+        }
         User u = am.getUser(currentUser);
         am.resetPassword(u, password);
         System.out.println("Success!");
