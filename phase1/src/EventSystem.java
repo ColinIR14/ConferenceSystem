@@ -102,13 +102,13 @@ public class EventSystem {
             messageMenu();
         else {
             System.out.println("Please enter the user you want to message:(your contact is listed below," +
-                    "if the user is not in your contact your message will not be sent");
+                    "if the user is not in your contact your message will not be sent)");
             StringBuilder users = new StringBuilder();
             for (User m : us.getMessageable()) {
                 users.append(m.getUsername());
                 users.append("|");
             }
-            System.out.println(users.substring(0, Math.max(users.length() - 2, 0)));
+            System.out.println(users.substring(0, Math.max(users.length()-1, 0)));
             String receiver = in.nextLine();
             if (receiver.equals("back"))
                 messageMenu();
@@ -322,7 +322,6 @@ public class EventSystem {
                 mainMenu();
                 break;
         }
-
     }
 
     private void eventMenu() throws IOException { //Raj //List of events
@@ -469,7 +468,7 @@ public class EventSystem {
     }
 
     private void messageMenu() throws IOException { //Lan
-        System.out.println("Event Menu:\n");
+        System.out.println("Message Menu:\n");
         System.out.println("View messages (1)\n" +
                 "Send message (2)\n" +
                 "Add contact (3)\n" +
@@ -504,8 +503,14 @@ public class EventSystem {
                 else {
                     us.removeMessageable(am.getUser(username));
                 }
+                saveAll();
                 break;
             case "5":
+                if (!am.checkAccountType(currentUser).equals("organizer")){
+                    System.out.println("You're not an organizer");
+                    messageMenu();
+                    break;
+                }
                 System.out.println("Current event list:\n");
                 System.out.println(em.eventdetails());
                 System.out.println("Enter Number of Event you want to manipulate");
@@ -517,8 +522,10 @@ public class EventSystem {
                 int i = Integer.parseInt(in2);
                 Event ev = em.indexEvent(i);
                 sendMessageToEventMembers(ev);
+                saveAll();
                 break;
             case "6":
+                saveAll();
                 mainMenu();
                 break;
             default:
