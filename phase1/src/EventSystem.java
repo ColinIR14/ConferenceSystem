@@ -432,34 +432,35 @@ public class EventSystem {
             }
             saveAll();
         } else {
-            System.out.println("Current event list:\n");
-            System.out.println(em.eventdetails());
-            System.out.println("Enter Number of Event you want to manipulate(\"back\" for main menu)");
-            int i = Integer.parseInt(in.nextLine());
-            if (i == -1) {
-                mainMenu();
-
-            } else {
-                try {
-                    Event e = em.indexEvent(i);
-                    System.out.println("Add self to event(1)\n" +
-                            "Remove self from event(2)");
-                    System.out.println("Enter number you want to do(\"back\" for main menu)");
-                    int j = Integer.parseInt(in.nextLine());
-                    if (j == -1) {
-                        mainMenu();
-                    } else if (j == 1) {
-                        addSelfToEvent(e);
-                    } else if (j == 2) {
-                        removeSelfFromEvent(e);
-                    } else {
-                        System.out.println("Invalid input. Please try again.");
+            try{
+               System.out.println("Current event list:\n");
+               System.out.println(em.eventdetails());
+               System.out.println("Enter Number of Event you want to manipulate(\"back\" for main menu)");
+               String input1= in.nextLine();
+               if(input1 .equals("back")) mainMenu();
+               int i = Integer.parseInt(input1);
+               Event e = em.indexEvent(i);
+               System.out.println("Add self to event(1)\n" +
+                        "Remove self from event(2)");
+               System.out.println("Enter number you want to do(\"back\" for main menu)");
+               String input =in.nextLine();
+               if(input.equals("back")) mainMenu();
+               int j = Integer.parseInt(input);
+               if (j == 1) addSelfToEvent(e);
+               else if (j == 2)
+                   removeSelfFromEvent(e);
+               else {
+                   System.out.println("Invalid input. Please try again.");
+                   eventMenu();
                     }
                 }
-                catch(NumberFormatException e){
+            catch(NumberFormatException e){
                     System.out.println("Enter number please");
                     eventMenu();
                 }
+            catch(IndexOutOfBoundsException e){
+                System.out.println("Invalid input.Please try again");
+                eventMenu();
             }
 
         }
