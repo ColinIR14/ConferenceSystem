@@ -231,6 +231,14 @@ public class EventSystem {
         mm.sendEventMessage(u,e,message);
     }
 
+    /*
+    Welcome is the first UI function called for the program, and allows the user to log in,
+    make a new attendee account, or exit. Once logged in, it directs the user to the main menu.
+
+    Note that to make an admin account, you may use the default admin login below:
+    Username: admin
+    Password: prime
+     */
     private void welcome() throws IOException {
 
         System.out.println("Welcome to the Conference Manager program!\n\nType 'L' to log in.\nType 'N' to create a new attendee account (Contact a current admin if you need an organizer account, or use the default admin login).\nType 'C' to close the program.");
@@ -269,6 +277,9 @@ public class EventSystem {
         }
     }
 
+    /*
+    Prompts user for username and password, and returns them in an array to help other functions.
+     */
     private String[] promptLoginInfo (){
         String[] arr = new String[2];
         System.out.println("Input username:");
@@ -280,6 +291,10 @@ public class EventSystem {
         return arr;
     }
 
+    /*
+    Gives the user the main menu for the program. Allows user to access various submenus to use the program,
+    or to sign out.
+     */
     private void mainMenu () throws IOException {
         System.out.println("Main Menu\n");
         System.out.println("Events (E)\nMessages (M)\nAccount (A)\nSign out (S)\n");
