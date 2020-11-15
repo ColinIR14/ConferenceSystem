@@ -14,7 +14,7 @@ public class EventManager implements Serializable {
      */
     public EventManager() {
         eventList = new ArrayList<>();
-        nextId = 0;
+        nextId = 1;
         roomList = new ArrayList<>();
     }
 
@@ -88,8 +88,18 @@ public class EventManager implements Serializable {
         return true;
     }
 
-    public boolean addNewEvent(String EventName, Date EventTime, int EventRoomIndex, User EventSpeaker) {
-        Event tempevent = new Event(nextId, EventName, EventTime, roomList.get(EventRoomIndex), EventSpeaker);
+    public boolean addNewEvent(String EventName, Date EventTime, int EventRoomNumber, User EventSpeaker) {
+        Room room = new Room();
+        room.setRoomNumber(0);
+        for (Room x:roomList){
+            if (x.getRoomNumber() == EventRoomNumber){
+                room=x;
+            }
+        if (room.getRoomNumber() ==0){
+            return false;
+        }
+        }
+        Event tempevent = new Event(nextId, EventName, EventTime, room, EventSpeaker);
         nextId += 1;
         for (Event x : eventList) {
             if (x.equals(tempevent)) {
@@ -110,8 +120,18 @@ public class EventManager implements Serializable {
     }
 
     public void addRoom(Room r) {
-        roomList.add(r);
-    }
+        Boolean t = false;
+        for(Room room:roomList){
+            if (room.getRoomNumber() == r.getRoomNumber()){
+                System.out.println("Room already added!");
+                t = true;
+            }
+        }
+        if(!t){
+            roomList.add(r);
+        }
+        }
+
 
     public StringBuilder listOfRooms() {
         StringBuilder s = new StringBuilder();
@@ -149,7 +169,9 @@ public class EventManager implements Serializable {
     }
 
     public void cancelEvent(Event e) {
-        eventList.remove(e);//iwhat if e not in eventlist?
+        if (!eventList.remove(e)) {
+            System.out.println("Error: event not found.");
+        }
     }
 
     public void changeSpeaker(Event e, User speaker) {
@@ -160,7 +182,7 @@ public class EventManager implements Serializable {
         }
     }
     public void removeRoom(int room){
-        roomList.remove(room);
+        roomList.removeIf(x -> x.getRoomNumber() == room);
     }
     public StringBuilder getAttendees(Event e){
         StringBuilder s = new StringBuilder();

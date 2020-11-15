@@ -46,11 +46,6 @@ public class EventSystem {
         saveAll();
     }
 
-    private void createAccount(String username, String password, String accountType) throws IOException {
-        am.addNewUser(username, password, accountType);
-        saveAll();
-    }
-
     private void addAccount(String accountType) throws IOException{
         if (am.checkAccountType(currentUser).equals("organizer")){
             System.out.println("Please create your user name");
@@ -108,17 +103,25 @@ public class EventSystem {
     private void sendMessage(User us) throws IOException {
         System.out.println("Please enter your message:");
         String content = in.nextLine();
-        System.out.println("Please enter the user you want to message:(your contact is listed below," +
-                "if the user is not in your contact your message will not be sent");
-        StringBuilder users = new StringBuilder();
-        for (User m : us.getMessageable()) {
-            users.append(m.getUsername());
-            users.append("|");
+        if (content.equals("0"))
+            messageMenu();
+        else {
+            System.out.println("Please enter the user you want to message:(your contact is listed below," +
+                    "if the user is not in your contact your message will not be sent");
+            StringBuilder users = new StringBuilder();
+            for (User m : us.getMessageable()) {
+                users.append(m.getUsername());
+                users.append("|");
+            }
+            System.out.println(users.substring(0, Math.max(users.length() - 2, 0)));
+            String receiver = in.nextLine();
+            if (receiver.equals("0"))
+                messageMenu();
+            else {
+                User re = am.getUser(receiver);
+                mm.sendMessage(us, re, content);
+            }
         }
-        System.out.println(users.substring(0, Math.max(users.length() - 2, 0)));
-        String receiver = in.nextLine();
-        User re = am.getUser(receiver);
-        mm.sendMessage(us, re, content);
         saveAll();
     }
 
@@ -129,7 +132,7 @@ public class EventSystem {
         }
     }
 
-    private void addEvent(Scanner in) throws IOException {
+    private void addEvent() throws IOException {
         System.out.println("Enter Name");
         String name= in.nextLine();
         System.out.println("Enter Start Date for Event");
@@ -145,11 +148,23 @@ public class EventSystem {
             if(!u.getAccountType().equals("speaker")){
                 System.out.println("This isn't a speaker sorry!");
             }
-            em.addNewEvent(name,date1,room,u);}
+            if(em.addNewEvent(name,date1,room,u)){
+                System.out.println("Successfully Added");
+            }
+            else {
+                System.out.println("Failed to add");
+            }
+
+        }
         catch (ParseException e) {
             System.out.println("Invalid Date sorry!");
+            eventMenu();
         }
-        mainMenu();
+        catch(NumberFormatException e){
+            System.out.println("Enter a number for room please");
+            eventMenu();
+        }
+        eventMenu();
     }
 
     private void cancelEvent(Event e) throws IOException {
@@ -207,7 +222,6 @@ public class EventSystem {
         else{
             em.changeSpeaker(e,speaker);
         }
-        saveAll();
     }
 
     private void sendMessageToEventMembers(Event e) throws IOException {
@@ -215,12 +229,19 @@ public class EventSystem {
         String message= in.nextLine();
         User u = am.getUser(currentUser);
         mm.sendEventMessage(u,e,message);
-        saveAll();
     }
 
+    /*
+    Welcome is the first UI function called for the program, and allows the user to log in,
+    make a new attendee account, or exit. Once logged in, it directs the user to the main menu.
+
+    Note that to make an admin account, you may use the default admin login below:
+    Username: admin
+    Password: prime
+     */
     private void welcome() throws IOException {
 
-        System.out.println("Welcome to the Conference Manager program!\n\nType 'L' to log in.\nType 'N' to create a new attendee account (Contact a current admin if you need an admin account, or use the default admin login).\nType 'C' to close the program.");
+        System.out.println("Welcome to the Conference Manager program!\n\nType 'L' to log in.\nType 'N' to create a new attendee account (Contact a current admin if you need an organizer account, or use the default admin login).\nType 'C' to close the program.");
         String next = in.nextLine();
 
         switch (next) {
@@ -235,7 +256,14 @@ public class EventSystem {
             }
             case "N": {
                 String[] arr = promptLoginInfo();
-                createAccount(arr[0], arr[1], "attendee");
+                if (am.addNewUser(arr[0], arr[1])){
+                    System.out.println("Success!");
+                    saveAll();
+                }
+                else{
+                    System.out.println("Sorry, the user name has already been taken.");
+                    welcome();
+                }
                 System.out.println("Welcome new attendee! \n");
                 welcome();
                 break;
@@ -243,9 +271,15 @@ public class EventSystem {
             case "C":
                 closeProgram();
                 break;
+            default:
+                System.out.println("Invalid input. Please try again.");
+                welcome();
         }
     }
 
+    /*
+    Prompts user for username and password, and returns them in an array to help other functions.
+     */
     private String[] promptLoginInfo (){
         String[] arr = new String[2];
         System.out.println("Input username:");
@@ -257,6 +291,10 @@ public class EventSystem {
         return arr;
     }
 
+    /*
+    Gives the user the main menu for the program. Allows user to access various submenus to use the program,
+    or to sign out.
+     */
     private void mainMenu () throws IOException {
         System.out.println("Main Menu\n");
         System.out.println("Events (E)\nMessages (M)\nAccount (A)\nSign out (S)\n");
@@ -287,42 +325,67 @@ public class EventSystem {
     private void eventMenu () throws IOException { //Raj //List of events
         System.out.println("Event Menu\n");
         User u = am.getUser(currentUser);
-        if(u.getUsername().equals("Organiser")) {
+        if(am.checkAccountType(currentUser).equals("organizer")) {
             System.out.println(
                     "Select event (1)\n" +
-                            "Add event(2)" +
-                            "Add room(3)" +
-                            "Remove room(4)" +
-                            "Main Menu(5)");
+                            "Add event(2)\n" +
+                            "Add room(3)\n" +
+                            "Remove room(4)\n" +
+                            "Main Menu(5)\n");
             System.out.println("Please enter a one-character input selection.");
             String input = in.nextLine();
             switch (input) {
                 case "2":
-                    addEvent(in);
+                    addEvent();
 
                     break;
                 case "1": {
-                    System.out.println(em.eventdetails());
-                    System.out.println("Enter Number of Event you want to manipulate");
-                    int i = Integer.parseInt(in.nextLine());
-                    Event e = em.indexEvent(i);
-                    specificEventMenu(e);
-                    break;
-                }
+                    try{
+                       System.out.println(em.eventdetails());
+                       System.out.println("Enter Number of Event you want to manipulate");
+                       int i = Integer.parseInt(in.nextLine());
+                       Event e = em.indexEvent(i);
+                       specificEventMenu(e);
+                       break;}
+                    catch (IndexOutOfBoundsException e){
+                       System.out.println("Invalid index please try again");
+                       eventMenu();
+                    }
+                    catch(NumberFormatException e){
+                       System.out.println("Please enter a number!");
+                       eventMenu();
+                    }
+                    }
                 case "3": {
-                    Room r = new Room();
-                    System.out.println("Enter Room Number");
-                    int i = Integer.parseInt(in.nextLine());
-                    r.setRoomNumber(i);
-                    em.addRoom(r);
-                    break;
+                    try {
+                        Room r = new Room();
+                        System.out.println("Enter Room Number( do not enter 0 as room number please)");
+                        int i = Integer.parseInt(in.nextLine());
+                        if (i == 0) {
+                            System.out.println("Cannot add room number zero sorry");
+                            eventMenu();
+                        }
+                        r.setRoomNumber(i);
+                        em.addRoom(r);
+                        break;
+                    }
+                    catch(NumberFormatException e){
+                        System.out.println("Enter number please");
+                        eventMenu();
+                    }
                 }
                 case "4":
-                    System.out.println(em.listOfRooms());
-                    System.out.println("Enter Index of desired Room");
-                    int room = Integer.parseInt(in.nextLine());
-                    em.removeRoom(room);
-                    break;
+                    try {
+                        System.out.println(em.listOfRooms());
+                        System.out.println("Enter Number of Room to be deleted");
+                        int room = Integer.parseInt(in.nextLine());
+                        em.removeRoom(room);
+                        break;
+                    }
+                    catch(NumberFormatException e){
+                        System.out.println("Enter a number please");
+                        eventMenu();
+                    }
                 case "5":
                     mainMenu();
                     break;
@@ -330,6 +393,7 @@ public class EventSystem {
                     System.out.println("Invalid input. Please try again.");
                     break;
             }
+            saveAll();
         }
         else{
             System.out.println("Current event list:\n");
@@ -358,7 +422,10 @@ public class EventSystem {
                       System.out.println("Invalid input. Please try again.");
                   }
             }
+
         }
+        saveAll();
+        eventMenu();
     }
     private void specificEventMenu (Event e) throws IOException {
         System.out.println("Cancel Event(1)\n" +
@@ -367,9 +434,9 @@ public class EventSystem {
                 "Change speaker of event(4)\n+" +
                 "Remove user from event(5)\n+" +
                 "Remove self from event(6)\n" +
-                "Send messages to all attendees of event(7)"+
-                "See All users in event(8)"+
-                "Main menu(9)");
+                "Send messages to all attendees of event(7)\n"+
+                "See All users in event(8)\n"+
+                "Main menu(9)\n");
         System.out.println("Enter the number corresponding to the desired action");
         String next = in.nextLine();
         switch (next) {
@@ -409,7 +476,7 @@ public class EventSystem {
     }
 
     private void messageMenu () throws IOException { //Lan
-        System.out.println("Event Menu\n");
+        System.out.println("Event Menu:\n");
         System.out.println("View messages (1)\n" +
                 "Send message (2)\n" +
                 "Add contact (3)\n" +
@@ -417,7 +484,8 @@ public class EventSystem {
                 "Send event message (5)\n" +
                 "Main menu (6)\n");
         User us = am.getUser(currentUser);
-        System.out.println("Please enter an one-character input selection.");
+        System.out.println("Please enter an one-character input selection. (Enter 0 at anypoint if you want to go " +
+                "cancel action in further steps)");
         String input = in.nextLine();
         switch (input) {
             case "1":
@@ -429,20 +497,33 @@ public class EventSystem {
             case "3":
                 System.out.println("Please enter the user(username) you want to add to contact:");
                 String usern = in.nextLine();
-                mm.addMessagable(us, am.getUser(usern));
+                if (usern.equals("0"))
+                    messageMenu();
+                else {
+                    mm.addMessagable(us, am.getUser(usern));
+                }
                 break;
             case "4":
                 System.out.println("Please enter the user(username) you want to remove from your contact:");
                 String username = in.nextLine();
-                us.removeMessageable(am.getUser(username));
+                if (username.equals("0"))
+                    messageMenu();
+                else {
+                    us.removeMessageable(am.getUser(username));
+                }
                 break;
             case "5":
                 System.out.println("Current event list:\n");
                 System.out.println(em.eventdetails());
                 System.out.println("Enter Number of Event you want to manipulate");
                 int i = Integer.parseInt(in.nextLine());
-                Event ev = em.indexEvent(i);
-                sendMessageToEventMembers(ev);
+                if (i == 0) {
+                    messageMenu();
+                }
+                else {
+                    Event ev = em.indexEvent(i);
+                    sendMessageToEventMembers(ev);
+                }
                 break;
             case "6":
                 mainMenu();
@@ -451,6 +532,7 @@ public class EventSystem {
                 System.out.println("Invalid input, please retry");
                 messageMenu();
         }
+        saveAll();
         ArrayList<String> repeat = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5", "6"));
         if (repeat.contains(input))
             messageMenu();
@@ -462,7 +544,8 @@ public class EventSystem {
                 "Add Speaker account (2)\n" +
                 "Remove account (3)\n" +
                 "Reset password (4)\n" +
-                "Main menu (5)\n");
+                "List users (5)\n" +
+                "Main menu (6)\n");
         System.out.println("Please enter a one-character input selection.");
         String next = in.nextLine();
 
@@ -484,6 +567,14 @@ public class EventSystem {
                 accountMenu();
                 break;
             case "5":
+                if(am.checkAccountType(currentUser).equals("organizer")) {
+                    System.out.println(am.toString());
+                } else {
+                    System.out.println("Sorry, you do not have permission to access this.");
+                }
+                accountMenu();
+                break;
+            case "6":
                 mainMenu();
                 break;
             default:
