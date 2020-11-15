@@ -1,6 +1,9 @@
 import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 public class EventSystem {
@@ -168,7 +171,7 @@ public class EventSystem {
         System.out.println("Enter Start Date for Event (dd/MM/yyyy hh:mm:ss)");
         String date = in.nextLine();
         try {
-            Date date1 = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").parse(date);
+            LocalDateTime date2=LocalDateTime.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
             System.out.println(em.listOfRooms());
             System.out.println("Enter Index of desired Room");
             int room = Integer.parseInt(in.nextLine());
@@ -178,13 +181,13 @@ public class EventSystem {
             if (!u.getAccountType().equals("speaker")) {
                 System.out.println("This isn't a speaker sorry!");
             }
-            if (em.addNewEvent(name, date1, room, u)) {
+            if (em.addNewEvent(name, date2, room, u)) {
                 System.out.println("Successfully Added");
             } else {
                 System.out.println("Failed to add");
             }
 
-        } catch (ParseException e) {
+        } catch (DateTimeParseException e) {
             System.out.println("Invalid Date sorry!");
             eventMenu();
         } catch (NumberFormatException e) {

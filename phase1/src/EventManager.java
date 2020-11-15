@@ -1,5 +1,7 @@
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.io.Serializable;
 import java.util.Date;
@@ -76,7 +78,7 @@ public class EventManager implements Serializable {
      * an Event in Eventlist clashes with EventTime and EventSpeaker of Event being added.
      * Otherwise, add the Event to eventList and return true.
      */
-    public boolean addNewEvent(String EventName, Date EventTime, Room EventRoom, User EventSpeaker) {
+    public boolean addNewEvent(String EventName, LocalDateTime EventTime, Room EventRoom, User EventSpeaker) {
         Event tempevent = new Event(nextId, EventName, EventTime, EventRoom, EventSpeaker);
         nextId += 1;
         for (Event x : eventList) {
@@ -104,7 +106,7 @@ public class EventManager implements Serializable {
      * an Event in Eventlist clashes with EventTime and EventSpeaker of Event being added.
      * Otherwise, add the Event to eventList and return true.
      */
-    public boolean addNewEvent(String EventName, Date EventTime, int EventRoomNumber, User EventSpeaker) {
+    public boolean addNewEvent(String EventName, LocalDateTime EventTime, int EventRoomNumber, User EventSpeaker) {
         Room room = new Room();
         room.setRoomNumber(EventRoomNumber);
         for (Room x:roomList){
@@ -186,7 +188,7 @@ public class EventManager implements Serializable {
      * @return Stringbuilder of the events in eventList and their event information
      */
     public StringBuilder eventdetails() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        DateTimeFormatter d = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < eventList.size(); i++) {
             s.append("Event Number-");
@@ -196,7 +198,7 @@ public class EventManager implements Serializable {
             s.append("  Room Number-");
             s.append(eventList.get(i).getEventRoom().getRoomNumber());
             s.append("  Event Start Time-");
-            s.append(simpleDateFormat.format(eventList.get(i).getEventTime()));//to string here!is this good?
+            s.append(d.format(eventList.get(i).getEventTime()));//to string here!is this good?
             s.append("  Event Speaker-");
             s.append(eventList.get(i).getSpeaker().getUsername());
             s.append("\n");

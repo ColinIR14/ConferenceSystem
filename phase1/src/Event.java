@@ -1,4 +1,6 @@
 import java.sql.Time;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,11 +9,11 @@ import java.io.Serializable;
 public class Event implements Serializable{
   private Integer id;
   private String eventName;
-  private Date eventTime;
+  private LocalDateTime eventTime;
   private List<User> attendees;
   private Room eventRoom;
   private User eventSpeaker;
-  public Event(Integer id,String EventName,Date EventTime,List<User>Attendees,Room EventRoom,User EventSpeaker){//constructor with a list of attendees
+  public Event(Integer id,String EventName,LocalDateTime EventTime,List<User>Attendees,Room EventRoom,User EventSpeaker){//constructor with a list of attendees
     this.id = id;
     this.eventName=EventName;
     this.eventTime=EventTime;
@@ -19,7 +21,7 @@ public class Event implements Serializable{
     this.eventRoom=EventRoom;
     this.eventSpeaker=EventSpeaker;
   }
-  public Event(Integer id,String EventName,Date EventTime,Room EventRoom,User EventSpeaker){//constructor without list of attendees
+  public Event(Integer id,String EventName,LocalDateTime EventTime,Room EventRoom,User EventSpeaker){//constructor without list of attendees
     this.id=id;
     this.eventName=EventName;
     this.eventTime=EventTime;
@@ -31,10 +33,10 @@ public class Event implements Serializable{
   public String getEventName(){
     return eventName;
   }
-  public Date getEventTime(){
+  public LocalDateTime getEventTime(){
     return eventTime;
   }
-  public void setEventTime(Date t){
+  public void setEventTime(LocalDateTime t){
     eventTime=t;
   }
   public List<User> getAttendees(){
@@ -70,7 +72,11 @@ public class Event implements Serializable{
     if (! (e instanceof  Event)) return false;
     else {
       Event q =  (Event) e;
-      return ((this.eventRoom== q.eventRoom & this.eventTime==q.eventTime)||(this.eventTime==q.eventTime & this.eventSpeaker==q.eventSpeaker)||(this.eventName.equals(q.eventName)));
+      boolean b= false;
+      Duration d= Duration.between(this.eventTime,q.getEventTime());
+      long difference = Math.abs(d.getSeconds());
+      if(difference<= 3600) b = true;
+      return ((this.eventRoom== q.eventRoom & b)||(b & this.eventSpeaker==q.eventSpeaker)||(this.eventName.equals(q.eventName)));
     }
   }
 
