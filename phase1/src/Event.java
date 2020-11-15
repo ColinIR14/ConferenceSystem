@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.io.Serializable;
-
+/**Class representing event or talk
+ * Stores a unique id,name of event, time started, list of attendees,room and speaker of event.
+ * */
 public class Event implements Serializable{
   private Integer id;
   private String eventName;
@@ -13,14 +15,14 @@ public class Event implements Serializable{
   private List<User> attendees;
   private Room eventRoom;
   private User eventSpeaker;
-  public Event(Integer id,String EventName,LocalDateTime EventTime,List<User>Attendees,Room EventRoom,User EventSpeaker){//constructor with a list of attendees
-    this.id = id;
-    this.eventName=EventName;
-    this.eventTime=EventTime;
-    this.attendees= Attendees;
-    this.eventRoom=EventRoom;
-    this.eventSpeaker=EventSpeaker;
-  }
+
+  /**Constructor for Event
+   * @param id- unique id for Event
+   * @param EventName- Name of Event
+   * @param EventRoom - Room instance of Room of Event
+   * @param EventTime - Start Time of Event
+   * @param EventSpeaker- Speaker of Event
+  */
   public Event(Integer id,String EventName,LocalDateTime EventTime,Room EventRoom,User EventSpeaker){//constructor without list of attendees
     this.id=id;
     this.eventName=EventName;
@@ -29,44 +31,108 @@ public class Event implements Serializable{
     this.eventRoom=EventRoom;
     this.eventSpeaker=EventSpeaker;
   }
+
+  /**
+   * Returns the id of event
+   * @return unique id for event
+   */
+
   public Integer getId(){return id;}
+
+  /**
+   * getter for event name
+   * @return name of event
+   */
+
   public String getEventName(){
     return eventName;
   }
+
+  /**
+   * getter for event time start
+   * @return time of event start
+   */
+
   public LocalDateTime getEventTime(){
     return eventTime;
   }
+
+  /**
+   * setter for event time start
+   * @param t- new time to be started at
+   */
   public void setEventTime(LocalDateTime t){
     eventTime=t;
   }
+
+  /**
+   * getter for attendees of event
+   * @return attendees of event
+   */
+
   public List<User> getAttendees(){
     return attendees;
   }
 
+  /**
+   * Allows attendee to be added to event
+   * @param NewAttendee- User object containing new attendee to join event
+   * @return true iff the event can accept the user and the user isn't already added(if it can it adds the user)
+   */
   public boolean addAttendee(User NewAttendee){
     if(attendees.size()<eventRoom.getRoomCapacity() && !attendees.contains(NewAttendee)){
       attendees.add(NewAttendee);
       return true;}
     return false;
   }
-  public void removeAttendees(ArrayList<User> NewAttendees){
-    attendees.removeAll(NewAttendees);
-  }
+
+  /**
+   * removes one attendee from attendees
+   * @param NewAttendee - user object of user leaving event
+   */
+
   public void removeAttendee(User NewAttendee){
     attendees.remove(NewAttendee);
   }
+
+  /**
+   * getter for event speaker
+   * @return the user object representing the speaker
+   */
   public User getSpeaker(){
     return eventSpeaker;
   }
+
+  /**
+   * setter for speaker
+   * @param s user object representing the new speaker
+   */
   public void setSpeaker(User s){
     eventSpeaker=s;
   }
+
+  /**
+   * getter for room of event
+   * @return room object representing room of event
+   */
   public Room getEventRoom(){
     return eventRoom;
   }
+
+  /**
+   * setter for event Room
+   * @param r room object representing new room for event
+   */
   public void setEventRoom(Room r){
     eventRoom=r;
   }
+
+  /**
+   * Overriding of equals to return true iff events clash,ie are their times overlap and are in the same room,
+   * or their times overlap and have the same speaker, or have the same name.
+   * @param e-Event to be compared to
+   * @return true if and only if the two events clash.
+   */
   @Override
   public boolean equals(Object e){// returns equal if both events have either same speaker and time, or same time and room, thus can be used to prevent conflicts
     if (! (e instanceof  Event)) return false;
