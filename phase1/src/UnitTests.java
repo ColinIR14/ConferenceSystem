@@ -1,16 +1,15 @@
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.util.Date;
 
-import org.junit.jupiter.api.Test;
+import org.junit.*;
+
+import static org.junit.Assert.*;
 
 public class UnitTests {
 
-    //@Test
-    //public void AccountManagerTest() {
-    //    AccountManager tester = new AccountManager();
-    //    assertEquals();
-    //}
-
+    /**
+     * Tests the EventManager Useclass for errors in regards to its methods.
+     *
+     */
     @Test
     public void EventManagerTest(){
         EventManager tester = new EventManager();
@@ -22,22 +21,21 @@ public class UnitTests {
         Date testdate2 = new Date(2020,11,11);
         tester.addNewEvent("Howto101", testdate, testroom, testuser);
         tester.addNewEvent("Howto102", testdate2, testroom2, testuser2);
-        assertEquals("Howto101", tester.indexEvent(0).getEventName(), "Wrong Event Name");
-        assertEquals("Howto102", tester.indexEvent(1).getEventName(), "Wrong Event Name");
-        assertEquals(0, tester.indexEvent(0).getId(), "Wrong ID Number");
-        assertEquals(1, tester.indexEvent(1).getId(), "Wrong ID Number");
-        assertEquals(testdate, tester.indexEvent(0).getEventTime(), "Wrong Date");
-        assertEquals(testdate2, tester.indexEvent(1).getEventTime(), "Wrong Date");
-        assertEquals(testuser, tester.indexEvent(0).getSpeaker(), "Wrong Speaker");
-        assertEquals(testuser2, tester.indexEvent(1).getSpeaker(), "Wrong Speaker");
-
+        assertEquals("Wrong Event Name", "Howto101", tester.indexEvent(0).getEventName());
+        assertEquals("Wrong Event Name", "Howto102", tester.indexEvent(1).getEventName());
+        assertEquals("Wrong ID Number", 0, tester.indexEvent(0).getId(), 0);
+        assertEquals("Wrong ID Number", 1, tester.indexEvent(0).getId(), 0);
+        assertEquals("Wrong Date", testdate, tester.indexEvent(0).getEventTime());
+        assertEquals("Wrong Date", testdate2, tester.indexEvent(1).getEventTime());
+        assertEquals("Wrong Speaker", testuser, tester.indexEvent(0).getSpeaker());
+        assertEquals("Wrong Speaker", testuser2, tester.indexEvent(1).getSpeaker());
         User testattendee = new User("username1", "pass1", "attendee");
-        assertEquals(true, tester.signUpUsertoEvent(tester.indexEvent(0), testattendee), "User not able to be added");
+        assertTrue("User not able to be added", tester.signUpUsertoEvent(tester.indexEvent(0), testattendee));
         tester.signUpUsertoEvent(tester.indexEvent(0), testattendee);
-        assertEquals(false, tester.signUpUsertoEvent(tester.indexEvent(0), testattendee), "User not able to be added, already in the list");
-        assertEquals(true, tester.cancelUseratEvent(tester.indexEvent(0), testattendee), "User not able to be removed");
+        assertFalse("User not able to be added, already in the list", tester.signUpUsertoEvent(tester.indexEvent(0), testattendee));
+        assertTrue("User not able to be removed", tester.cancelUseratEvent(tester.indexEvent(0), testattendee));
         tester.cancelUseratEvent(tester.indexEvent(0), testattendee);
-        assertEquals(false, tester.cancelUseratEvent(tester.indexEvent(0), testattendee), "User not able to be removed, user not present");
+        assertFalse("User not able to be removed, user not present", tester.cancelUseratEvent(tester.indexEvent(0), testattendee));
     }
 
 }
