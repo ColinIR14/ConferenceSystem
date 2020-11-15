@@ -65,6 +65,7 @@ public class EventManager implements Serializable {
 
     /**
      * Adds a new Event to the eventList.
+     * Note: This method requires Roomnumber instead of Room.
      *
      * @param EventName    String of the Event's name
      * @param EventTime    Time of when the Event will take place
@@ -90,7 +91,19 @@ public class EventManager implements Serializable {
         roomOccupied.add(EventRoom);
         return true;
     }
-
+    /**
+     * Adds a new Event to the eventList.
+     * Note: This method requires Roomnumber instead of Room.
+     *
+     * @param EventName    String of the Event's name
+     * @param EventTime    Time of when the Event will take place
+     * @param EventRoomNumber    Int representing room number of where the Event will take place
+     * @param EventSpeaker Speaker of who will speak at the Event
+     * @return boolean false if the Event is already in Eventlist, an Event in Eventlist has the same name as
+     * the Event being added, an Event in Eventlist clashes with EventTime and EventRoom of Event being added or
+     * an Event in Eventlist clashes with EventTime and EventSpeaker of Event being added.
+     * Otherwise, add the Event to eventList and return true.
+     */
     public boolean addNewEvent(String EventName, Date EventTime, int EventRoomNumber, User EventSpeaker) {
         Room room = new Room();
         room.setRoomNumber(EventRoomNumber);
@@ -120,6 +133,11 @@ public class EventManager implements Serializable {
         return eventList.size();
     }
 
+    /**
+     * Adds a new Room to the roomList.
+     *
+     * @param r Room that will be added to the list
+     */
     public void addRoom(Room r) {
         boolean t = false;
         for(Room room:roomList){
@@ -133,7 +151,11 @@ public class EventManager implements Serializable {
         }
         }
 
-
+    /**
+     * Return a list of rooms distinguished by their respective room numbers, that are stored in roomList.
+     *
+     * @return Stringbuilder of the rooms within roomList
+     */
     public StringBuilder listOfRooms() {
         StringBuilder s = new StringBuilder();
         for (Room room : roomList) {
@@ -144,6 +166,11 @@ public class EventManager implements Serializable {
         return s;
     }
 
+    /**
+     * Return a list of rooms distinguished by their respective room numbers, that are stored in roomList.
+     *
+     * @return Stringbuilder of the rooms within roomList
+     */
     public ArrayList<Integer> getListOfRoomsOccupied(){
         ArrayList<Integer> ro = new ArrayList<>();
         for (Room room : roomOccupied){
@@ -152,6 +179,12 @@ public class EventManager implements Serializable {
         return ro;
     }
 
+    /**
+     * Return a list of events stored in eventList with their respective details: Event number, name, room number,
+     * start time and speaker.
+     *
+     * @return Stringbuilder of the events in eventList and their event information
+     */
     public StringBuilder eventdetails() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         StringBuilder s = new StringBuilder();
@@ -171,10 +204,21 @@ public class EventManager implements Serializable {
         return s;
     }
 
+    /**
+     * Return a specific indexed Event within eventList.
+     *
+     * @param i int of the wanted Event in eventList
+     * @return Event at the index of the int inputted
+     */
     public Event indexEvent(int i) {
         return eventList.get(i);
     }
 
+    /**
+     * Removes a specific Event from eventList.
+     *
+     * @param e Event that is wanted to be removed from eventList.
+     */
     public void cancelEvent(Event e) {
         if (!eventList.remove(e)) {
             System.out.println("Error: event not found.");
@@ -182,6 +226,12 @@ public class EventManager implements Serializable {
         roomOccupied.remove(e.getEventRoom().getRoomNumber());
     }
 
+    /**
+     * Changes the spearker at a specified Event.
+     *
+     * @param e Event of which the speaker will be changed.
+     * @param speaker Speaker who will newly speak at the Event.
+     */
     public void changeSpeaker(Event e, User speaker) {
         for (Event x : eventList) {
             if (x.equals(e)) {
@@ -189,9 +239,22 @@ public class EventManager implements Serializable {
             }
         }
     }
+
+    /**
+     * Removes a specified room from roomList.
+     *
+     * @param room int of the roomnumber of which the room will be removed
+     */
     public void removeRoom(int room){
         roomList.removeIf(x -> x.getRoomNumber() == room);
     }
+
+    /**
+     * Return a list of attendees who will be going to a specific event.
+     *
+     * @param e Event of which the user wants to see the list of attendees of
+     * @return Stringbuilder of usernames of attendees who will being going to the Event.
+     */
     public StringBuilder getAttendees(Event e){
         StringBuilder s = new StringBuilder();
         for(User x:e.getAttendees()){
