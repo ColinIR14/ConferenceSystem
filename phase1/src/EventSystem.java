@@ -134,7 +134,7 @@ public class EventSystem {
     private void addEvent() throws IOException {
         System.out.println("Enter Name");
         String name = in.nextLine();
-        System.out.println("Enter Start Date for Event");
+        System.out.println("Enter Start Date for Event (dd/MM/yyyy hh:mm:ss)");
         String date = in.nextLine();
         try {
             Date date1 = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss").parse(date);
@@ -339,7 +339,6 @@ public class EventSystem {
             switch (input) {
                 case "2":
                     addEvent();
-
                     break;
                 case "1": {
                     try {
@@ -375,7 +374,12 @@ public class EventSystem {
                         System.out.println(em.listOfRooms());
                         System.out.println("Enter Number of Room to be deleted");
                         int room = Integer.parseInt(in.nextLine());
-                        em.removeRoom(room);
+                        if (!em.getListOfRoomsOccupied().contains(room)) {
+                            em.removeRoom(room);
+                        }
+                        else{
+                            System.out.println("There are events assigned to this room.");
+                        }
                         break;
                     } catch (NumberFormatException e) {
                         System.out.println("Enter a number please");
