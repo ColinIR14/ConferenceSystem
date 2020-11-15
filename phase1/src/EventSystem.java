@@ -53,24 +53,20 @@ public class EventSystem {
      * @throws IOException in order to call the saveAll() method and save all the changes
      */
     private void addAccount(String accountType) throws IOException {
-        if (am.checkAccountType(currentUser).equals("organizer")) {
-            System.out.println("Please create your user name (five characters or longer)");
-            String username = in.nextLine();
-            if (username.equals("back")){
-                accountMenu();
-            }
-            System.out.println("Please create your password");
-            String password = in.nextLine();
-            if (password.equals("back")){
-                accountMenu();
-            }
-            if (am.addNewUser(username, password, accountType)) {
-                System.out.println("Success!");
-            } else {
-                System.out.println("Sorry, the user name has already been taken or is invalid.");
-            }
+        System.out.println("Please create your user name (five characters or longer)");
+        String username = in.nextLine();
+        if (username.equals("back")){
+            accountMenu();
+        }
+        System.out.println("Please create your password");
+        String password = in.nextLine();
+        if (password.equals("back")){
+            accountMenu();
+        }
+        if (am.addNewUser(username, password, accountType)) {
+            System.out.println("Success!");
         } else {
-            System.out.println(("Sorry, you don't have access to it."));
+            System.out.println("Sorry, the user name has already been taken or is invalid.");
         }
         saveAll();
     }
