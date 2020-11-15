@@ -120,7 +120,7 @@ public class EventManager implements Serializable {
     }
 
     public void addRoom(Room r) {
-        Boolean t = false;
+        boolean t = false;
         for(Room room:roomList){
             if (room.getRoomNumber() == r.getRoomNumber()){
                 System.out.println("Room already added!");
@@ -135,11 +135,9 @@ public class EventManager implements Serializable {
 
     public StringBuilder listOfRooms() {
         StringBuilder s = new StringBuilder();
-        for (int i = 0; i < roomList.size(); i++) {
-            s.append("Index-");
-            s.append(i);
+        for (Room room : roomList) {
             s.append("Room Number");
-            s.append(roomList.get(i).getRoomNumber());
+            s.append(room.getRoomNumber());
             s.append("\n");
         }
         return s;
@@ -150,7 +148,7 @@ public class EventManager implements Serializable {
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < eventList.size(); i++) {
             s.append("Event Number-");
-            s.append(i+1);
+            s.append(i);
             s.append("  Event Name-");
             s.append(eventList.get(i).getEventName());
             s.append("  Room Number-");

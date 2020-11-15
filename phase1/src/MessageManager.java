@@ -9,7 +9,6 @@ import java.util.List;
 public class MessageManager implements Serializable{
 
     private ArrayList<Message> messageList;
-    private boolean messageable;
 
     /**
      * Creates a MessageManager with an empty ArrayList of user messages.
@@ -34,16 +33,6 @@ public class MessageManager implements Serializable{
         return new Message(sender, receiver, content);
     }
 
-    /**
-     * Takes in sender and receiver, and check if the receiver is a messageable user of sender.
-     * The sender and receiver can not be the same user.
-     * Returns nothing.
-     * @param sender User that wants to check if another user is in contact
-     * @param receiver User that need to be checked if they exist in the sender's contact
-     */
-    private void setMessageable(User sender, User receiver){
-        this.messageable = sender.getMessageable().contains(receiver);
-    }
 
     /**
      * Takes in sender, receiver, content, and check if the the receiver is messageable for the sender. If messageable,
@@ -54,11 +43,12 @@ public class MessageManager implements Serializable{
      * @param receiver User that may receive a message
      * @param content String of the message
      */
-    public void sendMessage(User sender, User receiver, String content){
-        setMessageable(sender, receiver);
-        if (messageable) {
+    public boolean sendMessage(User sender, User receiver, String content) {
+        if (sender.getMessageable().contains(receiver)) {
             this.messageList.add(addMessage(sender, receiver, content));
+            return true;
         }
+        return false;
     }
 
     /**

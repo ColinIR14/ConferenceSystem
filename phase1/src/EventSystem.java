@@ -98,7 +98,7 @@ public class EventSystem {
     private void sendMessage(User us) throws IOException {
         System.out.println("Please enter your message:");
         String content = in.nextLine();
-        if (content.equals("0"))
+        if (content.equals("back"))
             messageMenu();
         else {
             System.out.println("Please enter the user you want to message:(your contact is listed below," +
@@ -110,11 +110,15 @@ public class EventSystem {
             }
             System.out.println(users.substring(0, Math.max(users.length() - 2, 0)));
             String receiver = in.nextLine();
-            if (receiver.equals("0"))
+            if (receiver.equals("back"))
                 messageMenu();
             else {
                 User re = am.getUser(receiver);
-                mm.sendMessage(us, re, content);
+                if(mm.sendMessage(us, re, content)) {
+                    System.out.println("Message sent successfully.");
+                } else {
+                    System.out.println("Message not sent.");
+                }
             }
         }
         saveAll();
@@ -219,6 +223,7 @@ public class EventSystem {
         } else {
             em.changeSpeaker(e, speaker);
         }
+        saveAll();
     }
 
     private void sendMessageToEventMembers(Event e) throws IOException {
@@ -226,6 +231,7 @@ public class EventSystem {
         String message = in.nextLine();
         User u = am.getUser(currentUser);
         mm.sendEventMessage(u, e, message);
+        saveAll();
     }
 
     /*
@@ -252,12 +258,13 @@ public class EventSystem {
                 break;
             }
             case "N": {
+                System.out.println("Your username must be at least 5 characters long.");
                 String[] arr = promptLoginInfo();
                 if (am.addNewUser(arr[0], arr[1])) {
                     System.out.println("Success!");
                     saveAll();
                 } else {
-                    System.out.println("Sorry, the user name has already been taken.");
+                    System.out.println("Sorry, the user name has already been taken or is invalid.");
                     welcome();
                 }
                 System.out.println("Welcome new attendee! \n");
@@ -340,10 +347,7 @@ public class EventSystem {
                         System.out.println(em.eventdetails());
                         System.out.println("Enter Number of Event you want to manipulate");
                         int i = Integer.parseInt(in.nextLine());
-                        if (i==0){
-                            mainMenu();
-                        }
-                        Event e = em.indexEvent(i-1);
+                        Event e = em.indexEvent(i);
                         specificEventMenu(e);
                         break;
                     } catch (IndexOutOfBoundsException e) {
@@ -357,12 +361,8 @@ public class EventSystem {
                 case "3": {
                     try {
                         Room r = new Room();
-                        System.out.println("Enter Room Number( do not enter 0 as room number please)");
+                        System.out.println("Enter Room Number (integer only)");
                         int i = Integer.parseInt(in.nextLine());
-                        if (i == 0) {
-                            System.out.println("Cannot add room number zero sorry");
-                            eventMenu();
-                        }
                         r.setRoomNumber(i);
                         em.addRoom(r);
                         break;
@@ -393,18 +393,18 @@ public class EventSystem {
         } else {
             System.out.println("Current event list:\n");
             System.out.println(em.eventdetails());
-            System.out.println("Enter Number of Event you want to manipulate(0 for main menu)");
+            System.out.println("Enter Number of Event you want to manipulate(\"back\" for main menu)");
             int i = Integer.parseInt(in.nextLine());
-            if (i == 0) {
+            if (i == -1) {
                 mainMenu();
 
             } else {
-                Event e = em.indexEvent(i-1);
+                Event e = em.indexEvent(i);
                 System.out.println("Add self to event(1)\n" +
                         "Remove self from event(2)");
-                System.out.println("Enter number you want to do(0 for main menu)");
+                System.out.println("Enter number you want to do(\"back\" for main menu)");
                 int j = Integer.parseInt(in.nextLine());
-                if (j == 0) {
+                if (j == -1) {
                     mainMenu();
                 } else if (j == 1) {
                     addSelfToEvent(e);
@@ -490,7 +490,7 @@ public class EventSystem {
             case "3":
                 System.out.println("Please enter the user(username) you want to add to contact:");
                 String usern = in.nextLine();
-                if (usern.equals("0"))
+                if (usern.equals("back"))
                     messageMenu();
                 else {
                     mm.addMessagable(us, am.getUser(usern));
@@ -499,7 +499,7 @@ public class EventSystem {
             case "4":
                 System.out.println("Please enter the user(username) you want to remove from your contact:");
                 String username = in.nextLine();
-                if (username.equals("0"))
+                if (username.equals("back"))
                     messageMenu();
                 else {
                     us.removeMessageable(am.getUser(username));
@@ -509,13 +509,14 @@ public class EventSystem {
                 System.out.println("Current event list:\n");
                 System.out.println(em.eventdetails());
                 System.out.println("Enter Number of Event you want to manipulate");
-                int i = Integer.parseInt(in.nextLine());
-                if (i == 0) {
+                String in2 = in.nextLine();
+                if (in2.equals("back")) {
                     messageMenu();
-                } else {
-                    Event ev = em.indexEvent(i-1);
-                    sendMessageToEventMembers(ev);
+                    break;
                 }
+                int i = Integer.parseInt(in2);
+                Event ev = em.indexEvent(i);
+                sendMessageToEventMembers(ev);
                 break;
             case "6":
                 mainMenu();
@@ -525,7 +526,7 @@ public class EventSystem {
                 messageMenu();
         }
         saveAll();
-        ArrayList<String> repeat = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5", "6"));
+        ArrayList<String> repeat = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5"));
         if (repeat.contains(input))
             messageMenu();
     }

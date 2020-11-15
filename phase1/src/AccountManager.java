@@ -33,7 +33,7 @@ public class AccountManager implements Serializable{
      */
     public boolean addNewUser(String username, String password, String accountType){
         for (User currentUser : userList){
-            if (currentUser.getUsername().equals(username)){
+            if (currentUser.getUsername().equals(username) || username.length() < 5){
                 return false; //duplicate username
             }
         }
