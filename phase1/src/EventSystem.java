@@ -266,16 +266,15 @@ public class EventSystem {
         String next = in.nextLine();
 
         switch (next) {
-            case "L": {
+            case "L" -> {
                 String[] arr = promptLoginInfo();
                 if (logIn(arr[0], arr[1])) {
                     mainMenu();
                 } else {
                     welcome();
                 }
-                break;
             }
-            case "N": {
+            case "N" -> {
                 System.out.println("Your username must be at least 5 characters long.");
                 String[] arr = promptLoginInfo();
                 if (am.addNewUser(arr[0], arr[1])) {
@@ -287,14 +286,12 @@ public class EventSystem {
                 }
                 System.out.println("Welcome new attendee! \n");
                 welcome();
-                break;
             }
-            case "C":
-                closeProgram();
-                break;
-            default:
+            case "C" -> closeProgram();
+            default -> {
                 System.out.println("Invalid input. Please try again.");
                 welcome();
+            }
         }
     }
 
@@ -323,22 +320,14 @@ public class EventSystem {
         String next = in.nextLine();
 
         switch (next) {
-            case "E":
-                eventMenu();
-                break;
-            case "M":
-                messageMenu();
-                break;
-            case "A":
-                accountMenu();
-                break;
-            case "S":
-                signOut();
-                break;
-            default:
+            case "E" -> eventMenu();
+            case "M" -> messageMenu();
+            case "A" -> accountMenu();
+            case "S" -> signOut();
+            default -> {
                 System.out.println("Invalid input");
                 mainMenu();
-                break;
+            }
         }
     }
 
@@ -454,37 +443,19 @@ public class EventSystem {
         System.out.println("Enter the number corresponding to the desired action");
         String next = in.nextLine();
         switch (next) {
-            case "1":
-                cancelEvent(e);
-                break;
-            case "2":
-                addSelfToEvent(e);
-                break;
-            case "3":
-                addUserToEvent(e);
-                break;
-            case "4":
-                changeSpeaker(e);
-                break;
-            case "5":
-                removeUserFromEvent(e);
-                break;
-            case "6":
-                removeSelfFromEvent(e);
-                break;
-            case "7":
-                sendMessageToEventMembers(e);
-                break;
-            case "8":
-                System.out.println(em.getAttendees(e));
-                break;
-            case "9":
-                mainMenu();
-                break;
-            default:
+            case "1" -> cancelEvent(e);
+            case "2" -> addSelfToEvent(e);
+            case "3" -> addUserToEvent(e);
+            case "4" -> changeSpeaker(e);
+            case "5" -> removeUserFromEvent(e);
+            case "6" -> removeSelfFromEvent(e);
+            case "7" -> sendMessageToEventMembers(e);
+            case "8" -> System.out.println(em.getAttendees(e));
+            case "9" -> mainMenu();
+            default -> {
                 System.out.println("Invalid input. Please try again.");
                 specificEventMenu(e);
-                break;
+            }
         }
         eventMenu();
     }
@@ -502,13 +473,9 @@ public class EventSystem {
                 "cancel action in further steps)");
         String input = in.nextLine();
         switch (input) {
-            case "1":
-                seeMessages(us);
-                break;
-            case "2":
-                sendMessage(us);
-                break;
-            case "3":
+            case "1" -> seeMessages(us);
+            case "2" -> sendMessage(us);
+            case "3" -> {
                 System.out.println("Please enter the user(username) you want to add to contact:");
                 String usern = in.nextLine();
                 if (usern.equals("back"))
@@ -516,8 +483,8 @@ public class EventSystem {
                 else {
                     mm.addMessagable(us, am.getUser(usern));
                 }
-                break;
-            case "4":
+            }
+            case "4" -> {
                 System.out.println("Please enter the user(username) you want to remove from your contact:");
                 String username = in.nextLine();
                 if (username.equals("back"))
@@ -526,9 +493,9 @@ public class EventSystem {
                     us.removeMessageable(am.getUser(username));
                 }
                 saveAll();
-                break;
-            case "5":
-                if (!am.checkAccountType(currentUser).equals("organizer")){
+            }
+            case "5" -> {
+                if (!am.checkAccountType(currentUser).equals("organizer")) {
                     System.out.println("You're not an organizer");
                     messageMenu();
                     break;
@@ -545,14 +512,15 @@ public class EventSystem {
                 Event ev = em.indexEvent(i);
                 sendMessageToEventMembers(ev);
                 saveAll();
-                break;
-            case "6":
+            }
+            case "6" -> {
                 saveAll();
                 mainMenu();
-                break;
-            default:
+            }
+            default -> {
                 System.out.println("Invalid input, please retry");
                 messageMenu();
+            }
         }
         saveAll();
         ArrayList<String> repeat = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5"));
@@ -573,37 +541,35 @@ public class EventSystem {
             String next = in.nextLine();
 
             switch (next) {
-                case "1":
+                case "1" -> {
                     addAccount("organizer");
                     accountMenu();
-                    break;
-                case "2":
+                }
+                case "2" -> {
                     addAccount("speaker");
                     accountMenu();
-                    break;
-                case "3":
+                }
+                case "3" -> {
                     removeAccount();
                     accountMenu();
-                    break;
-                case "4":
+                }
+                case "4" -> {
                     changePassword();
                     accountMenu();
-                    break;
-                case "5":
+                }
+                case "5" -> {
                     if (am.checkAccountType(currentUser).equals("organizer")) {
                         System.out.println(am.toString());
                     } else {
                         System.out.println("Sorry, you do not have permission to access this.");
                     }
                     accountMenu();
-                    break;
-                case "6":
-                    mainMenu();
-                    break;
-                default:
+                }
+                case "6" -> mainMenu();
+                default -> {
                     System.out.println("Invalid input");
                     mainMenu();
-                    break;
+                }
             }
         } else {
             System.out.println("Delete account (1)\n" +
@@ -612,7 +578,7 @@ public class EventSystem {
             System.out.println("Please enter a one-character input selection.");
             String next2 = in.nextLine();
             switch (next2) {
-                case "1":
+                case "1" -> {
                     System.out.println("Input password to confirm.");
                     String password = in.nextLine();
                     if (am.deleteUser(currentUser, password)) {
@@ -623,15 +589,13 @@ public class EventSystem {
                         System.out.println("Error. Please try again.");
                         accountMenu();
                     }
-                    break;
-                case "2":
+                }
+                case "2" -> {
                     changePassword();
                     saveAll();
                     accountMenu();
-                    break;
-                case "3":
-                    mainMenu();
-                    break;
+                }
+                case "3" -> mainMenu();
             }
         }
     }
