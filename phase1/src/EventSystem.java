@@ -50,8 +50,14 @@ public class EventSystem {
         if (am.checkAccountType(currentUser).equals("organizer")) {
             System.out.println("Please create your user name");
             String username = in.nextLine();
+            if (username.equals("back")){
+                accountMenu();
+            }
             System.out.println("Please create your password");
             String password = in.nextLine();
+            if (password.equals("back")){
+                accountMenu();
+            }
             if (am.addNewUser(username, password, accountType)) {
                 System.out.println("Success!");
             } else {
@@ -67,6 +73,9 @@ public class EventSystem {
         if (am.checkAccountType(currentUser).equals("organizer")) {
             System.out.println("Please enter the user name you want to remove");
             String username = in.nextLine();
+            if (username.equals("back")){
+                accountMenu();
+            }
             if (am.deleteUser(username, am.getUser(username).getPassword())) {
                 System.out.println("Success!");
             } else {
@@ -75,8 +84,14 @@ public class EventSystem {
         } else {
             System.out.println("Please enter your name you want to remove");
             String username = in.nextLine();
+            if (username.equals("back")){
+                accountMenu();
+            }
             System.out.println("Please enter your name you want to remove");
             String password = in.nextLine();
+            if (password.equals("back")){
+                accountMenu();
+            }
             if (am.deleteUser(username, password)) {
                 System.out.println("Success!");
             } else {
@@ -89,6 +104,9 @@ public class EventSystem {
     private void changePassword() throws IOException {
         System.out.println("Please enter your new password");
         String password = in.nextLine();
+        if (password.equals("back")){
+            accountMenu();
+        }
         User u = am.getUser(currentUser);
         am.resetPassword(u, password);
         System.out.println("Success!");
