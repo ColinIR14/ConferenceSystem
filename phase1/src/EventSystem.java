@@ -172,6 +172,10 @@ public class EventSystem {
         String date = in.nextLine();
         try {
             LocalDateTime date2=LocalDateTime.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+            if (date2.getHour()>17 || date2.getHour() <9){
+                System.out.println("Events can only be between 9am and 5 pm");
+                eventMenu();
+            }
             System.out.println(em.listOfRooms());
             System.out.println("Enter Index of desired Room");
             int room = Integer.parseInt(in.nextLine());
