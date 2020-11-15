@@ -54,7 +54,7 @@ public class EventSystem {
      */
     private void addAccount(String accountType) throws IOException {
         if (am.checkAccountType(currentUser).equals("organizer")) {
-            System.out.println("Please create your user name");
+            System.out.println("Please create your user name (five characters or longer)");
             String username = in.nextLine();
             if (username.equals("back")){
                 accountMenu();
@@ -67,7 +67,7 @@ public class EventSystem {
             if (am.addNewUser(username, password, accountType)) {
                 System.out.println("Success!");
             } else {
-                System.out.println("Sorry, the user name has already been taken.");
+                System.out.println("Sorry, the user name has already been taken or is invalid.");
             }
         } else {
             System.out.println(("Sorry, you don't have access to it."));
