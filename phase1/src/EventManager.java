@@ -266,4 +266,11 @@ public class EventManager implements Serializable {
         }
         return s;
     }
+    public boolean isoccupied(int room){
+        boolean occupied=false;
+        for(Event x: eventList){
+            if(x.getEventRoom().getRoomNumber()==room) occupied=true;
+        }
+        return occupied;
+    }
 }

@@ -177,7 +177,7 @@ public class EventSystem {
                 eventMenu();
             }
             System.out.println(em.listOfRooms());
-            System.out.println("Enter Index of desired Room");
+            System.out.println("Enter Number of Room for this event(If you want a different room, you must add the room first)");
             int room = Integer.parseInt(in.nextLine());
             System.out.println("Enter Speaker username");
             String speaker = in.nextLine();
@@ -412,11 +412,12 @@ public class EventSystem {
                         System.out.println(em.listOfRooms());
                         System.out.println("Enter Number of Room to be deleted");
                         int room = Integer.parseInt(in.nextLine());
-                        if (!em.getListOfRoomsOccupied().contains(room)) {
+                        //if (em.getListOfRoomsOccupied().contains(room))
+                        if (!em.isoccupied(room)) {
                             em.removeRoom(room);
                         }
                         else{
-                            System.out.println("There are events assigned to this room.");
+                            System.out.println("There are events assigned to this room, or this is not a room");
                         }
                         break;
                     } catch (NumberFormatException e) {
