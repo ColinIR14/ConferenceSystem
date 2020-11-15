@@ -340,7 +340,10 @@ public class EventSystem {
                         System.out.println(em.eventdetails());
                         System.out.println("Enter Number of Event you want to manipulate");
                         int i = Integer.parseInt(in.nextLine());
-                        Event e = em.indexEvent(i);
+                        if (i==0){
+                            mainMenu();
+                        }
+                        Event e = em.indexEvent(i-1);
                         specificEventMenu(e);
                         break;
                     } catch (IndexOutOfBoundsException e) {
@@ -390,18 +393,18 @@ public class EventSystem {
         } else {
             System.out.println("Current event list:\n");
             System.out.println(em.eventdetails());
-            System.out.println("Enter Number of Event you want to manipulate(-1 for main menu)");
+            System.out.println("Enter Number of Event you want to manipulate(0 for main menu)");
             int i = Integer.parseInt(in.nextLine());
-            if (i == -1) {
+            if (i == 0) {
                 mainMenu();
 
             } else {
-                Event e = em.indexEvent(i);
+                Event e = em.indexEvent(i-1);
                 System.out.println("Add self to event(1)\n" +
                         "Remove self from event(2)");
-                System.out.println("Enter number you want to do(-1 for main menu)");
+                System.out.println("Enter number you want to do(0 for main menu)");
                 int j = Integer.parseInt(in.nextLine());
-                if (j == -1) {
+                if (j == 0) {
                     mainMenu();
                 } else if (j == 1) {
                     addSelfToEvent(e);
@@ -510,7 +513,7 @@ public class EventSystem {
                 if (i == 0) {
                     messageMenu();
                 } else {
-                    Event ev = em.indexEvent(i);
+                    Event ev = em.indexEvent(i-1);
                     sendMessageToEventMembers(ev);
                 }
                 break;
