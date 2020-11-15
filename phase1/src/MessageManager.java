@@ -36,12 +36,13 @@ public class MessageManager implements Serializable{
 
     /**
      * Takes in sender, receiver, content, and check if the the receiver is messageable for the sender. If messageable,
-     * then the message will be added to messageListg.
+     * then the message will be added to messageList.
      * The sender and receiver cannot be the same user.
-     * Returns nothing.
+     * Returns true or false to indicate whether the action was successful.
      * @param sender User that requested to send a message
      * @param receiver User that may receive a message
      * @param content String of the message
+     * @return boolean indicating whether the action was successful
      */
     public boolean sendMessage(User sender, User receiver, String content) {
         if (sender.getMessageable().contains(receiver)) {
