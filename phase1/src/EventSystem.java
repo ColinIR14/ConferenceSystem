@@ -6,6 +6,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
+/**
+ * Controls the program responsible for allowing users of a conference to create accounts, attend/host events
+ * and communicate with each other.
+ */
+
 public class EventSystem {
 
     private Gateway g = new Gateway();
@@ -18,258 +23,16 @@ public class EventSystem {
     public EventSystem() throws ClassNotFoundException {
     }
 
+    /**
+     * Interacts with the user to prompt menu options for various functions.
+     */
+
     public void run() {
         try {
             welcome();
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private boolean logIn(String username, String password) {
-        if (am.logInUser(username, password)) {
-            currentUser = username;
-            return true;
-        } else {
-            System.out.println("Sorry wrong username or password, please try again.");
-            return false;
-        }
-    }
-
-    private void signOut() throws IOException {
-
-        am.logOffUser(am.currentUser);
-        currentUser = null;
-        saveAll();
-        welcome();
-    }
-
-    private void closeProgram() throws IOException {
-        //saves all the managers when an User logs off.
-        saveAll();
-    }
-
-    /**
-     * Add a certain type account by creating the user name and passowrd if the user logged in is an organizer,
-     * otherwise the request is refused
-     * @param accountType the type of teh added account
-     * @throws IOException in order to call the saveAll() method and save all the changes
-     */
-    private void addAccount(String accountType) throws IOException {
-        System.out.println("Please create your user name (five characters or longer)");
-        String username = in.nextLine();
-        if (username.equals("back")){
-            accountMenu();
-        }
-        System.out.println("Please create your password");
-        String password = in.nextLine();
-        if (password.equals("back")){
-            accountMenu();
-        }
-        if (am.addNewUser(username, password, accountType)) {
-            System.out.println("Success!");
-        } else {
-            System.out.println("Sorry, the user name has already been taken or is invalid.");
-        }
-        saveAll();
-    }
-
-    /**
-     * If the user logged in is an organizer, remove a certain account by entering the user name when the user name
-     * entered exists, otherwise the request is refused.
-     * If the user logged in is a speaker or attendee, remove the logged in account by entering user name and password,
-     * otherwise the request is refused.
-     * @throws IOException in order to call the saveAll() method and save all the changes
-     */
-    private void removeAccount() throws IOException {
-        if (am.checkAccountType(currentUser).equals("organizer")) {
-            System.out.println("Please enter the user name you want to remove");
-            String username = in.nextLine();
-            if (username.equals("back")){
-                accountMenu();
-            }
-            if (am.deleteUser(username, am.getUser(username).getPassword())) {
-                System.out.println("Success!");
-            } else {
-                System.out.println("Sorry, your user name is not correct.");
-            }
-        } else {
-            System.out.println("Please enter your user name");
-            String username = in.nextLine();
-            if (username.equals("back")){
-                accountMenu();
-            }
-            System.out.println("Please enter your password");
-            String password = in.nextLine();
-            if (password.equals("back")){
-                accountMenu();
-            }
-            if (am.deleteUser(username, password)) {
-                System.out.println("Success!");
-            } else {
-                System.out.println("Sorry, your user name or password is not correct.");
-            }
-        }
-        saveAll();
-    }
-
-    /**
-     * Change the password of the logged in account into the newly entered password
-     * @throws IOException in order to call the saveAll() method and save all the changes
-     */
-    private void changePassword() throws IOException {
-        System.out.println("Please enter your new password");
-        String password = in.nextLine();
-        if (password.equals("back")){
-            accountMenu();
-        }
-        User u = am.getUser(currentUser);
-        am.resetPassword(u, password);
-        System.out.println("Success!");
-        saveAll();
-    }
-
-    private void sendMessage(User us) throws IOException {
-        System.out.println("Please enter your message:");
-        String content = in.nextLine();
-        if (content.equals("back"))
-            messageMenu();
-        else {
-            System.out.println("Please enter the user you want to message:(your contact is listed below," +
-                    "if the user is not in your contact your message will not be sent)");
-            StringBuilder users = new StringBuilder();
-            for (User m : us.getMessageable()) {
-                users.append(m.getUsername());
-                users.append("|");
-            }
-            System.out.println(users.substring(0, Math.max(users.length()-1, 0)));
-            String receiver = in.nextLine();
-            if (receiver.equals("back"))
-                messageMenu();
-            else {
-                User re = am.getUser(receiver);
-                if(mm.sendMessage(us, re, content)) {
-                    System.out.println("Message sent successfully.");
-                } else {
-                    System.out.println("Message not sent.");
-                }
-            }
-        }
-        saveAll();
-    }
-
-    private void seeMessages(User us) {
-        ArrayList<Message> messages = mm.getUserMessages(us);
-        for (Message m : messages) {
-            System.out.println(m.getContentToString());
-        }
-    }
-
-    private void addEvent() throws IOException {
-        System.out.println("Enter Name");
-        String name = in.nextLine();
-        System.out.println("Enter Start Date for Event (dd/MM/yyyy hh:mm:ss)");
-        String date = in.nextLine();
-        try {
-            LocalDateTime date2=LocalDateTime.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
-            if (date2.getHour()>17 || date2.getHour() <9){
-                System.out.println("Events can only be between 9am and 5 pm");
-                eventMenu();
-            }
-            System.out.println(em.listOfRooms());
-            System.out.println("Enter Number of Room for this event(If you want a different room, you must add the room first)");
-            int room = Integer.parseInt(in.nextLine());
-            System.out.println("Enter Speaker username");
-            String speaker = in.nextLine();
-            User u = am.getUser(speaker);
-            if (!u.getAccountType().equals("speaker")) {
-                System.out.println("This isn't a speaker sorry!");
-            }
-            if (em.addNewEvent(name, date2, room, u)) {
-                System.out.println("Successfully Added");
-            } else {
-                System.out.println("Failed to add");
-            }
-
-        } catch (DateTimeParseException e) {
-            System.out.println("Invalid Date sorry!");
-            eventMenu();
-        } catch (NumberFormatException e) {
-            System.out.println("Enter a number for room please");
-            eventMenu();
-        }
-        eventMenu();
-    }
-
-    private void cancelEvent(Event e) throws IOException {
-        em.cancelEvent(e);
-        saveAll();
-    }
-
-    private void addSelfToEvent(Event e) throws IOException {
-        User u = am.getUser(currentUser);
-        if (!em.signUpUsertoEvent(e, u)) {
-            System.out.println("Failed");
-        } else {
-            System.out.println("Success");
-        }
-        saveAll();
-    }
-
-    private void addUserToEvent(Event e) throws IOException {
-        System.out.println("Enter username you wish to add");
-        String username = in.nextLine();
-        User u = am.getUser(username);
-        if (!em.signUpUsertoEvent(e, u)) {
-            System.out.println("Failed");
-        } else {
-            System.out.println("Success");
-        }
-        saveAll();
-    }
-
-    private void removeSelfFromEvent(Event e) throws IOException {
-        User u = am.getUser(currentUser);
-        if (em.cancelUseratEvent(e, u)) {
-            System.out.println("Successfully Removed");
-        } else {
-            System.out.println("Failed to remove user");
-        }
-        saveAll();
-    }
-
-    private void removeUserFromEvent(Event e) throws IOException {
-        System.out.println("Enter username you want to remove");
-        String username = in.nextLine();
-        User u = am.getUser(username);
-        if (!u.getUsername().equals("invalid")) {//"invalid" is placeholder user returned if username doesn't match with anything in am
-            if (em.cancelUseratEvent(e, u)) {
-                System.out.println("Successfully Removed");
-            }
-        } else {
-            System.out.println("Failed to remove user");
-        }
-        saveAll();
-    }
-
-    private void changeSpeaker(Event e) throws IOException {
-        System.out.println("Enter username of new speaker");
-        String username = in.nextLine();
-        User speaker = am.getUser(username);
-        if (!speaker.getAccountType().equals("speaker")) {
-            System.out.println("Not a speaker,sorry!");
-        } else {
-            em.changeSpeaker(e, speaker);
-        }
-        saveAll();
-    }
-
-    private void sendMessageToEventMembers(Event e) throws IOException {
-        System.out.println("Enter message you wish to send");
-        String message = in.nextLine();
-        User u = am.getUser(currentUser);
-        mm.sendEventMessage(u, e, message);
-        saveAll();
     }
 
     /*
@@ -279,7 +42,7 @@ public class EventSystem {
     Note that to make an admin account, you may use the default admin login below:
     Username: admin
     Password: prime
-     */
+    */
     private void welcome() throws IOException {
 
         System.out.println("Welcome to the Conference Manager program!\n\nType 'L' to log in.\nType 'N' to create a new attendee account (Contact a current admin if you need an organizer account, or use the default admin login).\nType 'C' to close the program.");
@@ -320,7 +83,7 @@ public class EventSystem {
 
     /*
     Prompts user for username and password, and returns them in an array to help other functions.
-     */
+    */
     private String[] promptLoginInfo() {
         String[] arr = new String[2];
         System.out.println("Input username:");
@@ -333,9 +96,37 @@ public class EventSystem {
     }
 
     /*
+    Checks username and password and logs user in if their account if found.
+    */
+    private boolean logIn(String username, String password) {
+        if (am.logInUser(username, password)) {
+            currentUser = username;
+            return true;
+        } else {
+            System.out.println("Sorry wrong username or password, please try again.");
+            return false;
+        }
+    }
+
+    private void signOut() throws IOException {
+
+        am.logOffUser(am.currentUser);
+        currentUser = null;
+        //saves all the managers when a User signs out.
+        saveAll();
+        welcome();
+    }
+
+    private void closeProgram() throws IOException {
+        //saves all the managers when a User closes the program.
+        saveAll();
+    }
+
+
+    /*
     Gives the user the main menu for the program. Allows user to access various submenus to use the program,
     or to sign out.
-     */
+    */
     private void mainMenu() throws IOException {
         System.out.println("Main Menu\n");
         System.out.println("Events (E)\nMessages (M)\nAccount (A)\nSign out (S)\n");
@@ -361,6 +152,7 @@ public class EventSystem {
                 break;
         }
     }
+
 
     private void eventMenu() throws IOException { //Raj //List of events
         System.out.println("Event Menu\n");
@@ -517,6 +309,115 @@ public class EventSystem {
         eventMenu();
     }
 
+    private void addEvent() throws IOException {
+        System.out.println("Enter Name");
+        String name = in.nextLine();
+        System.out.println("Enter Start Date for Event (dd/MM/yyyy hh:mm:ss)");
+        String date = in.nextLine();
+        try {
+            LocalDateTime date2=LocalDateTime.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+            if (date2.getHour()>17 || date2.getHour() <9){
+                System.out.println("Events can only be between 9am and 5 pm");
+                eventMenu();
+            }
+            System.out.println(em.listOfRooms());
+            System.out.println("Enter Number of Room for this event(If you want a different room, you must add the room first)");
+            int room = Integer.parseInt(in.nextLine());
+            System.out.println("Enter Speaker username");
+            String speaker = in.nextLine();
+            User u = am.getUser(speaker);
+            if (!u.getAccountType().equals("speaker")) {
+                System.out.println("This isn't a speaker sorry!");
+            }
+            if (em.addNewEvent(name, date2, room, u)) {
+                System.out.println("Successfully Added");
+            } else {
+                System.out.println("Failed to add");
+            }
+
+        } catch (DateTimeParseException e) {
+            System.out.println("Invalid Date sorry!");
+            eventMenu();
+        } catch (NumberFormatException e) {
+            System.out.println("Enter a number for room please");
+            eventMenu();
+        }
+        eventMenu();
+    }
+
+    private void cancelEvent(Event e) throws IOException {
+        em.cancelEvent(e);
+        saveAll();
+    }
+
+    private void addSelfToEvent(Event e) throws IOException {
+        User u = am.getUser(currentUser);
+        if (!em.signUpUsertoEvent(e, u)) {
+            System.out.println("Failed");
+        } else {
+            System.out.println("Success");
+        }
+        saveAll();
+    }
+
+    private void addUserToEvent(Event e) throws IOException {
+        System.out.println("Enter username you wish to add");
+        String username = in.nextLine();
+        User u = am.getUser(username);
+        if (!em.signUpUsertoEvent(e, u)) {
+            System.out.println("Failed");
+        } else {
+            System.out.println("Success");
+        }
+        saveAll();
+    }
+
+    private void removeSelfFromEvent(Event e) throws IOException {
+        User u = am.getUser(currentUser);
+        if (em.cancelUseratEvent(e, u)) {
+            System.out.println("Successfully Removed");
+        } else {
+            System.out.println("Failed to remove user");
+        }
+        saveAll();
+    }
+
+    private void removeUserFromEvent(Event e) throws IOException {
+        System.out.println("Enter username you want to remove");
+        String username = in.nextLine();
+        User u = am.getUser(username);
+        if (!u.getUsername().equals("invalid")) {//"invalid" is placeholder user returned if username doesn't match with anything in am
+            if (em.cancelUseratEvent(e, u)) {
+                System.out.println("Successfully Removed");
+            }
+        } else {
+            System.out.println("Failed to remove user");
+        }
+        saveAll();
+    }
+
+    private void changeSpeaker(Event e) throws IOException {
+        System.out.println("Enter username of new speaker");
+        String username = in.nextLine();
+        User speaker = am.getUser(username);
+        if (!speaker.getAccountType().equals("speaker")) {
+            System.out.println("Not a speaker,sorry!");
+        } else {
+            em.changeSpeaker(e, speaker);
+        }
+        saveAll();
+    }
+
+    private void sendMessageToEventMembers(Event e) throws IOException {
+        System.out.println("Enter message you wish to send");
+        String message = in.nextLine();
+        User u = am.getUser(currentUser);
+        mm.sendEventMessage(u, e, message);
+        saveAll();
+    }
+
+
+
     private void messageMenu() throws IOException { //Lan
         System.out.println("Message Menu:\n");
         System.out.println("View messages (1)\n" +
@@ -596,6 +497,42 @@ public class EventSystem {
         ArrayList<String> repeat = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5"));
         if (repeat.contains(input))
             messageMenu();
+    }
+
+    private void sendMessage(User us) throws IOException {
+        System.out.println("Please enter your message:");
+        String content = in.nextLine();
+        if (content.equals("back"))
+            messageMenu();
+        else {
+            System.out.println("Please enter the user you want to message:(your contact is listed below," +
+                    "if the user is not in your contact your message will not be sent)");
+            StringBuilder users = new StringBuilder();
+            for (User m : us.getMessageable()) {
+                users.append(m.getUsername());
+                users.append("|");
+            }
+            System.out.println(users.substring(0, Math.max(users.length()-1, 0)));
+            String receiver = in.nextLine();
+            if (receiver.equals("back"))
+                messageMenu();
+            else {
+                User re = am.getUser(receiver);
+                if(mm.sendMessage(us, re, content)) {
+                    System.out.println("Message sent successfully.");
+                } else {
+                    System.out.println("Message not sent.");
+                }
+            }
+        }
+        saveAll();
+    }
+
+    private void seeMessages(User us) {
+        ArrayList<Message> messages = mm.getUserMessages(us);
+        for (Message m : messages) {
+            System.out.println(m.getContentToString());
+        }
     }
 
     /**
@@ -685,8 +622,87 @@ public class EventSystem {
     }
 
     /**
+     * Add a certain type account by creating the user name and passowrd if the user logged in is an organizer,
+     * otherwise the request is refused
+     * @param accountType the type of teh added account
+     * @throws IOException in order to call the saveAll() method and save all the changes
+     */
+    private void addAccount(String accountType) throws IOException {
+        System.out.println("Please create your user name (five characters or longer)");
+        String username = in.nextLine();
+        if (username.equals("back")){
+            accountMenu();
+        }
+        System.out.println("Please create your password");
+        String password = in.nextLine();
+        if (password.equals("back")){
+            accountMenu();
+        }
+        if (am.addNewUser(username, password, accountType)) {
+            System.out.println("Success!");
+        } else {
+            System.out.println("Sorry, the user name has already been taken or is invalid.");
+        }
+        saveAll();
+    }
+
+    /**
+     * If the user logged in is an organizer, remove a certain account by entering the user name when the user name
+     * entered exists, otherwise the request is refused.
+     * If the user logged in is a speaker or attendee, remove the logged in account by entering user name and password,
+     * otherwise the request is refused.
+     * @throws IOException in order to call the saveAll() method and save all the changes
+     */
+    private void removeAccount() throws IOException {
+        if (am.checkAccountType(currentUser).equals("organizer")) {
+            System.out.println("Please enter the user name you want to remove");
+            String username = in.nextLine();
+            if (username.equals("back")){
+                accountMenu();
+            }
+            if (am.deleteUser(username, am.getUser(username).getPassword())) {
+                System.out.println("Success!");
+            } else {
+                System.out.println("Sorry, your user name is not correct.");
+            }
+        } else {
+            System.out.println("Please enter your user name");
+            String username = in.nextLine();
+            if (username.equals("back")){
+                accountMenu();
+            }
+            System.out.println("Please enter your password");
+            String password = in.nextLine();
+            if (password.equals("back")){
+                accountMenu();
+            }
+            if (am.deleteUser(username, password)) {
+                System.out.println("Success!");
+            } else {
+                System.out.println("Sorry, your user name or password is not correct.");
+            }
+        }
+        saveAll();
+    }
+
+    /**
+     * Change the password of the logged in account into the newly entered password
+     * @throws IOException in order to call the saveAll() method and save all the changes
+     */
+    private void changePassword() throws IOException {
+        System.out.println("Please enter your new password");
+        String password = in.nextLine();
+        if (password.equals("back")){
+            accountMenu();
+        }
+        User u = am.getUser(currentUser);
+        am.resetPassword(u, password);
+        System.out.println("Success!");
+        saveAll();
+    }
+
+    /**
      * Saves all the managers.
-     *
      * @throws IOException if there is no file with the specified name. It will create a new file should this happen.
      */
     private void saveAll() throws IOException {
