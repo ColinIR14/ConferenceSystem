@@ -160,10 +160,10 @@ public class EventSystem {
         if (am.checkAccountType(currentUser).equals("organizer")) {
             System.out.println(
                     "Select event (1)\n" +
-                            "Add event(2)\n" +
-                            "Add room(3)\n" +
-                            "Remove room(4)\n" +
-                            "Main Menu(5)\n");
+                            "Add event (2)\n" +
+                            "Add room (3)\n" +
+                            "Remove room (4)\n" +
+                            "Main Menu (5)\n");
             System.out.println("Please enter a one-character input selection.");
             String input = in.nextLine();
             switch (input) {
@@ -262,15 +262,15 @@ public class EventSystem {
     }
 
     private void specificEventMenu(Event e) throws IOException {
-        System.out.println("Cancel Event(1)\n" +
+        System.out.println("Cancel Event (1)\n" +
                 "Add self to event (2)\n" +
                 "Add user to event(3)\n" +
-                "Change speaker of event(4)\n+" +
-                "Remove user from event(5)\n+" +
-                "Remove self from event(6)\n" +
-                "Send messages to all attendees of event(7)\n" +
-                "See All users in event(8)\n" +
-                "Main menu(9)\n");
+                "Change speaker of event (4)\n+" +
+                "Remove user from event (5)\n+" +
+                "Remove self from event (6)\n" +
+                "Send messages to all attendees of event (7)\n" +
+                "See All users in event (8)\n" +
+                "Main menu (9)\n");
         System.out.println("Enter the number corresponding to the desired action");
         String next = in.nextLine();
         switch (next) {
@@ -310,36 +310,37 @@ public class EventSystem {
     }
 
     private void addEvent() throws IOException {
-        System.out.println("Enter Name");
+        System.out.println("Please enter the event name.");
         String name = in.nextLine();
-        System.out.println("Enter Start Date for Event (dd/MM/yyyy hh:mm:ss)");
+        System.out.println("Please enter the start date for the event. (dd/MM/yyyy hh:mm:ss)");
         String date = in.nextLine();
         try {
             LocalDateTime date2=LocalDateTime.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
             if (date2.getHour()>17 || date2.getHour() <9){
-                System.out.println("Events can only be between 9am and 5 pm");
+                System.out.println("Sorry, events can only be between 9am and 5 pm.");
                 eventMenu();
             }
             System.out.println(em.listOfRooms());
-            System.out.println("Enter Number of Room for this event(If you want a different room, you must add the room first)");
+            System.out.println("Please enter the room number for this event. (The room must be created first)");
             int room = Integer.parseInt(in.nextLine());
-            System.out.println("Enter Speaker username");
+            System.out.println("Please enter the speaker's username.");
             String speaker = in.nextLine();
             User u = am.getUser(speaker);
             if (!u.getAccountType().equals("speaker")) {
-                System.out.println("This isn't a speaker sorry!");
+                System.out.println("Sorry, this isn't a speaker! Please enter (2) to try adding an event again.\n");
+                eventMenu();
             }
             if (em.addNewEvent(name, date2, room, u)) {
-                System.out.println("Successfully Added");
+                System.out.println("Successfully Added!\n");
             } else {
                 System.out.println("Failed to add");
             }
 
         } catch (DateTimeParseException e) {
-            System.out.println("Invalid Date sorry!");
+            System.out.println("Invalid Date sorry! Please enter (2) to try adding an event again.\n");
             eventMenu();
         } catch (NumberFormatException e) {
-            System.out.println("Enter a number for room please");
+            System.out.println("Enter a number for room please. Please enter (2) to try adding an event again.\n");
             eventMenu();
         }
         eventMenu();

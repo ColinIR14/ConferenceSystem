@@ -161,8 +161,10 @@ public class EventManager implements Serializable {
      */
     public StringBuilder listOfRooms() {
         StringBuilder s = new StringBuilder();
+        s.append("List of Rooms:\n");
+
         for (Room room : roomList) {
-            s.append("Room Number");
+            s.append("Room Number ");
             s.append(room.getRoomNumber());
             s.append("\n");
         }
