@@ -103,8 +103,24 @@ public class MessageManager implements Serializable{
             sender.removeMessageable(receiver);
     }
 
-    public void removeMessageableFromList(ArrayList<User> messageableList, User user){
-        for (User u : messageableList){
+    public StringBuilder getMessageable(List<User> messageableList){
+        StringBuilder users = new StringBuilder();
+        if (messageableList.size() == 0){
+            users.append("You have no contact please add contact first \n");
+            return users;
+        }
+        users.append("Please enter the user you want to message:(your contact is listed below," +
+                "if the user is not in your contact your message will not be sent)\n");
+        for (User m : messageableList) {
+            users.append(m.getUsername());
+            users.append("|");
+        }
+        users.deleteCharAt(users.length()-1);
+        return users;
+    }
+
+    public void removeMessageableFromList(ArrayList<User> userList, User user){
+        for (User u : userList){
             removeMessageable(u, user);
         }
     }

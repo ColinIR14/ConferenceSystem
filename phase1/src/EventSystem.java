@@ -422,13 +422,11 @@ public class EventSystem {
         saveAll();
     }
 
-    /**
+    /*
      * MessageMenu allows loged in user to view messages sent to them, send message to other user in contact, add user to
      * contact, remove user from contact. Only Oganizer type user are allowed to send event message. And user can choose
      * to return to the main menu at the begining of message menu or return to beginning of message menu.
-     *
      * Notes, unless organizer type, user can only send message to users that are in the user's contact.
-     * @throws IOException catches IOE exceptions
      */
     private void messageMenu() throws IOException { //Lan
         System.out.println("Message Menu:\n");
@@ -444,7 +442,7 @@ public class EventSystem {
         String input = in.nextLine();
         switch (input) {
             case "1":
-                seeMessages(us);
+                System.out.println(seeMessages(us));
                 break;
             case "2":
                 sendMessage(us);
@@ -457,6 +455,7 @@ public class EventSystem {
                 else {
                     mm.addMessageable(us, am.getUser(usern));
                 }
+                saveAll();
                 break;
             case "4":
                 System.out.println("Please enter the user(username) you want to remove from your contact:");
@@ -487,6 +486,7 @@ public class EventSystem {
                     Event ev = em.indexEvent(i);
                     sendMessageToEventMembers(ev);
                     saveAll();
+                    break;
                 }
                 catch(NumberFormatException e){
                     System.out.println("Enter a number please");
@@ -511,10 +511,8 @@ public class EventSystem {
             messageMenu();
     }
 
-    /**
+    /*
      * Take sender user and ask for content of message and receiver and will send to message.
-     * @param us User sender
-     * @throws IOException catches IOE exceptions
      */
     private void sendMessage(User us) throws IOException {
         System.out.println("Please enter your message:");
@@ -522,14 +520,7 @@ public class EventSystem {
         if (content.equals("back"))
             messageMenu();
         else {
-            System.out.println("Please enter the user you want to message:(your contact is listed below," +
-                    "if the user is not in your contact your message will not be sent)");
-            StringBuilder users = new StringBuilder();
-            for (User m : us.getMessageable()) {
-                users.append(m.getUsername());
-                users.append("|");
-            }
-            System.out.println(users.substring(0, Math.max(users.length()-1, 0)));
+            System.out.println(mm.getMessageable(us.getMessageable()));
             String receiver = in.nextLine();
             if (receiver.equals("back"))
                 messageMenu();
@@ -549,11 +540,17 @@ public class EventSystem {
      * Takes in user receiver and generates list of messages that are sent to the taken user and prints it.
      * @param us receiver of messages
      */
-    private void seeMessages(User us) {
+    private StringBuilder seeMessages(User us) {
+        StringBuilder strb = new StringBuilder();
         ArrayList<Message> messages = mm.getUserMessages(us);
-        for (Message m : messages) {
-            System.out.println(m.getContentToString());
+        if (messages.size() == 0){
+            strb.append("You have no incoming messages");
+            return strb;
         }
+        for (Message m : messages) {
+            strb.append(m.getContentToString());
+        }
+        return strb;
     }
 
     /**
