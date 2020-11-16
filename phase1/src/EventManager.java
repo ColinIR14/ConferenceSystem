@@ -297,7 +297,6 @@ public class EventManager implements Serializable {
             for (User person: event.getAttendees()) {
                 if (user.equals(person)) {
                     eventsAttending.add(event);
-                    break;
                 }
             }
         }
