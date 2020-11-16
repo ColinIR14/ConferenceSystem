@@ -154,7 +154,6 @@ public class EventSystem {
         }
     }
 
-
     private void eventMenu() throws IOException { //Raj //List of events
         System.out.println("Event Menu\n");
         User u = am.getUser(currentUser);
@@ -451,7 +450,7 @@ public class EventSystem {
                 if (usern.equals("back"))
                     messageMenu();
                 else {
-                    mm.addMessagable(us, am.getUser(usern));
+                    mm.addMessageable(us, am.getUser(usern));
                 }
                 break;
             case "4":
@@ -460,7 +459,7 @@ public class EventSystem {
                 if (username.equals("back"))
                     messageMenu();
                 else {
-                    us.removeMessageable(am.getUser(username));
+                    mm.removeMessageable(us, am.getUser(username));
                 }
                 saveAll();
                 break;

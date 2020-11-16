@@ -91,10 +91,21 @@ public class MessageManager implements Serializable{
      * @param sender User that can then send message to the receiver
      * @param receiver User that will be able to receive message from sender
      */
-    public void addMessagable(User sender, User receiver){
+    public void addMessageable(User sender, User receiver){
         if (!sender.getMessageable().contains(receiver))
             sender.addMessageable(receiver);
         else
             System.out.println("The user is already in your contact");
+    }
+
+    public void removeMessageable(User sender, User receiver){
+        if (sender.getMessageable().contains(receiver))
+            sender.removeMessageable(receiver);
+    }
+
+    public void removeMessageableFromList(ArrayList<User> messageableList, User user){
+        for (User u : messageableList){
+            removeMessageable(u, user);
+        }
     }
 }
