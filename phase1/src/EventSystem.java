@@ -24,7 +24,6 @@ public class EventSystem {
     /**
      * Interacts with the user to prompt menu options for various functions.
      */
-
     public void run() {
         try {
             welcome();
@@ -430,6 +429,9 @@ public class EventSystem {
         saveAll();
     }
 
+    /*
+    change the speaker of given event
+     */
     private void changeSpeaker(Event e) throws IOException {
         System.out.println("Enter username of new speaker");
         String username = in.nextLine();
@@ -442,6 +444,9 @@ public class EventSystem {
         saveAll();
     }
 
+    /*
+    send message to all attendees of gvien event
+     */
     private void sendMessageToEventMembers(Event e) throws IOException {
         System.out.println("Enter message you wish to send");
         String message = in.nextLine();
@@ -546,6 +551,9 @@ public class EventSystem {
             messageMenu();
     }
 
+    /*
+    send message menu for speaker
+     */
     private void sendMessageSpeaker(User sender) throws IOException {
         System.out.println("Send message to all attandees to your talk(s) (1) \n" +
                 "Send message to individual attandees attending your talk(s) (2)");
@@ -583,6 +591,9 @@ public class EventSystem {
             }
     }
 
+    /*
+    Send message menu for organizer.
+     */
     private void sendMessageOrganizer(User sender) throws IOException{
         System.out.println("Send message to all speakers (1)\n" +
                 "Send message to all attandees (2)\n" +
@@ -608,7 +619,7 @@ public class EventSystem {
             case "3":
                 System.out.println("Enter the username of user you want to send");
                 String receiver = in.nextLine();
-                if (am.getUserList().contains(am.getUser(receiver)))
+                if (am.checkUser(receiver))
                     mm.sendMessage1(sender, am.getUser(receiver), content);
         }
     }
@@ -729,16 +740,6 @@ public class EventSystem {
                 case "1":
                     removeAccount();
                     welcome();
-                    /*System.out.println("Input password to confirm.");
-                    String password = in.nextLine();
-                    if (am.deleteUser(currentUser, password)) {
-                        currentUser = null;
-                        saveAll();
-                        welcome();
-                    } else {
-                        System.out.println("Error. Please try again.");
-                        accountMenu();
-                    }*/
                     break;
                 case "2":
                     changePassword();

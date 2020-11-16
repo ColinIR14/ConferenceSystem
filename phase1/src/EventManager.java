@@ -240,6 +240,12 @@ public class EventManager implements Serializable {
         }
         return s;
     }
+
+    /**
+     * Takes room number and checks if it is occupied
+     * @param room int room number
+     * @return true or false if the room is occupied
+     */
     public boolean isoccupied(int room){
         boolean occupied=false;
         for(Event x: eventList){
@@ -295,7 +301,13 @@ public class EventManager implements Serializable {
                  x.removeAttendee(u);
          }
     }
-   public ArrayList<Event> getEventsOfSpeaker(User s){
+
+    /**
+     * Takes user and generate a list of event of the given speaker
+     * @param s User speaker
+     * @return list of events
+     */
+    public ArrayList<Event> getEventsOfSpeaker(User s){
         ArrayList<Event> events= new ArrayList<>();
         for (Event x: eventList){
             if(x.getSpeaker().getUsername().equals(s.getUsername())){

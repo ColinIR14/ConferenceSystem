@@ -44,6 +44,12 @@ public class AccountManager implements Serializable{
     }
 
     //overload, default new user is Attendees.
+    /**
+     * Takes username, password, and add add new user
+     * @param username String user username
+     * @param password String user password
+     * @return true or fales whether information matches
+     */
     public boolean addNewUser(String username, String password){
         return addNewUser(username, password, "attendee");
     }
@@ -145,6 +151,11 @@ public class AccountManager implements Serializable{
         return new User("invalid","invalid","user");
     }
 
+    /**
+     * Takes username and check if the user exists
+     * @param username String username of user
+     * @return true or false if the user exists
+     */
     public boolean checkUser(String username){
         for (User user : userList){
             if (user.getUsername().equals(username)){
@@ -154,17 +165,30 @@ public class AccountManager implements Serializable{
         return false;
     }
 
+    /**
+     * Takes sender and receiver adn removes the receiver from the sender's contact.
+     * @param sender User sending message
+     * @param receiver User receiving message
+     */
     public void removeMessageable(User sender, User receiver){
         if (receiver.isContainedIn(sender.getMessageable()))
             sender.removeMessageable(receiver);
     }
 
+    /**
+     * Takes User user and remove user from contact of all users in list.
+     * @param user User to be removed from contacts
+     */
     public void removeMessageableFromList(User user){
         for (User u : userList){
             removeMessageable(u, user);
         }
     }
 
+    /**
+     * Get userlist.
+     * @return ArrayList of user
+     */
     public ArrayList<User> getUserList(){
         return userList;
     }

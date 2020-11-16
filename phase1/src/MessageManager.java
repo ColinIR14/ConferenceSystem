@@ -52,9 +52,14 @@ public class MessageManager implements Serializable{
         return false;
     }
 
-    public boolean sendMessage1(User sender, User receiver, String content) {
+    /**
+     * Takes sender, receiver, content, and add message to message list
+     * @param sender User that will send the message
+     * @param receiver User that will receive the message
+     * @param content String of message
+     */
+    public void sendMessage1(User sender, User receiver, String content) {
         this.messageList.add(addMessage(sender, receiver, content));
-        return true;
     }
 
     /**
@@ -103,6 +108,11 @@ public class MessageManager implements Serializable{
             System.out.println("The user is already in your contact");
     }
 
+    /**
+     * Takes messageable list of users and generates a string with usernames
+     * @param messageableList List of Users in contact
+     * @return String of list of users
+     */
     public StringBuilder getMessageable(List<User> messageableList){
         StringBuilder users = new StringBuilder();
         if (messageableList.size() == 0){
@@ -118,6 +128,11 @@ public class MessageManager implements Serializable{
         return users;
     }
 
+    /**
+     * Takes list of event to get users of event that can be messaged.
+     * @param eventList ArrayList of Event
+     * @return String of all users that can be messaged
+     */
     public String getMessageableOfEvents(ArrayList<Event> eventList){
         StringBuilder str = new StringBuilder();
         if (eventList.size() == 0)

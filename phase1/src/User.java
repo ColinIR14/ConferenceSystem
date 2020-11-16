@@ -89,7 +89,6 @@ public class User implements Serializable{
         eventsAttending.add(e);
     }
 
-
     @Override
     public boolean equals(Object object) {
         if (! (object instanceof User)) {
@@ -98,9 +97,6 @@ public class User implements Serializable{
         User user = (User) object;
         return user.getUsername().equals(this.getUsername());
     }
-
-
-
 
     public boolean isContainedIn(List<User> users){
         for (User u : users){
