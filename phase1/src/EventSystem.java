@@ -549,10 +549,9 @@ public class EventSystem {
     private void sendMessageSpeaker(User sender) throws IOException {
         System.out.println("Send message to all attandees to your talk(s) (1) \n" +
                 "Send message to individual attandees attending your talk(s) (2)");
-        ArrayList<User> validUser = new ArrayList<User>();
+        ArrayList<User> validUser = new ArrayList<>();
         for (Event event : em.getEventsOfSpeaker(sender)){
-            for (User user : event.getAttendees())
-                validUser.add(user);
+            validUser.addAll(event.getAttendees());
         }
         String input = in.nextLine();
         if (input.equals("back"))
@@ -646,9 +645,8 @@ public class EventSystem {
         saveAll();
     }
 
-    /**
+    /*
      * Takes in user receiver and generates list of messages that are sent to the taken user and prints it.
-     * @param us receiver of messages
      */
     private StringBuilder seeMessages(User us) {
         StringBuilder strb = new StringBuilder();
@@ -664,7 +662,7 @@ public class EventSystem {
         return strb;
     }
 
-    /**
+    /*
      * If the logged in user is an organizer, allows the user to enter a single-digit input between 1-6 to select the
      * operation they want to take.
      * (1.Add Organizer account  2.delete account  3.Reset account  4.Reset password  5.List users  6.Main menu)
@@ -672,7 +670,6 @@ public class EventSystem {
      * to select the operation they want to take.
      * (1.delete account  2.Reset account 3.Main menu)
      * Each option selected redirects to a corresponding private method previously defined.
-     * @throws IOException in order to call the saveAll() method and save all the changes
      */
     private void accountMenu() throws IOException { // Daisy
         System.out.println("Account Menu\n");
@@ -752,11 +749,9 @@ public class EventSystem {
         }
     }
 
-    /**
+    /*
      * Add a certain type account by creating the user name and passowrd if the user logged in is an organizer,
      * otherwise the request is refused
-     * @param accountType the type of teh added account
-     * @throws IOException in order to call the saveAll() method and save all the changes
      */
     private void addAccount(String accountType) throws IOException {
         System.out.println("Please create your user name (five characters or longer)");
@@ -777,12 +772,11 @@ public class EventSystem {
         saveAll();
     }
 
-    /**
+    /*
      * If the user logged in is an organizer, remove a certain account by entering the user name when the user name
      * entered exists, otherwise the request is refused.
      * If the user logged in is a speaker or attendee, remove the logged in account by entering user name and password,
      * otherwise the request is refused.
-     * @throws IOException in order to call the saveAll() method and save all the changes
      */
     private void removeAccount() throws IOException {
         if (am.checkAccountType(currentUser).equals("organizer")) {
@@ -820,9 +814,8 @@ public class EventSystem {
         saveAll();
     }
 
-    /**
+    /*
      * Change the password of the logged in account into the newly entered password
-     * @throws IOException in order to call the saveAll() method and save all the changes
      */
     private void changePassword() throws IOException {
         System.out.println("Please enter your new password");
