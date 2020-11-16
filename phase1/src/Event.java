@@ -1,6 +1,7 @@
 import java.sql.Time;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,7 @@ public class Event implements Serializable{
   private List<User> attendees;
   private Room eventRoom;
   private User eventSpeaker;
+  private transient  DateTimeFormatter d = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
   /**Constructor for Event
    * @param id- unique id for Event
@@ -146,6 +148,31 @@ public class Event implements Serializable{
       if(difference<= 3600) b = true;
       return ((this.eventRoom== q.eventRoom & b)||(b & this.eventSpeaker==q.eventSpeaker)||(this.eventName.equals(q.eventName)));
     }
+  }
+
+
+  /**
+   * Returns string rep of event.
+   *
+   * @return String representation of event
+   */
+  @Override
+  public String toString() {
+    if (d == null) {
+      d = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+    }
+    StringBuilder s = new StringBuilder();
+    s.append("  Event Name- ");
+    s.append(this.getEventName());
+    s.append("  Room Number- ");
+    s.append(this.getEventRoom().getRoomNumber());
+    s.append("  Event Start Time- ");
+    s.append(d.format(this.getEventTime()));
+    s.append("  Event Speaker- ");
+    s.append(this.getSpeaker().getUsername());
+    s.append("\n");
+
+    return s.toString();
   }
 
 }

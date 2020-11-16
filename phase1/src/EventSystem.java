@@ -189,7 +189,7 @@ public class EventSystem {
                 case "3": {
                     try {
                         Room r = new Room();
-                        System.out.println("Enter Room Number (integer only)");
+                        System.out.println("Please enter a room number (integer only)");
                         int i = Integer.parseInt(in.nextLine());
                         r.setRoomNumber(i);
                         em.addRoom(r);
@@ -202,14 +202,15 @@ public class EventSystem {
                 case "4":
                     try {
                         System.out.println(em.listOfRooms());
-                        System.out.println("Enter Number of Room to be deleted");
+                        System.out.println("Please enter the room number to be removed.");
                         int room = Integer.parseInt(in.nextLine());
                         //if (em.getListOfRoomsOccupied().contains(room))
-                        if (!em.isoccupied(room)) {
+                        if (!em.isoccupied(room) && em.getRoom(room)) {
                             em.removeRoom(room);
+                            System.out.println("Successfully removed!\n");
                         }
                         else{
-                            System.out.println("There are events assigned to this room, or this is not a room");
+                            System.out.println("Sorry, there are events assigned to this room, or there is no room with that number.\n");
                         }
                         break;
                     } catch (NumberFormatException e) {
@@ -228,6 +229,10 @@ public class EventSystem {
             try{
                System.out.println("Current event list:\n");
                System.out.println(em.eventdetails());
+               System.out.println("Events you are attending:\n");
+               for (Event event: em.getEventsAttending(am.getUser(currentUser))) {
+                   System.out.println(event);
+               }
                System.out.println("Enter Number of Event you want to manipulate(\"back\" for main menu)");
                String input1= in.nextLine();
                if(input1 .equals("back")) mainMenu();
