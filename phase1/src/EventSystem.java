@@ -190,7 +190,7 @@ public class EventSystem {
                 case "3": {
                     try {
                         Room r = new Room();
-                        System.out.println("Enter Room Number (integer only)");
+                        System.out.println("Please enter a room number (integer only)");
                         int i = Integer.parseInt(in.nextLine());
                         r.setRoomNumber(i);
                         em.addRoom(r);
@@ -203,14 +203,15 @@ public class EventSystem {
                 case "4":
                     try {
                         System.out.println(em.listOfRooms());
-                        System.out.println("Enter Number of Room to be deleted");
+                        System.out.println("Please enter the room number to be removed.");
                         int room = Integer.parseInt(in.nextLine());
                         //if (em.getListOfRoomsOccupied().contains(room))
-                        if (!em.isoccupied(room)) {
+                        if (!em.isoccupied(room) && em.getRoom(room)) {
                             em.removeRoom(room);
+                            System.out.println("Successfully removed!\n");
                         }
                         else{
-                            System.out.println("There are events assigned to this room, or this is not a room");
+                            System.out.println("Sorry, there are events assigned to this room, or there is no room with that number.\n");
                         }
                         break;
                     } catch (NumberFormatException e) {

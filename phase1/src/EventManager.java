@@ -275,4 +275,19 @@ public class EventManager implements Serializable {
         }
         return occupied;
     }
+
+    /**
+     * Checks if a room has already been made.
+     *
+     * @param room Room number
+     * @return boolean true if a room with 'room' number exists and false if it doesn't.
+     */
+    public boolean getRoom(int room){
+        for (Room r: roomList) {
+            if (r.getRoomNumber() == room){
+                return true;
+            }
+        }
+        return false;
+    }
 }
