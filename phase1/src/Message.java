@@ -52,7 +52,7 @@ public class Message implements Serializable{
      * @return String of the message
      */
     public String getContentToString(){
-        return "FROM "+this.sender.getUsername()+" : "+this.content+" TO "+this.receiver.getUsername();
+        return "FROM "+this.sender.getUsername()+" TO "+this.receiver.getUsername()+" : "+this.content;
 
     }
 }

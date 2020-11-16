@@ -156,7 +156,7 @@ public class EventSystem {
         User u = am.getUser(currentUser);
         if (am.checkAccountType(currentUser).equals("organizer")) {
             System.out.println(
-                    "Select event (1)\n" +
+                    "View and Select event to manipulate (1)\n" +
                             "Add event (2)\n" +
                             "Add room (3)\n" +
                             "Remove room (4)\n" +
@@ -170,7 +170,11 @@ public class EventSystem {
                 case "1": {
                     try {
                         System.out.println(em.eventdetails());
-                        System.out.println("Enter Number of Event you want to manipulate");
+                        if (em.eventdetails().toString().equals("No event found")){
+                            eventMenu();
+                            break;
+                        }
+                        System.out.println("Enter Event Number of the event you want to manipulate");
                         int i = Integer.parseInt(in.nextLine());
                         Event e = em.indexEvent(i);
                         specificEventMenu(e);
@@ -219,15 +223,21 @@ public class EventSystem {
                     break;
                 default:
                     System.out.println("Invalid input. Please try again.");
+                    eventMenu();
             }
             saveAll();
         }
         else if (am.checkAccountType(currentUser).equals("speaker")){
-            System.out.println("List Talks(1)\n Send message to all attendees in talks(2)\n Main menu(3)");
+            System.out.println("List Your Talks(1)\nSend message to all attendees in talks(2)\nMain menu(3)");
             System.out.println("Please enter a one input character selection ");
             String input = in.nextLine();
             switch (input){
                 case "1":
+                    if(em.getEventsOfSpeaker(am.getUser(currentUser)).size() == 0){
+                        System.out.println("You are not speaking at any events.");
+                        eventMenu();
+                        break;
+                    }
                     for (Event x: em.getEventsOfSpeaker(am.getUser(currentUser))){
                         System.out.println(x);}
                     eventMenu();
@@ -243,11 +253,11 @@ public class EventSystem {
                 case "3":
                     mainMenu();
                     break;
-
+                default:
+                    System.out.println("Invalid input, try again.");
+                    eventMenu();
                 }
             }
-
-
         else {
             try{
                System.out.println("Current event list:\n");
@@ -324,7 +334,12 @@ public class EventSystem {
                 sendMessageToEventMembers(e);
                 break;
             case "8":
-                System.out.println(em.getAttendees(e));
+                if (em.getAttendees(e).length() == 0){
+                    System.out.println("No attendees");
+                }
+                else {
+                    System.out.println(em.getAttendees(e));
+                }
                 break;
             case "9":
                 mainMenu();
@@ -488,12 +503,16 @@ public class EventSystem {
             case "3":
                 System.out.println("Please enter the user(username) you want to add to contact:");
                 String usern = in.nextLine();
-                if (usern.equals("back"))
+                if (usern.equals("back")) {
                     messageMenu();
-                else if (am.checkUser(usern))
+                }
+                else if (am.checkUser(usern)) {
                     mm.addMessageable(us, am.getUser(usern));
-                else
+                    System.out.println("Successfully added the contact.");
+                }
+                else {
                     System.out.println("User doesn't exist");
+                }
                 saveAll();
                 messageMenu();
                 break;
@@ -574,6 +593,11 @@ public class EventSystem {
                     saveAll();
                     break;
                 case "2":
+                    if (em.getEventsOfSpeaker(sender).size() == 0){
+                        System.out.println("You are not speaking at any events.");
+                        messageMenu();
+                        break;
+                    }
                     String str = mm.getMessageableOfEvents(em.getEventsOfSpeaker(sender));
                     System.out.println(str);
                     String receiver = in.nextLine();
@@ -689,7 +713,7 @@ public class EventSystem {
                     "Add Speaker account (2)\n" +
                     "Remove account (3)\n" +
                     "Reset password (4)\n" +
-                    "List users (5)\n" +
+                    "List all users (5)\n" +
                     "Main menu (6)\n");
             System.out.println("Please enter a one-character input selection.");
             String next = in.nextLine();
@@ -724,7 +748,7 @@ public class EventSystem {
                     break;
                 default:
                     System.out.println("Invalid input");
-                    mainMenu();
+                    accountMenu();
                     break;
             }
         } else {
@@ -745,6 +769,10 @@ public class EventSystem {
                     break;
                 case "3":
                     mainMenu();
+                    break;
+                default:
+                    System.out.println("Invalid input");
+                    accountMenu();
                     break;
             }
         }

@@ -5,7 +5,7 @@ You need to log in as organizer(admin initially) to create speaker and organizer
 
 
 Controller
-To run the program, please run the main method which will create a new eventSystem object and run the run() method that displays our welcome menu. Then you can iterate with the program. Our controller interacts with the user input and also prints menu options and messages. To close the program, you must find your way back to the welcome menu by signing out (if you have signed in) and Typing ‘C’ to close the program and save all the accounts, events and messages made.
+To run the program, please run the main method in Main class which will create a new eventSystem object and run the run() method that displays our welcome menu. Then you can iterate with the program. Our controller interacts with the user input and also prints menu options and messages. To close the program, you must find your way back to the welcome menu by signing out (if you have signed in) and Typing ‘C’ to close the program and save all the accounts, events and messages made.
 
 
 Message
