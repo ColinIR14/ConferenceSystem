@@ -1,3 +1,4 @@
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -230,7 +231,18 @@ public class EventManager implements Serializable {
     public void changeSpeaker(Event e, User speaker) {
         for (Event x : eventList) {
             if (x.equals(e)) {
-                x.setSpeaker(speaker);
+                boolean isOccupied = false;
+                for (Event q:eventList){
+                    if (q.getSpeaker().getUsername().equals(speaker.getUsername()) &
+                            Math.abs(Duration.between(q.getEventTime(),x.getEventTime()).getSeconds())<=3600)
+                        isOccupied =true;
+                }
+                if(!isOccupied) {
+                    x.setSpeaker(speaker);
+                }
+                else{
+                    System.out.println("Speaker busy at this event's time");
+                }
             }
         }
     }
@@ -302,5 +314,19 @@ public class EventManager implements Serializable {
             }
         }
         return eventsAttending;
+    }
+
+    /**
+     * When removing a user, we must remove him from all events he is attending
+     * @param u-User to be removed
+     */
+    public void removeUserFromEvent(User u){
+         for(Event x:eventList){
+             for(User y:x.getAttendees()){
+                 if(y.getUsername().equals(u.getUsername())){
+                     x.removeAttendee(y);
+                 }
+             }
+         }
     }
 }
