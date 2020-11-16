@@ -92,6 +92,9 @@ public class MessageManager implements Serializable{
      * @param receiver User that will be able to receive message from sender
      */
     public void addMessagable(User sender, User receiver){
-        sender.addMessageable(receiver);
+        if (!sender.getMessageable().contains(receiver))
+            sender.addMessageable(receiver);
+        else
+            System.out.println("The user is already in your contact");
     }
 }
