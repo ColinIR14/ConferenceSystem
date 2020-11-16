@@ -590,6 +590,7 @@ public class EventSystem {
                     String content = in.nextLine();
                     for (Event event : em.getEventsOfSpeaker(sender))
                         mm.sendEventMessage(sender, event, content);
+                    System.out.println("Success!");
                     saveAll();
                     break;
                 case "2":
@@ -608,9 +609,14 @@ public class EventSystem {
                     System.out.println("Please enter your message:");
                     String content2 = in.nextLine();
                     mm.sendMessage1(sender, am.getUser(receiver), content2);
+                    System.out.println("Success!");
                     saveAll();
                     break;
+                default:
+                    System.out.println("Invalid input, try again");
+                    messageMenu();
                 }
+
             }
     }
 
@@ -620,8 +626,16 @@ public class EventSystem {
     private void sendMessageOrganizer(User sender) throws IOException{
         System.out.println("Send message to all speakers (1)\n" +
                 "Send message to all attandees (2)\n" +
-                "Send message (3)");
+                "Send message (3)\n" +
+                "Type \"back\" to go back");
         String input = in.nextLine();
+        if (input.equals("back")){
+            messageMenu();
+        }
+        if (!(input.equals("1")||input.equals("2")||input.equals("3")||input.equals("back"))){
+            System.out.println("Invalid input, try again");
+            sendMessageOrganizer(am.getUser(currentUser));
+        }
         System.out.println("Please enter your message:");
         String content = in.nextLine();
         switch (input) {
@@ -630,6 +644,7 @@ public class EventSystem {
                     if (user.getAccountType().equals("speaker"))
                         mm.sendMessage1(sender, user, content);
                 }
+                System.out.println("Message sent");
                 saveAll();
                 break;
             case "2":
@@ -637,6 +652,7 @@ public class EventSystem {
                     if (user.getAccountType().equals("attendee"))
                         mm.sendMessage1(sender, user, content);
                 }
+                System.out.println("Message sent");
                 saveAll();
                 break;
             case "3":
@@ -644,6 +660,7 @@ public class EventSystem {
                 String receiver = in.nextLine();
                 if (am.checkUser(receiver))
                     mm.sendMessage1(sender, am.getUser(receiver), content);
+                    System.out.println("Message sent");
         }
     }
 
@@ -671,6 +688,12 @@ public class EventSystem {
             else {
                 User re = am.getUser(receiver);
                 if(mm.sendMessage(us, re, content)) {
+                    if (re.getAccountType().equals("organizer")){
+                        System.out.println("Warning: You have sent a message to an Organizer. You may not get a reply.");
+                    }
+                    else if(re.getAccountType().equals("speaker")){
+                        System.out.println("Warning: You have sent a message to a Speaker. You may not get a reply if you are not attending his/her talk.");
+                    }
                     System.out.println("Message sent successfully.");
                 } else {
                     System.out.println("Message not sent.");
