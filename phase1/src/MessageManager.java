@@ -52,6 +52,11 @@ public class MessageManager implements Serializable{
         return false;
     }
 
+    public boolean sendMessage1(User sender, User receiver, String content) {
+        this.messageList.add(addMessage(sender, receiver, content));
+        return true;
+    }
+
     /**
      * Takes in sender, even, content, and if messageable the message will be added to messageList with receiver being
      * all attandees from a given event.

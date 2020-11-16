@@ -569,14 +569,14 @@ public class EventSystem {
                 case "2":
                     String str = mm.getMessageableOfEvents(em.getEventsOfSpeaker(sender));
                     System.out.println(str);
-                    String receiver = in.next();
+                    String receiver = in.nextLine();
                     if (!validUser.contains(am.getUser(receiver))) {
                         messageMenu();
                         break;
                     }
                     System.out.println("Please enter your message:");
                     String content2 = in.nextLine();
-                    mm.sendMessage(sender, am.getUser(receiver), content2);
+                    mm.sendMessage1(sender, am.getUser(receiver), content2);
                     saveAll();
                     break;
                 }
@@ -594,22 +594,22 @@ public class EventSystem {
             case "1":
                 for(User user : am.getUserList()){
                     if (user.getAccountType().equals("speaker"))
-                        mm.sendMessage(sender, user, content);
+                        mm.sendMessage1(sender, user, content);
                 }
                 saveAll();
                 break;
             case "2":
                 for (User user : am.getUserList()){
                     if (user.getAccountType().equals("attendee"))
-                        mm.sendMessage(sender, user, content);
+                        mm.sendMessage1(sender, user, content);
                 }
                 saveAll();
                 break;
             case "3":
                 System.out.println("Enter the username of user you want to send");
-                String receiver = in.next();
+                String receiver = in.nextLine();
                 if (am.getUserList().contains(am.getUser(receiver)))
-                    mm.sendMessage(sender, am.getUser(receiver), content);
+                    mm.sendMessage1(sender, am.getUser(receiver), content);
         }
     }
 
@@ -659,6 +659,7 @@ public class EventSystem {
         }
         for (Message m : messages) {
             strb.append(m.getContentToString());
+            strb.append("\n");
         }
         return strb;
     }
