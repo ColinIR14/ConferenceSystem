@@ -3,6 +3,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.io.Serializable;
 import java.time.Duration;
+import java.util.List;
 
 public class EventManager implements Serializable {
     private ArrayList<Event> eventList;
@@ -293,5 +294,14 @@ public class EventManager implements Serializable {
              if (x.getAttendees().contains(u))
                  x.removeAttendee(u);
          }
+    }
+   public ArrayList<Event> getEventsOfSpeaker(User s){
+        ArrayList<Event> events= new ArrayList<>();
+        for (Event x: eventList){
+            if(x.getSpeaker().getUsername().equals(s.getUsername())){
+                events.add(x);
+            }
+        }
+        return events;
     }
 }

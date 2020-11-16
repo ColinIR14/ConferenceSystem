@@ -222,7 +222,34 @@ public class EventSystem {
                     System.out.println("Invalid input. Please try again.");
             }
             saveAll();
-        } else {
+        }
+        else if (am.checkAccountType(currentUser).equals("speaker")){
+            System.out.println("List Talks(1)\n Send message to all attendees in talks(2)\n Main menu(3)");
+            System.out.println("Please enter a one input character selection ");
+            String input = in.nextLine();
+            switch (input){
+                case "1":
+                    for (Event x: em.getEventsOfSpeaker(am.getUser(currentUser))){
+                        System.out.println(x);}
+                    eventMenu();
+                    break;
+                case "2":
+                    System.out.println("Enter message:");
+                    String content = in.nextLine();
+                    for(Event x:em.getEventsOfSpeaker(am.getUser(currentUser))){
+                        mm.sendEventMessage(am.getUser(currentUser),x,content);
+                    }
+                    eventMenu();
+                    break;
+                case "3":
+                    mainMenu();
+                    break;
+
+                }
+            }
+
+
+        else {
             try{
                System.out.println("Current event list:\n");
                System.out.println(em.eventdetails());
