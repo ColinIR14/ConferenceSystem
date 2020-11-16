@@ -418,8 +418,14 @@ public class EventSystem {
         saveAll();
     }
 
-
-
+    /**
+     * MessageMenu allows loged in user to view messages sent to them, send message to other user in contact, add user to
+     * contact, remove user from contact. Only Oganizer type user are allowed to send event message. And user can choose
+     * to return to the main menu at the begining of message menu or return to beginning of message menu.
+     *
+     * Notes, unless organizer type, user can only send message to users that are in the user's contact.
+     * @throws IOException catches IOE exceptions
+     */
     private void messageMenu() throws IOException { //Lan
         System.out.println("Message Menu:\n");
         System.out.println("View messages (1)\n" +
@@ -501,6 +507,11 @@ public class EventSystem {
             messageMenu();
     }
 
+    /**
+     * Take sender user and ask for content of message and receiver and will send to message.
+     * @param us User sender
+     * @throws IOException catches IOE exceptions
+     */
     private void sendMessage(User us) throws IOException {
         System.out.println("Please enter your message:");
         String content = in.nextLine();
@@ -530,6 +541,10 @@ public class EventSystem {
         saveAll();
     }
 
+    /**
+     * Takes in user receiver and generates list of messages that are sent to the taken user and prints it.
+     * @param us receiver of messages
+     */
     private void seeMessages(User us) {
         ArrayList<Message> messages = mm.getUserMessages(us);
         for (Message m : messages) {
