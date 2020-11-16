@@ -290,4 +290,24 @@ public class EventManager implements Serializable {
         }
         return false;
     }
+
+    /**
+     * Return the list of events which a specific user will be attending.
+     *
+     * @param user User in question
+     * @return ArrayList of events attendee is going to.
+     */
+
+    public ArrayList<Event> getEventsAttending(User user) {
+        ArrayList<Event> eventsAttending = new ArrayList<>();
+        for (Event event: eventList) {
+            for (User person: event.getAttendees()) {
+                if (user.equals(person)) {
+                    eventsAttending.add(event);
+                    break;
+                }
+            }
+        }
+        return eventsAttending;
+    }
 }

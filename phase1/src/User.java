@@ -94,5 +94,13 @@ public class User implements Serializable{
     }
 
 
+    @Override
+    public boolean equals(Object object) {
+        if (! (object instanceof User)) {
+            return false;
+        }
+        User user = (User) object;
+        return user.getUsername().equals(this.getUsername());
+    }
 
 }

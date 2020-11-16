@@ -230,6 +230,10 @@ public class EventSystem {
             try{
                System.out.println("Current event list:\n");
                System.out.println(em.eventdetails());
+               System.out.println("Events you are attending:\n");
+               for (Event event: em.getEventsAttending(am.getUser(currentUser))) {
+                   System.out.println(event);
+               }
                System.out.println("Enter Number of Event you want to manipulate(\"back\" for main menu)");
                String input1= in.nextLine();
                if(input1 .equals("back")) mainMenu();
