@@ -74,6 +74,7 @@ public class EventSystem {
             }
             case "C":
                 closeProgram();
+                System.exit(0);
                 break;
             default:
                 System.out.println("Invalid input. Please try again.");
