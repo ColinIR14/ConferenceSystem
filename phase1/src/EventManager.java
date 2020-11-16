@@ -105,14 +105,17 @@ public class EventManager implements Serializable {
      * Otherwise, add the Event to eventList and return true.
      */
     public boolean addNewEvent(String EventName, LocalDateTime EventTime, int EventRoomNumber, User EventSpeaker) {
-        Room room = new Room();
-        room.setRoomNumber(EventRoomNumber);
-        for (Room x:roomList){
-            if (x.getRoomNumber() == EventRoomNumber){
-                room=x;
-            }
+        Room r = null;
+        for (Room room : roomList) {
+           if (room.getRoomNumber() == EventRoomNumber) {
+               r = room;
+           }
         }
-        Event tempevent = new Event(nextId, EventName, EventTime, room, EventSpeaker);
+        if (r == null) {
+            return false;
+        }
+
+        Event tempevent = new Event(nextId, EventName, EventTime, r, EventSpeaker);
         nextId += 1;
         for (Event x : eventList) {
             if (x.equals(tempevent)) {
@@ -120,7 +123,7 @@ public class EventManager implements Serializable {
             }
         }
         eventList.add(tempevent);
-        roomOccupied.add(room);
+        roomOccupied.add(r);
         return true;
     }
 
@@ -272,7 +275,7 @@ public class EventManager implements Serializable {
      * @param room Room number
      * @return boolean true if a room with 'room' number exists and false if it doesn't.
      */
-    public boolean getRoom(int room){
+    public boolean checkRoom(int room){
         for (Room r: roomList) {
             if (r.getRoomNumber() == room){
                 return true;

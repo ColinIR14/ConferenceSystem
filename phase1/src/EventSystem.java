@@ -203,7 +203,7 @@ public class EventSystem {
                         System.out.println("Please enter the room number to be removed.");
                         int room = Integer.parseInt(in.nextLine());
                         //if (em.getListOfRoomsOccupied().contains(room))
-                        if (!em.isoccupied(room) && em.getRoom(room)) {
+                        if (!em.isoccupied(room) && em.checkRoom(room)) {
                             em.removeRoom(room);
                             System.out.println("Successfully removed!\n");
                         }
@@ -683,6 +683,8 @@ public class EventSystem {
                 accountMenu();
             }
             if (am.deleteUser(username, am.getUser(username).getPassword())) {
+                User u = am.getUser(currentUser);
+                //mm.removeMessageableFromList(u.getMessageable(), u);
                 System.out.println("Success!");
             } else {
                 System.out.println("Sorry, your user name is not correct.");
