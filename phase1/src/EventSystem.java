@@ -473,7 +473,12 @@ public class EventSystem {
                 System.out.println(seeMessages(us));
                 break;
             case "2":
-                sendMessage(us);
+                if (am.checkAccountType(currentUser).equals("speaker"))
+                    sendMessageSpeaker(us);
+                else if(am.checkAccountType(currentUser).equals("organizer"))
+                    sendMessageOrganizer(us);
+                else
+                    sendMessage(us);
                 break;
             case "3":
                 System.out.println("Please enter the user(username) you want to add to contact:");
@@ -539,6 +544,73 @@ public class EventSystem {
         ArrayList<String> repeat = new ArrayList<>(Arrays.asList("1", "2", "3", "4", "5"));
         if (repeat.contains(input))
             messageMenu();
+    }
+
+    private void sendMessageSpeaker(User sender) throws IOException {
+        System.out.println("Send message to all attandees to your talk(s) (1) \n" +
+                "Send message to individual attandees attending your talk(s) (2)");
+        ArrayList<User> validUser = new ArrayList<User>();
+        for (Event event : em.getEventsOfSpeaker(sender)){
+            for (User user : event.getAttendees())
+                validUser.add(user);
+        }
+        String input = in.nextLine();
+        if (input.equals("back"))
+            messageMenu();
+        else {
+            switch (input) {
+                case "1":
+                    System.out.println("Please enter your message:");
+                    String content = in.nextLine();
+                    for (Event event : em.getEventsOfSpeaker(sender))
+                        mm.sendEventMessage(sender, event, content);
+                    saveAll();
+                    break;
+                case "2":
+                    String str = mm.getMessageableOfEvents(em.getEventsOfSpeaker(sender));
+                    System.out.println(str);
+                    String receiver = in.next();
+                    if (!validUser.contains(am.getUser(receiver))) {
+                        messageMenu();
+                        break;
+                    }
+                    System.out.println("Please enter your message:");
+                    String content2 = in.nextLine();
+                    mm.sendMessage(sender, am.getUser(receiver), content2);
+                    saveAll();
+                    break;
+                }
+            }
+    }
+
+    private void sendMessageOrganizer(User sender) throws IOException{
+        System.out.println("Send message to all speakers (1)\n" +
+                "Send message to all attandees (2)\n" +
+                "Send message (3)");
+        String input = in.nextLine();
+        System.out.println("Please enter your message:");
+        String content = in.nextLine();
+        switch (input) {
+            case "1":
+                for(User user : am.getUserList()){
+                    if (user.getAccountType().equals("speaker"))
+                        mm.sendMessage(sender, user, content);
+                }
+                saveAll();
+                break;
+            case "2":
+                for (User user : am.getUserList()){
+                    if (user.getAccountType().equals("attendee"))
+                        mm.sendMessage(sender, user, content);
+                }
+                saveAll();
+                break;
+            case "3":
+                System.out.println("Enter the username of user you want to send");
+                String receiver = in.next();
+                if (am.getUserList().contains(am.getUser(receiver)))
+                    mm.sendMessage(sender, am.getUser(receiver), content);
+        }
     }
 
     /*

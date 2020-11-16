@@ -112,4 +112,19 @@ public class MessageManager implements Serializable{
         users.deleteCharAt(users.length()-2);
         return users;
     }
+
+    public String getMessageableOfEvents(ArrayList<Event> eventList){
+        StringBuilder str = new StringBuilder();
+        if (eventList.size() == 0)
+            return str.toString();
+        str.append("Please enter the user you want to message:(your contact is listed below," +
+                "if the user is not in your talk(s) your message will not be sent)\n");
+        for (Event event : eventList){
+            for (User user : event.getAttendees())
+                str.append(user.getUsername() + " | ");
+        }
+        return str.substring(0, str.length()-2);
+    }
+
+
 }

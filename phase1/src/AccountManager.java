@@ -165,6 +165,8 @@ public class AccountManager implements Serializable{
         }
     }
 
-
+    public ArrayList<User> getUserList(){
+        return userList;
+    }
 
 }
