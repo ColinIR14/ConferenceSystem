@@ -143,6 +143,28 @@ public class AccountManager implements Serializable{
             return currentUser;}
         }
         return new User("invalid","invalid","user");
-
     }
+
+    public boolean checkUser(String username){
+        for (User user : userList){
+            if (user.getUsername().equals(username)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void removeMessageable(User sender, User receiver){
+        if (receiver.isContainedIn(sender.getMessageable()))
+            sender.removeMessageable(receiver);
+    }
+
+    public void removeMessageableFromList(User user){
+        for (User u : userList){
+            removeMessageable(u, user);
+        }
+    }
+
+
+
 }

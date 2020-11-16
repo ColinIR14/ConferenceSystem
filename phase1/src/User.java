@@ -59,10 +59,6 @@ public class User implements Serializable{
     /**
      * Getters, Setters, and Adders for Messageable and eventsAttending. (All list-related) */
 
-    public void setMessageable(List<User> users) {
-        messageable = users;
-    }
-
     public void addMessageable(User u) {
         messageable.add(u);
     }
@@ -105,5 +101,13 @@ public class User implements Serializable{
 
 
 
+
+    public boolean isContainedIn(List<User> users){
+        for (User u : users){
+            if (u.equals(this))
+                return true;
+        }
+        return false;
+    }
 
 }

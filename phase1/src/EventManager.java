@@ -1,8 +1,8 @@
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.io.Serializable;
+import java.time.Duration;
 
 public class EventManager implements Serializable {
     private ArrayList<Event> eventList;
@@ -31,7 +31,7 @@ public class EventManager implements Serializable {
     public boolean signUpUsertoEvent(Event event, User user) {
         for (Event x : eventList) {
             if (x.equals(event)) {
-                if (x.getAttendees().contains(user)) {
+                if (user.isContainedIn(x.getAttendees())) {
                     return true;
                 } else {
                     return !x.addAttendee(user);
@@ -52,9 +52,7 @@ public class EventManager implements Serializable {
     public boolean cancelUseratEvent(Event event, User user) {
         for (Event x : eventList) {
             if (x.equals(event)) {
-                ArrayList<String> attendeesUsernames = new ArrayList<>();
-                for (User y:x.getAttendees()) attendeesUsernames.add(y.getUsername());
-                if (attendeesUsernames.contains(user.getUsername())) {
+                if (user.isContainedIn(x.getAttendees())) {
                     x.removeAttendee(user);
                     return true;
                 }
@@ -64,34 +62,6 @@ public class EventManager implements Serializable {
         return false;
     }
 
-    /**
-     * Adds a new Event to the eventList.
-     * Note: This method requires Roomnumber instead of Room.
-     *
-     * @param EventName    String of the Event's name
-     * @param EventTime    Time of when the Event will take place
-     * @param EventRoom    Room of where the Event will take place
-     * @param EventSpeaker Speaker of who will speak at the Event
-     * @return boolean false if the Event is already in Eventlist, an Event in Eventlist has the same name as
-     * the Event being added, an Event in Eventlist clashes with EventTime and EventRoom of Event being added or
-     * an Event in Eventlist clashes with EventTime and EventSpeaker of Event being added.
-     * Otherwise, add the Event to eventList and return true.
-     */
-    public boolean addNewEvent(String EventName, LocalDateTime EventTime, Room EventRoom, User EventSpeaker) {
-        Event tempevent = new Event(nextId, EventName, EventTime, EventRoom, EventSpeaker);
-        nextId += 1;
-        for (Event x : eventList) {
-            if (x.equals(tempevent)) {
-                return false;
-            }
-        }
-        eventList.add(tempevent);
-        if (!roomList.contains(EventRoom)) {
-            roomList.add(EventRoom);
-        }
-        roomOccupied.add(EventRoom);
-        return true;
-    }
     /**
      * Adds a new Event to the eventList.
      * Note: This method requires Roomnumber instead of Room.
@@ -115,7 +85,6 @@ public class EventManager implements Serializable {
         if (r == null) {
             return false;
         }
-
         Event tempevent = new Event(nextId, EventName, EventTime, r, EventSpeaker);
         nextId += 1;
         for (Event x : eventList) {
@@ -321,11 +290,8 @@ public class EventManager implements Serializable {
      */
     public void removeUserFromEvent(User u){
          for(Event x:eventList){
-             for(User y:x.getAttendees()){
-                 if(y.getUsername().equals(u.getUsername())){
-                     x.removeAttendee(y);
-                 }
-             }
+             if (x.getAttendees().contains(u))
+                 x.removeAttendee(u);
          }
     }
 }
