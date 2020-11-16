@@ -1,10 +1,7 @@
-import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.io.Serializable;
-import java.util.Date;
 
 public class EventManager implements Serializable {
     private ArrayList<Event> eventList;
@@ -27,20 +24,20 @@ public class EventManager implements Serializable {
      *
      * @param event Event object to be added
      * @param user  User that will be added to the Event
-     * @return boolean true if the Event with eventname exists and the user is not in the Event's Attendees list.
-     * Otherwise, return false.
+     * @return boolean false if the Event with eventname exists and the user is not in the Event's Attendees list.
+     * Otherwise, return true.
      */
     public boolean signUpUsertoEvent(Event event, User user) {
         for (Event x : eventList) {
             if (x.equals(event)) {
                 if (x.getAttendees().contains(user)) {
-                    return false;
+                    return true;
                 } else {
-                    return x.addAttendee(user);
+                    return !x.addAttendee(user);
                 }
             }
         }
-        return false;
+        return true;
     }
 
     /**
@@ -172,19 +169,6 @@ public class EventManager implements Serializable {
     }
 
     /**
-     * Return a list of rooms distinguished by their respective room numbers, that are stored in roomList.
-     *
-     * @return Stringbuilder of the rooms within roomList
-     */
-    public ArrayList<Integer> getListOfRoomsOccupied(){
-        ArrayList<Integer> ro = new ArrayList<>();
-        for (Room room : roomOccupied){
-            ro.add(room.getRoomNumber());
-        }
-        return ro;
-    }
-
-    /**
      * Return a list of events stored in eventList with their respective details: Event number, name, room number,
      * start time and speaker.
      *
@@ -193,6 +177,10 @@ public class EventManager implements Serializable {
     public StringBuilder eventdetails() {
         DateTimeFormatter d = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
         StringBuilder s = new StringBuilder();
+        if (eventList.size() == 0) {
+            s.append("No event found");
+            return s;
+        }
         for (int i = 0; i < eventList.size(); i++) {
             s.append("Event Number-");
             s.append(i);
@@ -228,7 +216,6 @@ public class EventManager implements Serializable {
         if (!eventList.remove(e)) {
             System.out.println("Error: event not found.");
         }
-        roomOccupied.remove(e.getEventRoom().getRoomNumber());
     }
 
     /**
@@ -271,7 +258,10 @@ public class EventManager implements Serializable {
     public boolean isoccupied(int room){
         boolean occupied=false;
         for(Event x: eventList){
-            if(x.getEventRoom().getRoomNumber()==room) occupied=true;
+            if (x.getEventRoom().getRoomNumber() == room) {
+                occupied = true;
+                break;
+            }
         }
         return occupied;
     }

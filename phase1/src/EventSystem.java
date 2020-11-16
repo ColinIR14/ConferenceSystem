@@ -1,6 +1,4 @@
 import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -222,7 +220,6 @@ public class EventSystem {
                     break;
                 default:
                     System.out.println("Invalid input. Please try again.");
-                    break;
             }
             saveAll();
         } else {
@@ -309,7 +306,6 @@ public class EventSystem {
             default:
                 System.out.println("Invalid input. Please try again.");
                 specificEventMenu(e);
-                break;
         }
         eventMenu();
     }
@@ -348,6 +344,7 @@ public class EventSystem {
             System.out.println("Enter a number for room please. Please enter (2) to try adding an event again.\n");
             eventMenu();
         }
+        saveAll();
         eventMenu();
     }
 
@@ -358,7 +355,7 @@ public class EventSystem {
 
     private void addSelfToEvent(Event e) throws IOException {
         User u = am.getUser(currentUser);
-        if (!em.signUpUsertoEvent(e, u)) {
+        if (em.signUpUsertoEvent(e, u)) {
             System.out.println("Failed");
         } else {
             System.out.println("Success");
@@ -370,7 +367,11 @@ public class EventSystem {
         System.out.println("Enter username you wish to add");
         String username = in.nextLine();
         User u = am.getUser(username);
-        if (!em.signUpUsertoEvent(e, u)) {
+        if (am.checkAccountType(username).equals("speaker")){
+            System.out.println("Can't add speaker to as an attendee " +
+                    "(please create an attendee account to attend events)");
+        }
+        else if (em.signUpUsertoEvent(e, u)) {
             System.out.println("Failed");
         } else {
             System.out.println("Success");
@@ -439,7 +440,7 @@ public class EventSystem {
                 "Send event message (Organizers only) (5)\n" +
                 "Main menu (6)\n");
         User us = am.getUser(currentUser);
-        System.out.println("Please enter an one-character input selection. (Enter 0 at anypoint if you want to go " +
+        System.out.println("Please enter an one-character input selection. (Enter 'back' at anypoint if you want to go " +
                 "cancel action in further steps)");
         String input = in.nextLine();
         switch (input) {
