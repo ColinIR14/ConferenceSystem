@@ -453,10 +453,12 @@ public class EventSystem {
                 String usern = in.nextLine();
                 if (usern.equals("back"))
                     messageMenu();
-                else {
+                else if (am.checkUser(usern))
                     mm.addMessageable(us, am.getUser(usern));
-                }
+                else
+                    System.out.println("User doesn't exist");
                 saveAll();
+                messageMenu();
                 break;
             case "4":
                 System.out.println("Please enter the user(username) you want to remove from your contact:");
@@ -464,7 +466,7 @@ public class EventSystem {
                 if (username.equals("back"))
                     messageMenu();
                 else {
-                    mm.removeMessageable(us, am.getUser(username));
+                    am.removeMessageable(us, am.getUser(username));
                 }
                 saveAll();
                 break;
@@ -521,8 +523,16 @@ public class EventSystem {
         if (content.equals("back"))
             messageMenu();
         else {
-            System.out.println(mm.getMessageable(us.getMessageable()));
-            String receiver = in.nextLine();
+            StringBuilder str = mm.getMessageable(us.getMessageable());
+            String receiver = "";
+            if (str.length() != 0) {
+                System.out.println(str);
+                receiver = in.nextLine();
+            }
+            else{
+                System.out.println("You have no contact please add contact first ");
+                messageMenu();
+            }
             if (receiver.equals("back"))
                 messageMenu();
             else {
@@ -617,7 +627,9 @@ public class EventSystem {
             String next2 = in.nextLine();
             switch (next2) {
                 case "1":
-                    System.out.println("Input password to confirm.");
+                    removeAccount();
+                    welcome();
+                    /*System.out.println("Input password to confirm.");
                     String password = in.nextLine();
                     if (am.deleteUser(currentUser, password)) {
                         currentUser = null;
@@ -626,7 +638,7 @@ public class EventSystem {
                     } else {
                         System.out.println("Error. Please try again.");
                         accountMenu();
-                    }
+                    }*/
                     break;
                 case "2":
                     changePassword();
@@ -679,28 +691,30 @@ public class EventSystem {
             if (username.equals("back")){
                 accountMenu();
             }
+            User u = am.getUser(username);
             if (am.deleteUser(username, am.getUser(username).getPassword())) {
-                User u = am.getUser(currentUser);
-                //mm.removeMessageableFromList(u.getMessageable(), u);
+                am.removeMessageableFromList(u);
+                em.removeUserFromEvent(u);
                 System.out.println("Success!");
             } else {
                 System.out.println("Sorry, your user name is not correct.");
             }
+            accountMenu();
         } else {
-            System.out.println("Please enter your user name");
-            String username = in.nextLine();
-            if (username.equals("back")){
-                accountMenu();
-            }
             System.out.println("Please enter your password");
             String password = in.nextLine();
             if (password.equals("back")){
                 accountMenu();
             }
-            if (am.deleteUser(username, password)) {
+            User u = am.getUser(currentUser);
+            if (am.deleteUser(currentUser, password)) {
                 System.out.println("Success!");
+                am.removeMessageableFromList(u);
+                em.removeUserFromEvent(u);
+                welcome();
             } else {
-                System.out.println("Sorry, your user name or password is not correct.");
+                System.out.println("Sorry, your password is not correct.");
+                accountMenu();
             }
         }
         saveAll();

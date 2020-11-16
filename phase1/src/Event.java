@@ -82,9 +82,9 @@ public class Event implements Serializable{
    * @return true iff the event can accept the user and the user isn't already added(if it can it adds the user)
    */
   public boolean addAttendee(User NewAttendee){
-    ArrayList<String> attendeesUsernames = new ArrayList<>();
-    for (User x:attendees) attendeesUsernames.add(x.getUsername());
-    if(attendees.size()<eventRoom.getRoomCapacity() && !attendeesUsernames.contains(NewAttendee.getUsername())){
+    //ArrayList<String> attendeesUsernames = new ArrayList<>();
+    //for (User x:attendees) attendeesUsernames.add(x.getUsername());
+    if(attendees.size()<eventRoom.getRoomCapacity() && !NewAttendee.isContainedIn(attendees)) {
       attendees.add(NewAttendee);
       return true;}
     return false;
@@ -145,7 +145,7 @@ public class Event implements Serializable{
       boolean b= false;
       Duration d= Duration.between(this.eventTime,q.getEventTime());
       long difference = Math.abs(d.getSeconds());
-      if(difference<= 3600) b = true;
+      if(difference< 3600) b = true;
       return ((this.eventRoom== q.eventRoom & b)||(b & this.eventSpeaker==q.eventSpeaker)||(this.eventName.equals(q.eventName)));
     }
   }

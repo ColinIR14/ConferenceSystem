@@ -45,7 +45,7 @@ public class MessageManager implements Serializable{
      * @return boolean indicating whether the action was successful
      */
     public boolean sendMessage(User sender, User receiver, String content) {
-        if (sender.getMessageable().contains(receiver)) {
+        if (receiver.isContainedIn(sender.getMessageable())){
             this.messageList.add(addMessage(sender, receiver, content));
             return true;
         }
@@ -92,36 +92,24 @@ public class MessageManager implements Serializable{
      * @param receiver User that will be able to receive message from sender
      */
     public void addMessageable(User sender, User receiver){
-        if (!sender.getMessageable().contains(receiver))
+        if (!receiver.isContainedIn(sender.getMessageable()))
             sender.addMessageable(receiver);
         else
             System.out.println("The user is already in your contact");
     }
 
-    public void removeMessageable(User sender, User receiver){
-        if (sender.getMessageable().contains(receiver))
-            sender.removeMessageable(receiver);
-    }
-
     public StringBuilder getMessageable(List<User> messageableList){
         StringBuilder users = new StringBuilder();
         if (messageableList.size() == 0){
-            users.append("You have no contact please add contact first \n");
             return users;
         }
         users.append("Please enter the user you want to message:(your contact is listed below," +
                 "if the user is not in your contact your message will not be sent)\n");
         for (User m : messageableList) {
             users.append(m.getUsername());
-            users.append("|");
+            users.append(" | ");
         }
-        users.deleteCharAt(users.length()-1);
+        users.deleteCharAt(users.length()-2);
         return users;
-    }
-
-    public void removeMessageableFromList(ArrayList<User> userList, User user){
-        for (User u : userList){
-            removeMessageable(u, user);
-        }
     }
 }
