@@ -1,6 +1,9 @@
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * A Room class. Used for storing and passing room information.
+ */
 public class Room implements Serializable {
     private int roomNumber;
     private int roomCapacity=2;
