@@ -153,7 +153,6 @@ public class EventSystem {
 
     private void eventMenu() throws IOException { //Raj //List of events
         System.out.println("Event Menu\n");
-        User u = am.getUser(currentUser);
         if (am.checkAccountType(currentUser).equals("organizer")) {
             System.out.println(
                     "View and Select event to manipulate (1)\n" +
@@ -192,7 +191,7 @@ public class EventSystem {
                         Room r = new Room();
                         System.out.println("Please enter a room number (integer only)");
                         int i = Integer.parseInt(in.nextLine());
-                        r.setRoomNumber(i);
+                        em.setRoomNum(r, i);
                         em.addRoom(r);
                         break;
                     } catch (NumberFormatException e) {
@@ -368,7 +367,7 @@ public class EventSystem {
             System.out.println("Please enter the speaker's username.");
             String speaker = in.nextLine();
             User u = am.getUser(speaker);
-            if (!u.getAccountType().equals("speaker")) {
+            if (!am.checkAccountType(am.getName(u)).equals("speaker")) {
                 System.out.println("Sorry, this isn't a speaker! Please enter (2) to try adding an event again.\n");
                 eventMenu();
             }
@@ -434,7 +433,7 @@ public class EventSystem {
         System.out.println("Enter username you want to remove");
         String username = in.nextLine();
         User u = am.getUser(username);
-        if (!u.getUsername().equals("invalid")) {//"invalid" is placeholder user returned if username doesn't match with anything in am
+        if (!am.getName(u).equals("invalid")) {//"invalid" is placeholder user returned if username doesn't match with anything in am
             if (em.cancelUseratEvent(e, u)) {
                 System.out.println("Successfully Removed");
             }
@@ -641,7 +640,7 @@ public class EventSystem {
         switch (input) {
             case "1":
                 for(User user : am.getUserList()){
-                    if (user.getAccountType().equals("speaker"))
+                    if (am.checkAccountType(am.getName(user)).equals("speaker"))
                         mm.sendMessage1(sender, user, content);
                 }
                 System.out.println("Message sent");
@@ -649,7 +648,7 @@ public class EventSystem {
                 break;
             case "2":
                 for (User user : am.getUserList()){
-                    if (user.getAccountType().equals("attendee"))
+                    if (am.checkAccountType(am.getName(user)).equals("attendee"))
                         mm.sendMessage1(sender, user, content);
                 }
                 System.out.println("Message sent");
@@ -673,7 +672,7 @@ public class EventSystem {
         if (content.equals("back"))
             messageMenu();
         else {
-            StringBuilder str = mm.getMessageable(us.getMessageable());
+            StringBuilder str = mm.getMessageable(am.getContactList(us));
             String receiver = "";
             if (str.length() != 0) {
                 System.out.println(str);
@@ -688,10 +687,10 @@ public class EventSystem {
             else {
                 User re = am.getUser(receiver);
                 if(mm.sendMessage(us, re, content)) {
-                    if (re.getAccountType().equals("organizer")){
+                    if (am.checkAccountType(am.getName(re)).equals("organizer")){
                         System.out.println("Warning: You have sent a message to an Organizer. You may not get a reply.");
                     }
-                    else if(re.getAccountType().equals("speaker")){
+                    else if(am.checkAccountType(am.getName(re)).equals("speaker")){
                         System.out.println("Warning: You have sent a message to a Speaker. You may not get a reply if you are not attending his/her talk.");
                     }
                     System.out.println("Message sent successfully.");
@@ -714,7 +713,7 @@ public class EventSystem {
             return strb;
         }
         for (Message m : messages) {
-            strb.append(m.getContentToString());
+            strb.append(mm.messageStrBuilder(m));
             strb.append("\n");
         }
         return strb;
@@ -881,9 +880,8 @@ public class EventSystem {
         saveAll();
     }
 
-    /**
+    /*
      * Saves all the managers.
-     * @throws IOException if there is no file with the specified name. It will create a new file should this happen.
      */
     private void saveAll() throws IOException {
         g.saveAccountManagerToFile(am, "AccountManagerSave.ser");

@@ -1,6 +1,6 @@
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * An Account Manager. A use case class for managing user's account.
@@ -89,7 +89,7 @@ public class AccountManager implements Serializable{
     /**
      * Takes in an User and resets its password. User can only do so if they are logged in (achieved by CONTROLLER).
      * @param u instance of an User
-     * @param newPassword a String containning the new password
+     * @param newPassword a String containing the new password
      */
     public void resetPassword(User u, String newPassword){
         u.setPassword(newPassword);
@@ -152,6 +152,15 @@ public class AccountManager implements Serializable{
     }
 
     /**
+     * Takes in a User and returns the user name
+     * @param user takes in a User object
+     * @return the username of the User
+     */
+    public String getName(User user){
+        return user.getUsername();
+    }
+
+    /**
      * Takes username and check if the user exists
      * @param username String username of user
      * @return true or false if the user exists
@@ -183,6 +192,10 @@ public class AccountManager implements Serializable{
         for (User u : userList){
             removeMessageable(u, user);
         }
+    }
+
+    public List<User> getContactList(User user){
+        return user.getMessageable();
     }
 
     /**

@@ -19,15 +19,11 @@ public class MessageManager implements Serializable{
         messageList = new ArrayList<>();
     }
 
-    /**
+    /*
      * Takes in sender, receiver, content, and creates a new Message with the given information.
      * The sender and receiver can not be the same user. There may need be a restriction that will not allow users
      * to send information to organizers but need to discuss later.
      * Returns a new Message instance with given arguments.
-     * @param sender User that sent the message
-     * @param receiver User that need to receive the message
-     * @param content String about the message
-     * @return a new Message instance with given arguments
      */
     private Message addMessage(User sender, User receiver, String content){
         return new Message(sender, receiver, content);
@@ -141,9 +137,18 @@ public class MessageManager implements Serializable{
                 "if the user is not in your talk(s) your message will not be sent)\n");
         for (Event event : eventList){
             for (User user : event.getAttendees())
-                str.append(user.getUsername() + " | ");
+                str.append(user.getUsername()).append(" | ");
         }
         return str.substring(0, str.length()-2);
+    }
+
+    /**
+     * A String builder for Message
+     * @param m takes in a Message object
+     * @return a message
+     */
+    public String messageStrBuilder(Message m){
+        return m.getContentToString();
     }
 
 

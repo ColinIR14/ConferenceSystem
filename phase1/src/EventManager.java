@@ -108,6 +108,15 @@ public class EventManager implements Serializable {
     }
 
     /**
+     * Set the room number
+     * @param r the Room object taken in
+     * @param num the number to be set
+     */
+    public void setRoomNum(Room r, int num){
+        r.setRoomNumber((num));
+    }
+
+    /**
      * Adds a new Room to the roomList.
      *
      * @param r Room that will be added to the list

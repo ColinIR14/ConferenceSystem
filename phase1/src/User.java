@@ -2,6 +2,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.io.Serializable;
 
+/**
+ * A User class. An entity class used to store and pass room information.
+ */
 public class User implements Serializable{
     private String password;
     private String username;
@@ -89,6 +92,11 @@ public class User implements Serializable{
         eventsAttending.add(e);
     }
 
+    /**
+     * Test if the take-in Object is a user or not, and whether the two Users have the same Username
+     * @param object take-in an Object to compare with
+     * @return return true iff the take-in Object is a User and the two Users have the same Username
+     */
     @Override
     public boolean equals(Object object) {
         if (! (object instanceof User)) {
@@ -98,6 +106,11 @@ public class User implements Serializable{
         return user.getUsername().equals(this.getUsername());
     }
 
+    /**
+     * Check if this User is in the take-in List of User or not
+     * @param users A List of Users
+     * @return return true iff this user is contained in the List of Users taken in
+     */
     public boolean isContainedIn(List<User> users){
         for (User u : users){
             if (u.equals(this))

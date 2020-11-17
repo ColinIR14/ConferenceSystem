@@ -2,7 +2,9 @@ import java.util.Scanner;
 
 public class TextPresenter {
 
-
+    /**
+     * Show the welcome screen to user when the program is started
+     */
     public void welcome() {
         Scanner in = new Scanner(System.in);
         System.out.println("Welcome to the Conference Manager program! Type 'L' to log in or 'N' to create a new attendee account.");
