@@ -12,6 +12,7 @@ import java.util.*;
 public class EventSystem {
 
     private Gateway g = new Gateway();
+    private TextPresenter p = new TextPresenter();
     private AccountManager am = g.readAccountManagerFromFile("AccountManagerSave.ser");
     private EventManager em = g.readEventManagerFromFile("EventManagerSave.ser");
     private MessageManager mm = g.readMessageManagerFromFile("MessageManagerSave.ser");
@@ -84,9 +85,9 @@ public class EventSystem {
     */
     private String[] promptLoginInfo() {
         String[] arr = new String[2];
-        System.out.println("Input username:");
+        p.userInfoPrompt("username");
         String username = in.nextLine();
-        System.out.println("Input password:");
+        p.userInfoPrompt("password");
         String password = in.nextLine();
         arr[0] = username;
         arr[1] = password;

@@ -17,5 +17,18 @@ public class TextPresenter {
         }
     }
 
-    ///moving to Controller
+    /*
+    Prompts user for username and password, and returns them in an array to help other functions.
+    */
+    public void userInfoPrompt(String input) {
+        if (input.equals("username")) {
+            System.out.println("Input username:");
+        }
+        else if(input.equals("password")) {
+            System.out.println("Input password:");
+
+
+        }
+    }
+
 }
