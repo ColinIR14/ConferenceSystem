@@ -622,7 +622,7 @@ public class EventSystem {
     private void viewMessageMenu(User us) throws IOException {
         System.out.println("\nMessage Preview \n");
         System.out.println(seeMessages(us));
-        System.out.println("\n" + "Select message for details and further actions or type \"back\" to go back");
+        System.out.println("\n" + "Select message by entering the number in the front for details and further actions or type \"back\" to go back");
         String ans = in.nextLine();
         if (ans.equals("back")) {
             messageMenu();
