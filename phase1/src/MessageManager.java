@@ -98,10 +98,13 @@ public class MessageManager implements Serializable{
      * @param receiver User that will be able to receive message from sender
      */
     public void addMessageable(User sender, User receiver){
-        if (!receiver.isContainedIn(sender.getMessageable()))
+        if (!receiver.isContainedIn(sender.getMessageable())) {
             sender.addMessageable(receiver);
-        else
+            System.out.println("Suscessfully added!");
+        }
+        else{
             System.out.println("The user is already in your contact");
+        }
     }
 
     /**
@@ -114,8 +117,8 @@ public class MessageManager implements Serializable{
         if (messageableList.size() == 0){
             return users;
         }
-        users.append("Please enter the user you want to message:(your contact is listed below," +
-                "if the user is not in your contact your message will not be sent)\n");
+        users.append("Your contact is listed below," +
+                "if a user is not in your contact your message will not be sent\n");
         for (User m : messageableList) {
             users.append(m.getUsername());
             users.append(" | ");
@@ -149,6 +152,29 @@ public class MessageManager implements Serializable{
      */
     public String messageStrBuilder(Message m){
         return m.getContentToString();
+    }
+
+    /**
+     * Returns teh archived messages from User.
+     * @param us the User for which it will get the archived messages.
+     * @return an ArrayList of archived messages.
+     */
+    public ArrayList<Message> getArchivedMessage(User us){
+        ArrayList<Message> arcm = new ArrayList<>();
+        for (Message m : getUserMessages(us)){
+            if (m.getArchived()){
+                arcm.add(m);
+            }
+        }
+        return arcm;
+    }
+
+    /**
+     * Delete the message object from the messageList.
+     * @param m the message you would like to delete.
+     */
+    public void deleteMessage(Message m){
+        messageList.remove(m);
     }
 
 

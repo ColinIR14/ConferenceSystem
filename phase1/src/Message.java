@@ -7,6 +7,8 @@ public class Message implements Serializable{
     private User sender;
     private User receiver;
     private String content;
+    private boolean viewed;
+    private boolean archived;
 
     /**
      * Creates a Message with given sender, receiver, and content.
@@ -21,6 +23,7 @@ public class Message implements Serializable{
         this.sender = sender;
         this.receiver = receiver;
         this.content = content;
+        this.viewed = false;
     }
 
     /**
@@ -52,7 +55,46 @@ public class Message implements Serializable{
      * @return String of the message
      */
     public String getContentToString(){
-        return "FROM "+this.sender.getUsername()+" TO "+this.receiver.getUsername()+" : "+this.content;
+        if (!viewed) {
+            return "(*New*) FROM " + this.sender.getUsername() + " TO " + this.receiver.getUsername() + " : " + this.content;
+        }
+        else{
+            return "FROM " + this.sender.getUsername() + " TO " + this.receiver.getUsername() + " : " + this.content;
+        }
 
     }
+
+    /**
+     * Set if the message is Viewed.
+     * @param b true for viewed and false is for not viewed.
+     */
+    public void setViewed(boolean b){
+        this.viewed = b;
+    }
+
+    /**
+     * Returns if the message is viewed already.
+     * @return a boolean indicating if the message is viewed.
+     */
+    public boolean getViewed(){
+        return viewed;
+    }
+
+    /**
+     * Set the message to be archived.
+     * @param b true for archived and false for not archived.
+     */
+    public void setArchived(boolean b){
+        this.archived = b;
+    }
+
+    /**
+     * Returns the status of the message, if it is archived or not.
+     * @return a boolean indicating if the message is archived.
+     */
+    public boolean getArchived(){
+        return archived;
+    }
+
+
 }

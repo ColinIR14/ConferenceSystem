@@ -1,8 +1,10 @@
 import java.io.IOException;
+import java.sql.SQLOutput;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.*;
+import java.util.ArrayList;
 
 /**
  * Controls the program responsible for allowing users of a conference to create accounts, attend/host events
@@ -475,22 +477,24 @@ public class EventSystem {
      * contact, remove user from contact. Only Oganizer type user are allowed to send event message. And user can choose
      * to return to the main menu at the begining of message menu or return to beginning of message menu.
      * Notes, unless organizer type, user can only send message to users that are in the user's contact.
+     * Functions added: Preview messages, Archived messages.
      */
-    private void messageMenu() throws IOException { //Lan
-        System.out.println("Message Menu:\n");
-        System.out.println("View messages (1)\n" +
+    private void messageMenu() throws IOException {
+        System.out.println("\nMessage Menu:\n");
+        System.out.println("Preview messages (1)\n" +
                 "Send message (2)\n" +
-                "Add contact (3)\n" +
+                "View or Add contact (3)\n" +
                 "Remove contact (4)\n" +
                 "Send event message (Organizers only) (5)\n" +
-                "Main menu (6)\n");
+                "View archived messages (6)\n"+
+                "Main menu (7)\n");
         User us = am.getUser(currentUser);
         System.out.println("Please enter an one-character input selection. (Enter 'back' at anypoint if you want to go " +
                 "cancel action in further steps)");
         String input = in.nextLine();
         switch (input) {
             case "1":
-                System.out.println(seeMessages(us));
+                viewMessageMenu(us);
                 break;
             case "2":
                 if (am.checkAccountType(currentUser).equals("speaker"))
@@ -501,14 +505,15 @@ public class EventSystem {
                     sendMessage(us);
                 break;
             case "3":
-                System.out.println("Please enter the user(username) you want to add to contact:");
+                System.out.println(mm.getMessageable(us.getMessageable()));
+                System.out.println("Please enter the user(username) you want to add to contact or enter \"back\" if you wish to go back:");
+
                 String usern = in.nextLine();
                 if (usern.equals("back")) {
                     messageMenu();
                 }
                 else if (am.checkUser(usern)) {
                     mm.addMessageable(us, am.getUser(usern));
-                    System.out.println("Successfully added the contact.");
                 }
                 else {
                     System.out.println("User doesn't exist");
@@ -517,6 +522,7 @@ public class EventSystem {
                 messageMenu();
                 break;
             case "4":
+                System.out.println(mm.getMessageable(us.getMessageable()));
                 System.out.println("Please enter the user(username) you want to remove from your contact:");
                 String username = in.nextLine();
                 if (username.equals("back"))
@@ -557,6 +563,9 @@ public class EventSystem {
                 }
                 break;
             case "6":
+                seeArchive(us);
+
+            case "7":
                 saveAll();
                 mainMenu();
                 break;
@@ -570,6 +579,154 @@ public class EventSystem {
             messageMenu();
     }
 
+    /*
+     * See archived messages for user.
+     */
+    private void seeArchive(User us) throws IOException {
+        if (mm.getArchivedMessage(us).size()==0) {
+            System.out.println("\nYou have no archived messages!");
+            messageMenu();
+        }
+        System.out.println("\nYour archived messages:");
+        int i = 1;
+        for(Message m : mm.getArchivedMessage(us)){
+            System.out.println(i + ". "+ m.getContentToString());
+            i += 1;
+        }
+        System.out.println("\n----------");
+        System.out.println("Select the message by the number in the front for further actions or type \"back\" to go back");
+        String ans = in.nextLine();
+        if (ans.equals("back")) {
+            messageMenu();
+        }
+        else{
+            try {
+                int a = Integer.parseInt(ans);
+                if (1 <= a && a <= mm.getArchivedMessage(us).size()){
+                    specificMessageMenu(us, a, true);
+                }
+                else{
+                    System.out.println("Invalid Input");
+                    seeArchive(us);
+                }
+            }catch (NumberFormatException e){
+                System.out.println("Invalid Input.");
+                seeArchive(us);
+            }
+        }
+    }
+
+    /*
+     * A menu for previewing all messages of a user
+     */
+    private void viewMessageMenu(User us) throws IOException {
+        System.out.println("\nMessage Preview \n");
+        System.out.println(seeMessages(us));
+        System.out.println("\n" + "Select message for details and further actions or type \"back\" to go back");
+        String ans = in.nextLine();
+        if (ans.equals("back")) {
+            messageMenu();
+        }
+        else{
+            try {
+                int a = Integer.parseInt(ans);
+                if (1 <= a && a <= seeMessagesList(us).size()){
+                    specificMessageMenu(us, a, false);
+                }
+                else{
+                    System.out.println("Invalid Input");
+                    viewMessageMenu(us);
+                }
+            }catch (NumberFormatException e){
+                System.out.println("Invalid Input.");
+                viewMessageMenu(us);
+            }
+        }
+    }
+
+    /*
+     * A specific Menu when dealing with individual messages.
+     */
+    private void specificMessageMenu(User us, int a, boolean inarchive) throws IOException {
+        Message currentMessage;
+        if (inarchive){
+            currentMessage = mm.getArchivedMessage(us).get(a-1);
+        }
+        else {
+            currentMessage = seeMessagesList(us).get(a - 1);
+        }
+        currentMessage.setViewed(true);
+        System.out.println(currentMessage.getContentToString());
+        System.out.println("\nMark this message as unread. (1)");
+        System.out.println("Archive this message. (2)");
+        System.out.println("Remove from archive. (3)");
+        System.out.println("Directly reply to this message. This will automatically add the sender to your contact!(4)");
+        System.out.println("Delete this message. (5)");
+        System.out.println("Go back. (6)");
+        System.out.println("Please enter a number to indicate your choice");
+        String at = in.nextLine();
+        switch(at){
+            case "1":
+                currentMessage.setViewed(false);
+                viewMessageMenu(us);
+                saveAll();
+                break;
+            case "2":
+                if (currentMessage.getArchived()) {
+                    System.out.println("The message is already in archive.");
+                }
+                else {
+                    currentMessage.setArchived(true);
+                    System.out.println("Message archived!");
+                }
+                saveAll();
+                break;
+            case "3":
+                if (!currentMessage.getArchived()) {
+                    System.out.println("The message is not in archive.");
+                }
+                else {
+                    currentMessage.setArchived(false);
+                    System.out.println("Message removed from archive!");
+                }
+                saveAll();
+                break;
+            case "4":
+                if (!currentMessage.getSender().isContainedIn(us.getMessageable())) {
+                    mm.addMessageable(us, am.getUser(currentMessage.getSender().getUsername()));
+                }
+                System.out.println("Please enter your message:");
+                String content = in.nextLine();
+                User re = currentMessage.getSender();
+                if(mm.sendMessage(us, re, content)) {
+                    if (am.checkAccountType(am.getName(re)).equals("organizer")) {
+                        System.out.println("Warning: You have sent a message to an Organizer. You may not get a reply.");
+                    } else if (am.checkAccountType(am.getName(re)).equals("speaker")) {
+                        System.out.println("Warning: You have sent a message to a Speaker. You may not get a reply if you are not attending his/her talk.");
+                    }
+                    System.out.println("Message sent successfully.");
+                    saveAll();
+                }
+                break;
+            case "5":
+                mm.deleteMessage(currentMessage);
+            case "6":
+                if (inarchive){
+                    seeArchive(us);
+                }
+                viewMessageMenu(us);
+                break;
+            default:
+                System.out.println("Invalid input, try again.");
+                specificMessageMenu(us, a, inarchive);
+                break;
+        }
+        saveAll();
+        if (inarchive){
+            seeArchive(us);
+        }
+        viewMessageMenu(us);
+    }
     /*
     send message menu for speaker
      */
@@ -677,6 +834,7 @@ public class EventSystem {
             String receiver = "";
             if (str.length() != 0) {
                 System.out.println(str);
+                System.out.println("Please enter the recipient of the message.");
                 receiver = in.nextLine();
             }
             else{
@@ -707,17 +865,51 @@ public class EventSystem {
      * Takes in user receiver and generates list of messages that are sent to the taken user and prints it.
      */
     private StringBuilder seeMessages(User us) {
-        StringBuilder strb = new StringBuilder();
+        StringBuilder strbNew = new StringBuilder();
         ArrayList<Message> messages = mm.getUserMessages(us);
         if (messages.size() == 0){
-            strb.append("You have no incoming messages");
-            return strb;
+            strbNew.append("You have no incoming messages");
+            return strbNew;
+        }
+        int i = 1;
+        for (Message m : messages) {
+            if (!m.getViewed()) {
+                strbNew.append(i).append(". ").append(mm.messageStrBuilder(m));
+                strbNew.append("\n");
+                i += 1;
+            }
         }
         for (Message m : messages) {
-            strb.append(mm.messageStrBuilder(m));
-            strb.append("\n");
+            if (m.getViewed()) {
+                strbNew.append(i).append(". ").append(mm.messageStrBuilder(m));
+                strbNew.append("\n");
+                i += 1;
+            }
         }
-        return strb;
+
+        return strbNew;
+    }
+
+    /*
+     * Takes in an user and returns the Arraylist of messages in the exact same order as displayed.
+     */
+    private ArrayList<Message> seeMessagesList(User us) {
+        ArrayList<Message> ml = new ArrayList<>();
+        ArrayList<Message> messages = mm.getUserMessages(us);
+        if (messages.size() == 0){
+            return ml;
+        }
+        for (Message m : messages) {
+            if (!m.getViewed()) {
+                ml.add(m);
+            }
+        }
+        for (Message m : messages) {
+            if (m.getViewed()) {
+                ml.add(m);
+            }
+        }
+        return ml;
     }
 
     /*

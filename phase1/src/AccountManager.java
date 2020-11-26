@@ -180,8 +180,13 @@ public class AccountManager implements Serializable{
      * @param receiver User receiving message
      */
     public void removeMessageable(User sender, User receiver){
-        if (receiver.isContainedIn(sender.getMessageable()))
+        if (receiver.isContainedIn(sender.getMessageable())) {
             sender.removeMessageable(receiver);
+            System.out.println("Removed.");
+        }
+        else{
+            System.out.println("User not in the contact.");
+        }
     }
 
     /**
