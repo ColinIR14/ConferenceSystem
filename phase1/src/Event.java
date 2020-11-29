@@ -1,9 +1,7 @@
-import java.sql.Time;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.io.Serializable;
 /**Class representing event or talk
@@ -12,11 +10,13 @@ import java.io.Serializable;
 public class Event implements Serializable{
   private Integer id;
   private String eventName;
-  private LocalDateTime eventTime;
+  private LocalDateTime eventStartTime;
+  private LocalDateTime eventEndTime;
   private List<User> attendees;
   private Room eventRoom;
-  private User eventSpeaker;
+  private ArrayList<User> eventSpeaker;
   private transient  DateTimeFormatter d = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+
 
   /**Constructor for Event
    * @param id- unique id for Event
@@ -24,11 +24,12 @@ public class Event implements Serializable{
    * @param EventRoom - Room instance of Room of Event
    * @param EventTime - Start Time of Event
    * @param EventSpeaker- Speaker of Event
-  */
-  public Event(Integer id,String EventName,LocalDateTime EventTime,Room EventRoom,User EventSpeaker){//constructor without list of attendees
+   */
+  public Event(Integer id,String EventName,LocalDateTime EventTime,LocalDateTime eventEndTime,Room EventRoom,ArrayList<User> EventSpeaker){//constructor without list of attendees
     this.id=id;
     this.eventName=EventName;
-    this.eventTime=EventTime;
+    this.eventStartTime =EventTime;
+    this.eventEndTime=eventEndTime;
     this.attendees= new ArrayList<>();
     this.eventRoom=EventRoom;
     this.eventSpeaker=EventSpeaker;
@@ -55,16 +56,23 @@ public class Event implements Serializable{
    * @return time of event start
    */
 
-  public LocalDateTime getEventTime(){
-    return eventTime;
+  public LocalDateTime getEventStartTime(){
+    return eventStartTime;
   }
+
+  /**
+   * gettter for event time end
+   * @return time of event end
+   */
+  public LocalDateTime getEventEndTime(){return eventEndTime;}
 
   /**
    * setter for event time start
    * @param t- new time to be started at
    */
-  public void setEventTime(LocalDateTime t){
-    eventTime=t;
+
+  public void setEventStartTime(LocalDateTime t){
+    eventStartTime =t;
   }
 
   /**
@@ -103,7 +111,7 @@ public class Event implements Serializable{
    * getter for event speaker
    * @return the user object representing the speaker
    */
-  public User getSpeaker(){
+  public ArrayList<User> getSpeaker(){
     return eventSpeaker;
   }
 
@@ -111,11 +119,22 @@ public class Event implements Serializable{
    * setter for speaker
    * @param s user object representing the new speaker
    */
-  public void setSpeaker(User s){
+  public void removeSpeaker(User speaker){
+    this.eventSpeaker.remove(speaker);
+
+  }  public void setSpeaker(ArrayList<User> s){
     eventSpeaker=s;
   }
+  public boolean hasSpeaker(User s){
+    for(User x:eventSpeaker){
+      if(x.getUsername().equals(s.getUsername()))
+        return true;
 
-  /**
+    }
+    return false;
+  }
+  public void addSpeaker(User s){if(!this.hasSpeaker(s))
+    eventSpeaker.add(s); }  /**
    * getter for room of event
    * @return room object representing room of event
    */
@@ -143,10 +162,23 @@ public class Event implements Serializable{
     else {
       Event q =  (Event) e;
       boolean b= false;
-      Duration d= Duration.between(this.eventTime,q.getEventTime());
-      long difference = Math.abs(d.getSeconds());
-      if(difference< 3600) b = true;
-      return ((this.eventRoom== q.eventRoom & b)||(b & this.eventSpeaker==q.eventSpeaker)||(this.eventName.equals(q.eventName)));
+      if((this.getEventStartTime().isAfter(q.getEventStartTime()))||(this.getEventStartTime().isBefore(q.getEventEndTime())))
+        b=true;
+      if((q.getEventStartTime().isAfter(this.getEventStartTime()))||(q.getEventStartTime().isBefore(this.getEventEndTime())))
+        b=true;
+      boolean speakerOverlap =false;
+      for(User u: this.getSpeaker()){
+        for(User j:q.getSpeaker()){
+          if (u.getUsername().equals(j.getUsername())) {
+            speakerOverlap = true;
+            break;
+          }
+        }
+      }
+      //Duration d= Duration.between(this.eventStartTime,q.getEventStartTime());
+      //long difference = Math.abs(d.getSeconds());
+      //if(difference< 3600) b = true;
+      return ((this.eventRoom== q.eventRoom & b)||(b & speakerOverlap)||(this.eventName.equals(q.eventName)));
     }
   }
 
@@ -167,12 +199,23 @@ public class Event implements Serializable{
     s.append("  Room Number- ");
     s.append(this.getEventRoom().getRoomNumber());
     s.append("  Event Start Time- ");
-    s.append(d.format(this.getEventTime()));
-    s.append("  Event Speaker- ");
-    s.append(this.getSpeaker().getUsername());
+    s.append(d.format(this.getEventStartTime()));
+    s.append("  Event End Time- ");
+    s.append(d.format(this.getEventEndTime()));
+    s.append("  Event Speakers- ");
+    if(!this.getSpeaker().isEmpty()){
+      for(User j:this.getSpeaker()){
+        s.append(j.getUsername());
+        s.append("\n");
+      }
+    }
+    else
+      s.append("No speakers currently registered.");
+
     s.append("\n");
 
     return s.toString();
   }
 
 }
+

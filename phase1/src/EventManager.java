@@ -3,7 +3,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.io.Serializable;
 import java.time.Duration;
-import java.util.List;
 
 public class EventManager implements Serializable {
     private ArrayList<Event> eventList;
@@ -76,17 +75,17 @@ public class EventManager implements Serializable {
      * an Event in Eventlist clashes with EventTime and EventSpeaker of Event being added.
      * Otherwise, add the Event to eventList and return true.
      */
-    public boolean addNewEvent(String EventName, LocalDateTime EventTime, int EventRoomNumber, User EventSpeaker) {
+    public boolean addNewEvent(String EventName, LocalDateTime EventTime,LocalDateTime EventEnd, int EventRoomNumber, ArrayList<User> EventSpeaker) {
         Room r = null;
         for (Room room : roomList) {
-           if (room.getRoomNumber() == EventRoomNumber) {
-               r = room;
-           }
+            if (room.getRoomNumber() == EventRoomNumber) {
+                r = room;
+            }
         }
         if (r == null) {
             return false;
         }
-        Event tempevent = new Event(nextId, EventName, EventTime, r, EventSpeaker);
+        Event tempevent = new Event(nextId, EventName, EventTime,EventEnd, r, EventSpeaker);
         nextId += 1;
         for (Event x : eventList) {
             if (x.equals(tempevent)) {
@@ -132,7 +131,7 @@ public class EventManager implements Serializable {
         if(!t){
             roomList.add(r);
         }
-        }
+    }
 
     /**
      * Return a list of rooms distinguished by their respective room numbers, that are stored in roomList.
@@ -172,9 +171,18 @@ public class EventManager implements Serializable {
             s.append("  Room Number-");
             s.append(eventList.get(i).getEventRoom().getRoomNumber());
             s.append("  Event Start Time-");
-            s.append(d.format(eventList.get(i).getEventTime()));//to string here!is this good?
-            s.append("  Event Speaker-");
-            s.append(eventList.get(i).getSpeaker().getUsername());
+            s.append(d.format(eventList.get(i).getEventStartTime()));
+            s.append(" Event End Time-");
+            s.append(d.format(eventList.get(i).getEventEndTime()));//to string here!is this good?
+            s.append("  Event Speakers-");
+            if(!eventList.get(i).getSpeaker().isEmpty()){
+                for(User j:eventList.get(i).getSpeaker()) {
+                    s.append(j.getUsername());
+                    s.append(" ");
+                }
+            }
+            else
+                s.append("No speakers currently ");
             s.append("\n");
         }
         return s;
@@ -207,17 +215,37 @@ public class EventManager implements Serializable {
      * @param e Event of which the speaker will be changed.
      * @param speaker Speaker who will newly speak at the Event.
      */
-    public void changeSpeaker(Event e, User speaker) {
+
+    public boolean removeSpeaker(Event e, User speaker){
+        for(Event x:eventList){
+            if(x.equals(e)){
+                for(User user:x.getSpeaker()){
+                    if(user.getUsername().equals(speaker.getUsername())){
+                        x.removeSpeaker(user);
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+
+    }
+    public void addSpeaker(Event e, User speaker) {
         for (Event x : eventList) {
             if (x.equals(e)) {
                 boolean isOccupied = false;
                 for (Event q:eventList){
-                    if (q.getSpeaker().getUsername().equals(speaker.getUsername()) &
-                            Math.abs(Duration.between(q.getEventTime(),x.getEventTime()).getSeconds())<=3600)
+                    if (q.hasSpeaker(speaker) & (q.getEventStartTime().isAfter(x.getEventStartTime()
+                    )& q.getEventStartTime().isBefore(x.getEventEndTime())))
+                        //Math.abs(Duration.between(q.getEventStartTime(),x.getEventStartTime()).getSeconds())<=3600)
+                        isOccupied =true;
+                    if (q.hasSpeaker(speaker) & (x.getEventStartTime().isAfter(q.getEventStartTime()
+                    )& x.getEventStartTime().isBefore(q.getEventEndTime())))
+                        //Math.abs(Duration.between(q.getEventStartTime(),x.getEventStartTime()).getSeconds())<=3600)
                         isOccupied =true;
                 }
                 if(!isOccupied) {
-                    x.setSpeaker(speaker);
+                    x.addSpeaker(speaker);
                 }
                 else{
                     System.out.println("Speaker busy at this event's time");
@@ -305,10 +333,10 @@ public class EventManager implements Serializable {
      * @param u-User to be removed
      */
     public void removeUserFromEvent(User u){
-         for(Event x:eventList){
-             if (x.getAttendees().contains(u))
-                 x.removeAttendee(u);
-         }
+        for(Event x:eventList){
+            if (x.getAttendees().contains(u))
+                x.removeAttendee(u);
+        }
     }
 
     /**
@@ -318,10 +346,13 @@ public class EventManager implements Serializable {
      */
     public ArrayList<Event> getEventsOfSpeaker(User s){
         ArrayList<Event> events= new ArrayList<>();
-        for (Event x: eventList){
-            if(x.getSpeaker().getUsername().equals(s.getUsername())){
-                events.add(x);
+        for (Event x: eventList) {
+            for (User u : x.getSpeaker()) {
+                if (u.getUsername().equals(s.getUsername()))
+                    events.add(x);
             }
+            //if(x.getSpeaker().getUsername().equals(s.getUsername())){
+            //  events.add(x);
         }
         return events;
     }

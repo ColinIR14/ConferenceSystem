@@ -305,12 +305,13 @@ public class EventSystem {
         System.out.println("Cancel Event (1)\n" +
                 "Add self to event (2)\n" +
                 "Add user to event(3)\n" +
-                "Change speaker of event (4)\n+" +
-                "Remove user from event (5)\n+" +
-                "Remove self from event (6)\n" +
-                "Send messages to all attendees of event (7)\n" +
-                "See All users in event (8)\n" +
-                "Main menu (9)\n");
+                "Add speaker to event (4)\n+" +
+                "Remove Speaker from event(5)\n"+
+                "Remove user from event (6)\n+" +
+                "Remove self from event (7)\n" +
+                "Send messages to all attendees of event (8)\n" +
+                "See All users in event (9)\n" +
+                "Main menu (0)\n");
         System.out.println("Enter the number corresponding to the desired action");
         String next = in.nextLine();
         switch (next) {
@@ -327,15 +328,18 @@ public class EventSystem {
                 changeSpeaker(e);
                 break;
             case "5":
-                removeUserFromEvent(e);
+                removeSpeaker(e);
                 break;
             case "6":
-                removeSelfFromEvent(e);
+                removeUserFromEvent(e);
                 break;
             case "7":
-                sendMessageToEventMembers(e);
+                removeSelfFromEvent(e);
                 break;
             case "8":
+                sendMessageToEventMembers(e);
+                break;
+            case "9":
                 if (em.getAttendees(e).length() == 0){
                     System.out.println("No attendees");
                 }
@@ -343,7 +347,7 @@ public class EventSystem {
                     System.out.println(em.getAttendees(e));
                 }
                 break;
-            case "9":
+            case "0":
                 mainMenu();
                 break;
             default:
@@ -352,7 +356,6 @@ public class EventSystem {
         }
         eventMenu();
     }
-
     private void addEvent() throws IOException {
         System.out.println("Please enter the event name.");
         String name = in.nextLine();
@@ -364,17 +367,37 @@ public class EventSystem {
                 System.out.println("Sorry, events can only be between 9am and 5 pm.");
                 eventMenu();
             }
+            System.out.println("Please enter the end date for the event. (dd/MM/yyyy hh:mm:ss)");
+            String date3 = in.nextLine();
+
+            LocalDateTime date4=LocalDateTime.parse(date3, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
+            if (date4.getHour()>17 || date4.getHour() <9){
+                System.out.println("Sorry, events can only be between 9am and 5 pm.");
+                eventMenu();}
+            if(date4.isBefore(date2)){
+                System.out.println("Start Time cannot be after End time");
+                eventMenu();
+            }
+
+
             System.out.println(em.listOfRooms());
             System.out.println("Please enter the room number for this event. (The room must be created first)");
             int room = Integer.parseInt(in.nextLine());
-            System.out.println("Please enter the speaker's username.");
-            String speaker = in.nextLine();
-            User u = am.getUser(speaker);
-            if (!am.checkAccountType(am.getName(u)).equals("speaker")) {
-                System.out.println("Sorry, this isn't a speaker! Please enter (2) to try adding an event again.\n");
-                eventMenu();
+            ArrayList<User> speakers =new ArrayList<>();
+            String speaker ="fdiof";
+            while(!speaker.equals("end")) {
+                System.out.println("Please enter the speaker's username.You can add more than one speaker,input 'end' to finish ");
+                speaker = in.nextLine();
+                if(!speaker.equals("end")){
+                    User u = am.getUser(speaker);
+                    if (!am.checkAccountType(am.getName(u)).equals("speaker")) {
+                        System.out.println("Sorry, this isn't a speaker! Please enter (2) to try adding an event again.\n");
+                        eventMenu();
+                    }
+                    speakers.add(u);
+                }
             }
-            if (em.addNewEvent(name, date2, room, u)) {
+            if (em.addNewEvent(name, date2,date4 ,room, speakers)) {
                 System.out.println("Successfully Added!\n");
             } else {
                 System.out.println("Failed to add");
@@ -385,6 +408,10 @@ public class EventSystem {
             eventMenu();
         } catch (NumberFormatException e) {
             System.out.println("Enter a number for room please. Please enter (2) to try adding an event again.\n");
+            eventMenu();
+        }
+        catch(NullPointerException e){
+            System.out.println("Not a valid username.Try again");
             eventMenu();
         }
         saveAll();
@@ -456,10 +483,25 @@ public class EventSystem {
         if (!speaker.getAccountType().equals("speaker")) {
             System.out.println("Not a speaker,sorry!");
         } else {
-            em.changeSpeaker(e, speaker);
+            em.addSpeaker(e, speaker);
         }
         saveAll();
     }
+    private void removeSpeaker(Event e) throws IOException{
+        System.out.println("Enter username of speaker to be removed:");
+        String username = in.nextLine();
+        User speaker = am.getUser(username);
+        if (!speaker.getAccountType().equals("speaker")) {
+            System.out.println("Not a speaker,sorry!");}
+        else{
+            if(em.removeSpeaker(e,speaker))
+                System.out.println("Succesfully Removed");
+            else
+                System.out.println("Failed to remove");
+        }
+        saveAll();
+    }
+
 
     /*
     send message to all attendees of gvien event
