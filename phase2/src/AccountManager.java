@@ -195,7 +195,7 @@ public class AccountManager implements Serializable{
      */
     public void removeMessageableFromList(User user){
         for (User u : userList){
-            removeMessageable(u, user);
+            u.removeMessageable(user);
         }
     }
 

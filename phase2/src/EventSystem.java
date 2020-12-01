@@ -36,8 +36,10 @@ public class EventSystem {
     }
 
     /**
-    * Hello, it's Raine
-    */
+     * Hello, it's Raine.
+     *
+     * Hello!
+     */
 
     /*
     Welcome is the first UI function called for the program, and allows the user to log in,
@@ -569,7 +571,7 @@ public class EventSystem {
                 break;
             case "4":
                 System.out.println(mm.getMessageable(us.getMessageable()));
-                System.out.println("Please enter the user(username) you want to remove from your contact:");
+                System.out.println("Please enter the user(username) you want to remove from your contact, enter \"back\" to go back:");
                 String username = in.nextLine();
                 if (username.equals("back"))
                     messageMenu();
