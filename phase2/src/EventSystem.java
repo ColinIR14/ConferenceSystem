@@ -35,6 +35,10 @@ public class EventSystem {
         }
     }
 
+    /**
+    * Hello, it's Raine
+    */
+
     /*
     Welcome is the first UI function called for the program, and allows the user to log in,
     make a new attendee account, or exit. Once logged in, it directs the user to the main menu.
