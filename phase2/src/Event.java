@@ -119,7 +119,8 @@ public class Event implements Serializable{
   }
 
   /**
-   * remover for speaker
+   * setter for speaker
+   * @param speaker user object representing the new speaker
    */
   public void removeSpeaker(User speaker){
     this.eventSpeaker.remove(speaker);
