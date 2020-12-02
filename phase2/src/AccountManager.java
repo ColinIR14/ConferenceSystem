@@ -38,8 +38,7 @@ public class AccountManager implements Serializable{
             }
         }
         //TODO:pass in accountType as parameter when constructor of User is implemented.
-        User u = new User(username, password, accountType);
-        userList.add(u);
+        userList.add(new User(username, password, accountType));
         return true;
     }
 
@@ -148,7 +147,8 @@ public class AccountManager implements Serializable{
             if (currentUser.getUsername().equals(username)){
             return currentUser;}
         }
-        return new User("invalid","invalid","user");
+        return null;
+        //return new User("invalid","invalid","user");
     }
 
     /**

@@ -68,8 +68,7 @@ public class MessageManager implements Serializable{
      * @param content String of message
      */
     public void sendEventMessage(User sender, Event event, String content){
-       List<User> receivers = event.getAttendees();
-        for (User receiver : receivers) {
+        for (User receiver : event.getAttendees()) {
             this.messageList.add(addMessage(sender, receiver, content));
         }
     }

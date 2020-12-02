@@ -177,8 +177,7 @@ public class EventSystem {
                         }
                         System.out.println("Enter Event Number of the event you want to manipulate");
                         int i = Integer.parseInt(in.nextLine());
-                        Event e = em.indexEvent(i);
-                        specificEventMenu(e);
+                        specificEventMenu(em.indexEvent(i));
                         break;
                     } catch (IndexOutOfBoundsException e) {
                         System.out.println("Invalid index please try again");
@@ -292,16 +291,15 @@ public class EventSystem {
                String input1= in.nextLine();
                if(input1 .equals("back")) mainMenu();
                int i = Integer.parseInt(input1);
-               Event e = em.indexEvent(i);
                System.out.println("Add self to event(1)\n" +
                         "Remove self from event(2)");
                System.out.println("Enter number you want to do(\"back\" for main menu)");
                String input =in.nextLine();
                if(input.equals("back")) mainMenu();
                int j = Integer.parseInt(input);
-               if (j == 1) addSelfToEvent(e);
+               if (j == 1) addSelfToEvent(em.indexEvent(i));
                else if (j == 2)
-                   removeSelfFromEvent(e);
+                   removeSelfFromEvent(em.indexEvent(i));
                else {
                    System.out.println("Invalid input. Please try again.");
                    eventMenu();
@@ -429,12 +427,11 @@ public class EventSystem {
                 System.out.println("Please enter the speaker's username.You can add more than one speaker,input 'end' to finish ");
                 speaker = in.nextLine();
                 if(!speaker.equals("end")){
-                    User u = am.getUser(speaker);
-                    if (!am.checkAccountType(am.getName(u)).equals("speaker")) {
+                    if (!am.checkAccountType(am.getName(am.getUser(speaker))).equals("speaker")) {
                         System.out.println("Sorry, this isn't a speaker! Please enter (2) to try adding an event again.\n");
                         eventMenu();
                     }
-                    speakers.add(u);
+                    speakers.add(am.getUser(speaker));
                 }
             }
             if (em.addNewEvent(name, date2,date4 ,room, speakers, capacity)) {
@@ -464,8 +461,7 @@ public class EventSystem {
     }
 
     private void addSelfToEvent(Event e) throws IOException {
-        User u = am.getUser(currentUser);
-        if (em.signUpUsertoEvent(e, u)) {
+        if (em.signUpUsertoEvent(e, am.getUser(currentUser))) {
             System.out.println("Failed");
         } else {
             System.out.println("Success");
@@ -476,12 +472,11 @@ public class EventSystem {
     private void addUserToEvent(Event e) throws IOException {
         System.out.println("Enter username you wish to add");
         String username = in.nextLine();
-        User u = am.getUser(username);
         if (am.checkAccountType(username).equals("speaker")){
             System.out.println("Can't add speaker to as an attendee " +
                     "(please create an attendee account to attend events)");
         }
-        else if (em.signUpUsertoEvent(e, u)) {
+        else if (em.signUpUsertoEvent(e, am.getUser(username))) {
             System.out.println("Failed");
         } else {
             System.out.println("Success");
@@ -490,8 +485,7 @@ public class EventSystem {
     }
 
     private void removeSelfFromEvent(Event e) throws IOException {
-        User u = am.getUser(currentUser);
-        if (em.cancelUseratEvent(e, u)) {
+        if (em.cancelUseratEvent(e, am.getUser(currentUser))) {
             System.out.println("Successfully Removed");
         } else {
             System.out.println("Failed to remove user");
@@ -502,9 +496,8 @@ public class EventSystem {
     private void removeUserFromEvent(Event e) throws IOException {
         System.out.println("Enter username you want to remove");
         String username = in.nextLine();
-        User u = am.getUser(username);
-        if (!am.getName(u).equals("invalid")) {//"invalid" is placeholder user returned if username doesn't match with anything in am
-            if (em.cancelUseratEvent(e, u)) {
+        if (!am.getName(am.getUser(username)).equals("invalid")) {//"invalid" is placeholder user returned if username doesn't match with anything in am
+            if (em.cancelUseratEvent(e, am.getUser(username))) {
                 System.out.println("Successfully Removed");
             }
         } else {
@@ -519,22 +512,20 @@ public class EventSystem {
     private void changeSpeaker(Event e) throws IOException {
         System.out.println("Enter username of new speaker");
         String username = in.nextLine();
-        User speaker = am.getUser(username);
-        if (!speaker.getAccountType().equals("speaker")) {
+        if (!am.getUser(username).getAccountType().equals("speaker")) {
             System.out.println("Not a speaker,sorry!");
         } else {
-            em.addSpeaker(e, speaker);
+            em.addSpeaker(e, am.getUser(username));
         }
         saveAll();
     }
     private void removeSpeaker(Event e) throws IOException{
         System.out.println("Enter username of speaker to be removed:");
         String username = in.nextLine();
-        User speaker = am.getUser(username);
-        if (!speaker.getAccountType().equals("speaker")) {
+        if (!am.getUser(username).getAccountType().equals("speaker")) {
             System.out.println("Not a speaker,sorry!");}
         else{
-            if(em.removeSpeaker(e,speaker))
+            if(em.removeSpeaker(e,am.getUser(username)))
                 System.out.println("Successfully Removed");
             else
                 System.out.println("Failed to remove");
@@ -566,8 +557,7 @@ public class EventSystem {
     private void sendMessageToEventMembers(Event e) throws IOException {
         System.out.println("Enter message you wish to send");
         String message = in.nextLine();
-        User u = am.getUser(currentUser);
-        mm.sendEventMessage(u, e, message);
+        mm.sendEventMessage(am.getUser(currentUser), e, message);
         saveAll();
     }
 
@@ -580,24 +570,23 @@ public class EventSystem {
      */
     private void messageMenu() throws IOException {
         p.messageMenuPrompt();
-        User us = am.getUser(currentUser);
         System.out.println("Please enter an one-character input selection. (Enter 'back' at anypoint if you want to go " +
                 "cancel action in further steps)");
         String input = in.nextLine();
         switch (input) {
             case "1":
-                viewMessageMenu(us);
+                viewMessageMenu(am.getUser(currentUser));
                 break;
             case "2":
                 if (am.checkAccountType(currentUser).equals("speaker"))
-                    sendMessageSpeaker(us);
+                    sendMessageSpeaker(am.getUser(currentUser));
                 else if(am.checkAccountType(currentUser).equals("organizer"))
-                    sendMessageOrganizer(us);
+                    sendMessageOrganizer(am.getUser(currentUser));
                 else
-                    sendMessage(us);
+                    sendMessage(am.getUser(currentUser));
                 break;
             case "3":
-                System.out.println(mm.getMessageable(us.getMessageable()));
+                System.out.println(mm.getMessageable((am.getUser(currentUser)).getMessageable()));
                 System.out.println("Please enter the user(username) you want to add to contact or enter \"back\" if you wish to go back:");
 
                 String usern = in.nextLine();
@@ -605,7 +594,7 @@ public class EventSystem {
                     messageMenu();
                 }
                 else if (am.checkUser(usern)) {
-                    mm.addMessageable(us, am.getUser(usern));
+                    mm.addMessageable(am.getUser(currentUser), am.getUser(usern));
                 }
                 else {
                     System.out.println("User doesn't exist");
@@ -614,13 +603,13 @@ public class EventSystem {
                 messageMenu();
                 break;
             case "4":
-                System.out.println(mm.getMessageable(us.getMessageable()));
+                System.out.println(mm.getMessageable((am.getUser(currentUser)).getMessageable()));
                 System.out.println("Please enter the user(username) you want to remove from your contact, enter \"back\" to go back:");
                 String username = in.nextLine();
                 if (username.equals("back"))
                     messageMenu();
                 else {
-                    am.removeMessageable(us, am.getUser(username));
+                    am.removeMessageable(am.getUser(currentUser), am.getUser(username));
                 }
                 saveAll();
                 break;
@@ -640,8 +629,7 @@ public class EventSystem {
                         break;
                     }
                     int i = Integer.parseInt(in2);
-                    Event ev = em.indexEvent(i);
-                    sendMessageToEventMembers(ev);
+                    sendMessageToEventMembers(em.indexEvent(i));
                     saveAll();
                     break;
                 }
@@ -655,7 +643,7 @@ public class EventSystem {
                 }
                 break;
             case "6":
-                seeArchive(us);
+                seeArchive(am.getUser(currentUser));
 
             case "7":
                 saveAll();
@@ -783,11 +771,10 @@ public class EventSystem {
                 }
                 System.out.println("Please enter your message:");
                 String content = in.nextLine();
-                User re = currentMessage.getSender();
-                if(mm.sendMessage(us, re, content)) {
-                    if (am.checkAccountType(am.getName(re)).equals("organizer")) {
+                if(mm.sendMessage(us, currentMessage.getSender(), content)) {
+                    if (am.checkAccountType(am.getName(currentMessage.getSender())).equals("organizer")) {
                         System.out.println("Warning: You have sent a message to an Organizer. You may not get a reply.");
-                    } else if (am.checkAccountType(am.getName(re)).equals("speaker")) {
+                    } else if (am.checkAccountType(am.getName(currentMessage.getSender())).equals("speaker")) {
                         System.out.println("Warning: You have sent a message to a Speaker. You may not get a reply if you are not attending his/her talk.");
                     }
                     System.out.println("Message sent successfully.");
@@ -926,12 +913,11 @@ public class EventSystem {
             if (receiver.equals("back"))
                 messageMenu();
             else {
-                User re = am.getUser(receiver);
-                if(mm.sendMessage(us, re, content)) {
-                    if (am.checkAccountType(am.getName(re)).equals("organizer")){
+                if(mm.sendMessage(us, am.getUser(receiver), content)) {
+                    if (am.checkAccountType(am.getName(am.getUser(receiver))).equals("organizer")){
                         System.out.println("Warning: You have sent a message to an Organizer. You may not get a reply.");
                     }
-                    else if(am.checkAccountType(am.getName(re)).equals("speaker")){
+                    else if(am.checkAccountType(am.getName(am.getUser(receiver))).equals("speaker")){
                         System.out.println("Warning: You have sent a message to a Speaker. You may not get a reply if you are not attending his/her talk.");
                     }
                     System.out.println("Message sent successfully.");
@@ -1108,10 +1094,9 @@ public class EventSystem {
             if (username.equals("back")){
                 accountMenu();
             }
-            User u = am.getUser(username);
             if (am.deleteUser(username, am.getUser(username).getPassword())) {
-                am.removeMessageableFromList(u);
-                em.removeUserFromEvent(u);
+                am.removeMessageableFromList(am.getUser(username));
+                em.removeUserFromEvent(am.getUser(username));
                 System.out.println("Success!");
             } else {
                 System.out.println("Sorry, your user name is not correct.");
@@ -1123,11 +1108,10 @@ public class EventSystem {
             if (password.equals("back")){
                 accountMenu();
             }
-            User u = am.getUser(currentUser);
             if (am.deleteUser(currentUser, password)) {
                 System.out.println("Success!");
-                am.removeMessageableFromList(u);
-                em.removeUserFromEvent(u);
+                am.removeMessageableFromList(am.getUser(currentUser));
+                em.removeUserFromEvent(am.getUser(currentUser));
                 welcome();
             } else {
                 System.out.println("Sorry, your password is not correct.");
@@ -1146,8 +1130,7 @@ public class EventSystem {
         if (password.equals("back")){
             accountMenu();
         }
-        User u = am.getUser(currentUser);
-        am.resetPassword(u, password);
+        am.resetPassword(am.getUser(currentUser), password);
         System.out.println("Success!");
         saveAll();
     }
