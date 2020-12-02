@@ -264,12 +264,12 @@ public class EventManager implements Serializable {
             if (x.equals(e)) {
                 boolean isOccupied = false;
                 for (Event q:eventList){
-                    if (q.hasSpeaker(speaker) & (q.getEventStartTime().isAfter(x.getEventStartTime()
-                    )& q.getEventStartTime().isBefore(x.getEventEndTime())))
+                    if (q.hasSpeaker(speaker) & (q.getEventStartTime().compareTo(x.getEventStartTime())>=0
+                    )& q.getEventStartTime().compareTo(x.getEventEndTime())<=0)
                         //Math.abs(Duration.between(q.getEventStartTime(),x.getEventStartTime()).getSeconds())<=3600)
                         isOccupied =true;
-                    if (q.hasSpeaker(speaker) & (x.getEventStartTime().isAfter(q.getEventStartTime()
-                    )& x.getEventStartTime().isBefore(q.getEventEndTime())))
+                    if (q.hasSpeaker(speaker) & (x.getEventStartTime().compareTo(q.getEventStartTime())>=0
+                    )& x.getEventStartTime().compareTo((q.getEventEndTime()))<=0)
                         //Math.abs(Duration.between(q.getEventStartTime(),x.getEventStartTime()).getSeconds())<=3600)
                         isOccupied =true;
                 }

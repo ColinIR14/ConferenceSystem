@@ -196,9 +196,9 @@ public class Event implements Serializable{
     else {
       Event q =  (Event) e;
       boolean b= false;
-      if((this.getEventStartTime().isAfter(q.getEventStartTime()))||(this.getEventStartTime().isBefore(q.getEventEndTime())))
+      if((this.getEventStartTime().compareTo(q.getEventStartTime())>=0)||(this.getEventStartTime().compareTo(q.getEventEndTime())<=0))
         b=true;
-      if((q.getEventStartTime().isAfter(this.getEventStartTime()))||(q.getEventStartTime().isBefore(this.getEventEndTime())))
+      if((q.getEventStartTime().compareTo(this.getEventStartTime())>=0)||(q.getEventStartTime().compareTo(this.getEventEndTime())<=0))
         b=true;
       boolean speakerOverlap =false;
       for(User u: this.getSpeaker()){
