@@ -1045,10 +1045,11 @@ public class EventSystem {
         if (am.checkAccountType(currentUser).equals("organizer")) {
             System.out.println("Add Organizer account (1)\n" +
                     "Add Speaker account (2)\n" +
-                    "Remove account (3)\n" +
-                    "Reset password (4)\n" +
-                    "List all users (5)\n" +
-                    "Main menu (6)\n");
+                    "Add Attendee account (3)\n" +
+                    "Remove account (4)\n" +
+                    "Reset password (5)\n" +
+                    "List all users (6)\n" +
+                    "Main menu (7)\n");
             System.out.println("Please enter a one-character input selection.");
             String next = in.nextLine();
 
@@ -1062,14 +1063,18 @@ public class EventSystem {
                     accountMenu();
                     break;
                 case "3":
-                    removeAccount();
+                    addAccount("attendee");
                     accountMenu();
                     break;
                 case "4":
-                    changePassword();
+                    removeAccount();
                     accountMenu();
                     break;
                 case "5":
+                    changePassword();
+                    accountMenu();
+                    break;
+                case "6":
                     if (am.checkAccountType(currentUser).equals("organizer")) {
                         System.out.println(am.toString());
                     } else {
@@ -1077,7 +1082,7 @@ public class EventSystem {
                     }
                     accountMenu();
                     break;
-                case "6":
+                case "7":
                     mainMenu();
                     break;
                 default:
