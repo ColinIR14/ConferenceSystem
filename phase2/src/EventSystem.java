@@ -201,6 +201,8 @@ public class EventSystem {
                     try {
                         System.out.println("Please enter a room number (integer only)");
                         int roomNum = Integer.parseInt(in.nextLine());
+                        System.out.println("Please enter the room capacity (integer only)");
+                        int roomCapacity = Integer.parseInt(in.nextLine());
                         System.out.println("Enter 1 if your room consists of rows of chairs and 2 if your room has tables");
                         int seating = Integer.parseInt(in.nextLine());
                         if (seating != 1 && seating != 2) {
@@ -213,7 +215,7 @@ public class EventSystem {
                             System.out.println("Invalid input. Please enter 1 or 2 next time.");
                             break;
                         }
-                        em.addRoom(roomNum, seating, proj);
+                        em.addRoom(roomNum, seating, proj, roomCapacity);
                         break;
                     } catch (NumberFormatException e) {
                         System.out.println("Enter number please");
@@ -432,7 +434,9 @@ public class EventSystem {
             for (Room room : roomList) {
                 s.append("Room Number ");
                 s.append(room.getRoomNumber());
-                s.append("\n");
+                s.append(" (Capacity: ");
+                s.append(room.getRoomCapacity());
+                s.append(")\n");
             }
             System.out.println(s);
             System.out.println("Please enter the room number for this event. (The room must be created first)");
@@ -577,7 +581,7 @@ public class EventSystem {
 
 
     /*
-    send message to all attendees of gvien event
+    send message to all attendees of given event
      */
     private void sendMessageToEventMembers(Event e) throws IOException {
         System.out.println("Enter message you wish to send");
@@ -588,9 +592,9 @@ public class EventSystem {
     }
 
     /*
-     * MessageMenu allows loged in user to view messages sent to them, send message to other user in contact, add user to
-     * contact, remove user from contact. Only Oganizer type user are allowed to send event message. And user can choose
-     * to return to the main menu at the begining of message menu or return to beginning of message menu.
+     * MessageMenu allows logged in user to view messages sent to them, send message to other user in contact, add user to
+     * contact, remove user from contact. Only Organizer type user are allowed to send event message. And user can choose
+     * to return to the main menu at the beginning of message menu or return to beginning of message menu.
      * Notes, unless organizer type, user can only send message to users that are in the user's contact.
      * Functions added: Preview messages, Archived messages.
      */
@@ -847,7 +851,7 @@ public class EventSystem {
      */
     private void sendMessageSpeaker(User sender) throws IOException {
         System.out.println("Send message to all attandees to your talk(s) (1) \n" +
-                "Send message to individual attandees attending your talk(s) (2)");
+                "Send message to individual attandee attending your talk(s) (2)");
         ArrayList<User> validUser = new ArrayList<>();
         for (Event event : em.getEventsOfSpeaker(sender)){
             validUser.addAll(event.getAttendees());
@@ -1109,7 +1113,7 @@ public class EventSystem {
     }
 
     /*
-     * Add a certain type account by creating the user name and passowrd if the user logged in is an organizer,
+     * Add a certain type account by creating the user name and password if the user logged in is an organizer,
      * otherwise the request is refused
      */
     private void addAccount(String accountType) throws IOException {

@@ -132,7 +132,7 @@ public class EventManager implements Serializable {
      *
      * @param i room number that will be added to the list
      */
-    public void addRoom(int i, int seating, int proj) {
+    public void addRoom(int i, int seating, int proj, int capacity) {
         boolean t = false;
         for (Room room : roomList) {
             if (room.getRoomNumber() == i) {
@@ -146,6 +146,7 @@ public class EventManager implements Serializable {
             setRoomNum(r, i);
             r.setSeating(seating);
             r.setProj(proj);
+            r.setRoomCapacity(capacity);
             roomList.add(r);
             System.out.println("Successfully added!");
         }
@@ -238,7 +239,7 @@ public class EventManager implements Serializable {
     }
 
     /**
-     * Changes the spearker at a specified Event.
+     * Changes the speaker at a specified Event.
      *
      * @param e Event of which the speaker will be changed.
      * @param speaker Speaker who will newly speak at the Event.
