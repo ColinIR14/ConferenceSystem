@@ -137,9 +137,7 @@ public class EventSystem {
     or to sign out.
     */
     private void mainMenu() throws IOException {
-        System.out.println("Main Menu\n");
-        System.out.println("Events (E)\nMessages (M)\nAccount (A)\nSign out (S)\n");
-        System.out.println("Please enter a one-letter input selection.");
+        p.mainMenuPrompt();
         String next = in.nextLine();
 
         switch (next) {
@@ -165,13 +163,7 @@ public class EventSystem {
     private void eventMenu() throws IOException { //Raj //List of events
         System.out.println("Event Menu\n");
         if (am.checkAccountType(currentUser).equals("organizer")) {
-            System.out.println(
-                    "View and Select event to manipulate (1)\n" +
-                            "Add event (2)\n" +
-                            "Add room (3)\n" +
-                            "Remove room (4)\n" +
-                            "Main Menu (5)\n");
-            System.out.println("Please enter a one-character input selection.");
+            p.eventMenuPrompt();
             String input = in.nextLine();
             switch (input) {
                 case "2":
@@ -331,18 +323,7 @@ public class EventSystem {
     }
 
     private void specificEventMenu(Event e) throws IOException {
-        System.out.println("Cancel Event (1)\n" +
-                "Add self to event (2)\n" +
-                "Add user to event(3)\n" +
-                "Add speaker to event (4)\n+" +
-                "Remove Speaker from event(5)\n"+
-                "Remove user from event (6)\n+" +
-                "Remove self from event (7)\n" +
-                "Send messages to all attendees of event (8)\n" +
-                "See All users in event (9)\n" +
-                "Change event capacity (10)\n" +
-                "Main menu (0)\n");
-        System.out.println("Enter the number corresponding to the desired action");
+        p.specificEventMenu();
         String next = in.nextLine();
         switch (next) {
             case "1":
