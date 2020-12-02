@@ -6,7 +6,7 @@ import java.util.List;
  */
 public class Room implements Serializable {
     private int roomNumber;
-    private int roomCapacity=2;
+    private int roomCapacity;
     private List<Event> roomSchedule;
 
     /**

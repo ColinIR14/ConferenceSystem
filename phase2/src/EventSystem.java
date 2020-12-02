@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.net.SocketOption;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -201,6 +202,9 @@ public class EventSystem {
                         System.out.println("Please enter a room number (integer only)");
                         int i = Integer.parseInt(in.nextLine());
                         em.setRoomNum(r, i);
+                        System.out.println("Please enter the room capacity (integer only)");
+                        int c = Integer.parseInt(in.nextLine());
+                        em.setRoomCapacity(r, c);
                         em.addRoom(r);
                         break;
                     } catch (NumberFormatException e) {
@@ -317,6 +321,7 @@ public class EventSystem {
                 "Remove self from event (7)\n" +
                 "Send messages to all attendees of event (8)\n" +
                 "See All users in event (9)\n" +
+                "Change event capacity (10)\n" +
                 "Main menu (0)\n");
         System.out.println("Enter the number corresponding to the desired action");
         String next = in.nextLine();
@@ -353,6 +358,8 @@ public class EventSystem {
                     System.out.println(em.getAttendees(e));
                 }
                 break;
+            case "10":
+                changeEventCapacity(e);
             case "0":
                 mainMenu();
                 break;
@@ -389,6 +396,8 @@ public class EventSystem {
             System.out.println(em.listOfRooms());
             System.out.println("Please enter the room number for this event. (The room must be created first)");
             int room = Integer.parseInt(in.nextLine());
+            System.out.println("Please enter the max number of attendees for this event. (The event capacity can't be over the room capacity)");
+            int capacity = Integer.parseInt(in.nextLine());
             ArrayList<User> speakers =new ArrayList<>();
             String speaker ="fdiof";
             while(!speaker.equals("end")) {
@@ -403,7 +412,7 @@ public class EventSystem {
                     speakers.add(u);
                 }
             }
-            if (em.addNewEvent(name, date2,date4 ,room, speakers)) {
+            if (em.addNewEvent(name, date2,date4 ,room, speakers, capacity)) {
                 System.out.println("Successfully Added!\n");
             } else {
                 System.out.println("Failed to add");
@@ -501,11 +510,28 @@ public class EventSystem {
             System.out.println("Not a speaker,sorry!");}
         else{
             if(em.removeSpeaker(e,speaker))
-                System.out.println("Succesfully Removed");
+                System.out.println("Successfully Removed");
             else
                 System.out.println("Failed to remove");
         }
         saveAll();
+    }
+
+    private void changeEventCapacity(Event event) throws IOException{
+        try {
+            System.out.println("Please enter the new capacity for the event.");
+            int capacity = Integer.parseInt(in.nextLine());
+            if (em.setEventCapacity(event, capacity)){
+                System.out.println("Successfully modified!\n");
+            }
+            else{
+                System.out.println("The new event capacity is over the room capacity.\n");
+            }
+            //break;
+        } catch (NumberFormatException e) {
+            System.out.println("Enter a number please");
+            eventMenu();
+        }
     }
 
 

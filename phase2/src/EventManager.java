@@ -74,17 +74,20 @@ public class EventManager implements Serializable {
      * an Event in Eventlist clashes with EventTime and EventSpeaker of Event being added.
      * Otherwise, add the Event to eventList and return true.
      */
-    public boolean addNewEvent(String EventName, LocalDateTime EventTime,LocalDateTime EventEnd, int EventRoomNumber, ArrayList<User> EventSpeaker) {
+    public boolean addNewEvent(String EventName, LocalDateTime EventTime,LocalDateTime EventEnd, int EventRoomNumber, ArrayList<User> EventSpeaker, int EventCapacity) {
         Room r = null;
         for (Room room : roomList) {
             if (room.getRoomNumber() == EventRoomNumber) {
                 r = room;
+                if (room.getRoomCapacity() < EventCapacity){
+                    return false;
+                }
             }
         }
         if (r == null) {
             return false;
         }
-        Event tempevent = new Event(nextId, EventName, EventTime,EventEnd, r, EventSpeaker);
+        Event tempevent = new Event(nextId, EventName, EventTime,EventEnd, r, EventSpeaker, EventCapacity);
         nextId += 1;
         for (Event x : eventList) {
             if (x.equals(tempevent)) {
@@ -115,6 +118,15 @@ public class EventManager implements Serializable {
     }
 
     /**
+     * Set the room capacity
+     * @param r the Room object taken in
+     * @param num the number to be set
+     */
+    public void setRoomCapacity(Room r, int num){
+        r.setRoomCapacity((num));
+    }
+
+    /**
      * Adds a new Room to the roomList.
      *
      * @param r Room that will be added to the list
@@ -129,8 +141,17 @@ public class EventManager implements Serializable {
         }
         if(!t){
             roomList.add(r);
+            System.out.println("Successfully added!");
         }
     }
+
+    /**
+     * setter for event capacity
+     * @param e the event object being modified
+     * @param num the event capacity to be set
+     * @return true iff the input capacity is valid
+     */
+    public boolean setEventCapacity(Event e, int num){ return e.setEventCapacity(num); }
 
     /**
      * Return a list of rooms distinguished by their respective room numbers, that are stored in roomList.
@@ -144,7 +165,9 @@ public class EventManager implements Serializable {
         for (Room room : roomList) {
             s.append("Room Number ");
             s.append(room.getRoomNumber());
-            s.append("\n");
+            s.append(" (capacity: ");
+            s.append(room.getRoomCapacity());
+            s.append(") \n");
         }
         return s;
     }
@@ -169,6 +192,8 @@ public class EventManager implements Serializable {
             s.append(eventList.get(i).getEventName());
             s.append("  Room Number-");
             s.append(eventList.get(i).getEventRoom().getRoomNumber());
+            s.append("  Event Capacity-");
+            s.append(eventList.get(i).getEventCapacity());
             s.append("  Event Start Time-");
             s.append(d.format(eventList.get(i).getEventStartTime()));
             s.append(" Event End Time-");
@@ -295,13 +320,26 @@ public class EventManager implements Serializable {
 
     /**
      * Checks if a room has already been made.
-     *
      * @param room Room number
      * @return boolean true if a room with 'room' number exists and false if it doesn't.
      */
     public boolean checkRoom(int room){
         for (Room r: roomList) {
             if (r.getRoomNumber() == room){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if an event has already been created.
+     * @param num Event Id
+     * @return boolean true if an event with 'num' id exists and false if it doesn't.
+     */
+    public boolean checkEvent(int num){
+        for (Event e: eventList) {
+            if (e.getEventId() == num){
                 return true;
             }
         }
@@ -355,4 +393,14 @@ public class EventManager implements Serializable {
         }
         return events;
     }
+
+    public Event getEventFromId(int num){
+        for (Event e: eventList) {
+            if (e.getEventId() == num){
+                return e;
+            }
+        }
+        return null;
+    }
 }
+

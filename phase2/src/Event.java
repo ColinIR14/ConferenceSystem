@@ -15,17 +15,19 @@ public class Event implements Serializable{
   private List<User> attendees;
   private Room eventRoom;
   private ArrayList<User> eventSpeaker;
+  private Integer eventCapacity;
   private transient  DateTimeFormatter d = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
 
 
   /**Constructor for Event
-   * @param id- unique id for Event
-   * @param EventName- Name of Event
+   * @param id - unique id for Event
+   * @param EventName - Name of Event
    * @param EventRoom - Room instance of Room of Event
    * @param EventTime - Start Time of Event
-   * @param EventSpeaker- Speaker of Event
+   * @param EventSpeaker - Speaker of Event
+   * @param EventCapacity - Maximum Number of Attendee
    */
-  public Event(Integer id,String EventName,LocalDateTime EventTime,LocalDateTime eventEndTime,Room EventRoom,ArrayList<User> EventSpeaker){//constructor without list of attendees
+  public Event(Integer id,String EventName,LocalDateTime EventTime,LocalDateTime eventEndTime,Room EventRoom,ArrayList<User> EventSpeaker, Integer EventCapacity){//constructor without list of attendees
     this.id=id;
     this.eventName=EventName;
     this.eventStartTime =EventTime;
@@ -33,6 +35,7 @@ public class Event implements Serializable{
     this.attendees= new ArrayList<>();
     this.eventRoom=EventRoom;
     this.eventSpeaker=EventSpeaker;
+    this.eventCapacity=EventCapacity;
   }
 
   /**
@@ -40,7 +43,7 @@ public class Event implements Serializable{
    * @return unique id for event
    */
 
-  public Integer getId(){return id;}
+  public Integer getEventId(){return id;}
 
   /**
    * getter for event name
@@ -116,13 +119,17 @@ public class Event implements Serializable{
   }
 
   /**
-   * setter for speaker
-   * @param s user object representing the new speaker
+   * remover for speaker
    */
   public void removeSpeaker(User speaker){
     this.eventSpeaker.remove(speaker);
+  }
 
-  }  public void setSpeaker(ArrayList<User> s){
+  /**
+   * setter for speaker
+   * @param s user object representing the new speaker
+   */
+  public void setSpeaker(ArrayList<User> s){
     eventSpeaker=s;
   }
   public boolean hasSpeaker(User s){
@@ -134,7 +141,8 @@ public class Event implements Serializable{
     return false;
   }
   public void addSpeaker(User s){if(!this.hasSpeaker(s))
-    eventSpeaker.add(s); }  /**
+    eventSpeaker.add(s); }
+    /**
    * getter for room of event
    * @return room object representing room of event
    */
@@ -149,6 +157,31 @@ public class Event implements Serializable{
   public void setEventRoom(Room r){
     eventRoom=r;
   }
+
+  /**
+   * getter for event Capacity
+   * @return Integer representing event capacity
+   */
+  public Integer getEventCapacity(){
+    return eventCapacity;
+  }
+
+  /**
+   * setter for event Capacity
+   * @param a an Integer representing the capacity of the event
+   * @return a boolean representing if the capacity a is valid or not
+   */
+  public boolean setEventCapacity(Integer a){
+    if(a <= eventRoom.getRoomCapacity()){
+      eventCapacity=a;
+      return true;
+    }
+    else{
+      return false;
+    }
+  }
+
+
 
   /**
    * Overriding of equals to return true iff events clash,ie are their times overlap and are in the same room,
