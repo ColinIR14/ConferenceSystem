@@ -139,7 +139,6 @@ public class EventSystem {
     private void mainMenu() throws IOException {
         p.mainMenuPrompt();
         String next = in.nextLine();
-
         switch (next) {
             case "E":
                 eventMenu();
@@ -323,7 +322,7 @@ public class EventSystem {
     }
 
     private void specificEventMenu(Event e) throws IOException {
-        p.specificEventMenu();
+        p.specificEventMenuPrompt();
         String next = in.nextLine();
         switch (next) {
             case "1":
@@ -580,14 +579,7 @@ public class EventSystem {
      * Functions added: Preview messages, Archived messages.
      */
     private void messageMenu() throws IOException {
-        System.out.println("\nMessage Menu:\n");
-        System.out.println("Preview messages (1)\n" +
-                "Send message (2)\n" +
-                "View or Add contact (3)\n" +
-                "Remove contact (4)\n" +
-                "Send event message (Organizers only) (5)\n" +
-                "View archived messages (6)\n"+
-                "Main menu (7)\n");
+        p.messageMenuPrompt();
         User us = am.getUser(currentUser);
         System.out.println("Please enter an one-character input selection. (Enter 'back' at anypoint if you want to go " +
                 "cancel action in further steps)");
@@ -757,13 +749,7 @@ public class EventSystem {
         }
         currentMessage.setViewed(true);
         System.out.println(currentMessage.getContentToString());
-        System.out.println("\nMark this message as unread. (1)");
-        System.out.println("Archive this message. (2)");
-        System.out.println("Remove from archive. (3)");
-        System.out.println("Directly reply to this message. This will automatically add the sender to your contact!(4)");
-        System.out.println("Delete this message. (5)");
-        System.out.println("Go back. (6)");
-        System.out.println("Please enter a number to indicate your choice");
+        p.specificMessageMenuPrompt();
         String at = in.nextLine();
         switch(at){
             case "1":
@@ -831,8 +817,7 @@ public class EventSystem {
     send message menu for speaker
      */
     private void sendMessageSpeaker(User sender) throws IOException {
-        System.out.println("Send message to all attandees to your talk(s) (1) \n" +
-                "Send message to individual attandee attending your talk(s) (2)");
+        p.sendMessageSpeakerPrompt();
         ArrayList<User> validUser = new ArrayList<>();
         for (Event event : em.getEventsOfSpeaker(sender)){
             validUser.addAll(event.getAttendees());
@@ -881,10 +866,7 @@ public class EventSystem {
     Send message menu for organizer.
      */
     private void sendMessageOrganizer(User sender) throws IOException{
-        System.out.println("Send message to all speakers (1)\n" +
-                "Send message to all attandees (2)\n" +
-                "Send message (3)\n" +
-                "Type \"back\" to go back");
+        p.sendMessageOrganizerPrompt();
         String input = in.nextLine();
         if (input.equals("back")){
             messageMenu();
@@ -1024,16 +1006,8 @@ public class EventSystem {
     private void accountMenu() throws IOException { // Daisy
         System.out.println("Account Menu\n");
         if (am.checkAccountType(currentUser).equals("organizer")) {
-            System.out.println("Add Organizer account (1)\n" +
-                    "Add Speaker account (2)\n" +
-                    "Add Attendee account (3)\n" +
-                    "Remove account (4)\n" +
-                    "Reset password (5)\n" +
-                    "List all users (6)\n" +
-                    "Main menu (7)\n");
-            System.out.println("Please enter a one-character input selection.");
+            p.accountMenuPrompt();
             String next = in.nextLine();
-
             switch (next) {
                 case "1":
                     addAccount("organizer");

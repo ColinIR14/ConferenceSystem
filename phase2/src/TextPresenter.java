@@ -37,7 +37,7 @@ public class TextPresenter {
         System.out.println("Please enter a one-character input selection.");
     }
 
-    public void specificEventMenu(){
+    public void specificEventMenuPrompt(){
         System.out.println("Cancel Event (1)\n" +
                 "Add self to event (2)\n" +
                 "Add user to event(3)\n" +
@@ -51,6 +51,51 @@ public class TextPresenter {
                 "Main menu (0)\n");
         System.out.println("Enter the number corresponding to the desired action");
     }
+
+    public void messageMenuPrompt(){
+        System.out.println("\nMessage Menu:\n");
+        System.out.println("Preview messages (1)\n" +
+                "Send message (2)\n" +
+                "View or Add contact (3)\n" +
+                "Remove contact (4)\n" +
+                "Send event message (Organizers only) (5)\n" +
+                "View archived messages (6)\n"+
+                "Main menu (7)\n");
+    }
+
+    public void specificMessageMenuPrompt(){
+        System.out.println("\nMark this message as unread. (1)");
+        System.out.println("Archive this message. (2)");
+        System.out.println("Remove from archive. (3)");
+        System.out.println("Directly reply to this message. This will automatically add the sender to your contact!(4)");
+        System.out.println("Delete this message. (5)");
+        System.out.println("Go back. (6)");
+        System.out.println("Please enter a number to indicate your choice");
+    }
+
+    public void sendMessageSpeakerPrompt(){
+        System.out.println("Send message to all attendees to your talk(s) (1) \n" +
+                "Send message to individual attendee attending your talk(s) (2)");
+    }
+
+    public void sendMessageOrganizerPrompt(){
+        System.out.println("Send message to all speakers (1)\n" +
+                "Send message to all attendees (2)\n" +
+                "Send message (3)\n" +
+                "Type \"back\" to go back");
+    }
+
+    public void accountMenuPrompt(){
+        System.out.println("Add Organizer account (1)\n" +
+                "Add Speaker account (2)\n" +
+                "Add Attendee account (3)\n" +
+                "Remove account (4)\n" +
+                "Reset password (5)\n" +
+                "List all users (6)\n" +
+                "Main menu (7)\n");
+        System.out.println("Please enter a one-character input selection.");
+    }
+
 
 
 }
