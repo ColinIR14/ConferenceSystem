@@ -5,6 +5,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -198,14 +199,21 @@ public class EventSystem {
                 }
                 case "3": {
                     try {
-                        Room r = new Room();
                         System.out.println("Please enter a room number (integer only)");
-                        int i = Integer.parseInt(in.nextLine());
-                        em.setRoomNum(r, i);
-                        System.out.println("Please enter the room capacity (integer only)");
-                        int c = Integer.parseInt(in.nextLine());
-                        em.setRoomCapacity(r, c);
-                        em.addRoom(r);
+                        int roomNum = Integer.parseInt(in.nextLine());
+                        System.out.println("Enter 1 if your room consists of rows of chairs and 2 if your room has tables");
+                        int seating = Integer.parseInt(in.nextLine());
+                        if (seating != 1 && seating != 2) {
+                            System.out.println("Invalid input. Please enter 1 or 2 next time.");
+                            break;
+                        }
+                        System.out.println("Does your room have a projector or screen? Enter 1 for yes and 2 for no");
+                        int proj = Integer.parseInt(in.nextLine());
+                        if (proj != 0 && proj != 1) {
+                            System.out.println("Invalid input. Please enter 1 or 2 next time.");
+                            break;
+                        }
+                        em.addRoom(roomNum, seating, proj);
                         break;
                     } catch (NumberFormatException e) {
                         System.out.println("Enter number please");
@@ -214,7 +222,16 @@ public class EventSystem {
                 }
                 case "4":
                     try {
-                        System.out.println(em.listOfRooms());
+                        List<Room> roomList = em.listOfRooms(0, 0);
+                        StringBuilder s = new StringBuilder();
+                        s.append("List of Rooms:\n");
+
+                        for (Room room : roomList) {
+                            s.append("Room Number ");
+                            s.append(room.getRoomNumber());
+                            s.append("\n");
+                        }
+                        System.out.println(s);
                         System.out.println("Please enter the room number to be removed.");
                         int room = Integer.parseInt(in.nextLine());
                         //if (em.getListOfRoomsOccupied().contains(room))
@@ -392,8 +409,32 @@ public class EventSystem {
                 eventMenu();
             }
 
+            System.out.println("Input your seating requirement:\nDon't care (0) \nRows of chairs (1) \nTables (2) ");
+            int seating = Integer.parseInt(in.nextLine());
+            if (seating < 0 || seating > 3) {
+                System.out.println("Sorry, invalid input.");
+                eventMenu();
+            }
 
-            System.out.println(em.listOfRooms());
+            System.out.println("Do you require a screen/projector? \nDon't care (0) \nYes(1) \nNo (2)");
+            int proj = Integer.parseInt(in.nextLine());
+            if (proj < 0 || proj > 2) {
+                System.out.println("Sorry, invalid input.");
+                eventMenu();
+            }
+
+
+            List<Room> roomList = em.listOfRooms(seating, proj);
+
+            StringBuilder s = new StringBuilder();
+            s.append("List of rooms that match your requirements:\n");
+
+            for (Room room : roomList) {
+                s.append("Room Number ");
+                s.append(room.getRoomNumber());
+                s.append("\n");
+            }
+            System.out.println(s);
             System.out.println("Please enter the room number for this event. (The room must be created first)");
             int room = Integer.parseInt(in.nextLine());
             System.out.println("Please enter the max number of attendees for this event. (The event capacity can't be over the room capacity)");

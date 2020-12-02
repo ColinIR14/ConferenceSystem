@@ -8,6 +8,8 @@ public class Room implements Serializable {
     private int roomNumber;
     private int roomCapacity;
     private List<Event> roomSchedule;
+    private int seating;
+    private int proj;
 
     /**
      * Sets the RoomNumber into a give integer
@@ -57,7 +59,24 @@ public class Room implements Serializable {
         return roomSchedule;
     }
 
+    /**
+     * Getters and setters for Seating and Proj variables.
+     */
+    public int getSeating() {
+        return seating;
+    }
 
+    public void setSeating(int seating) {
+        this.seating = seating;
+    }
+
+    public int getProj() {
+        return proj;
+    }
+
+    public void setProj(int proj) {
+        this.proj = proj;
+    }
 }
 
 

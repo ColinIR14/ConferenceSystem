@@ -2,6 +2,7 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 
 public class EventManager implements Serializable {
     private ArrayList<Event> eventList;
@@ -127,19 +128,24 @@ public class EventManager implements Serializable {
     }
 
     /**
-     * Adds a new Room to the roomList.
+     * Creates and adds a new Room to the roomList.
      *
-     * @param r Room that will be added to the list
+     * @param i room number that will be added to the list
      */
-    public void addRoom(Room r) {
+    public void addRoom(int i, int seating, int proj) {
         boolean t = false;
-        for(Room room:roomList){
-            if (room.getRoomNumber() == r.getRoomNumber()){
+        for (Room room : roomList) {
+            if (room.getRoomNumber() == i) {
                 System.out.println("Room already added!");
                 t = true;
+                break;
             }
         }
-        if(!t){
+        if (!t) {
+            Room r = new Room();
+            setRoomNum(r, i);
+            r.setSeating(seating);
+            r.setProj(proj);
             roomList.add(r);
             System.out.println("Successfully added!");
         }
@@ -153,23 +159,21 @@ public class EventManager implements Serializable {
      */
     public boolean setEventCapacity(Event e, int num){ return e.setEventCapacity(num); }
 
-    /**
-     * Return a list of rooms distinguished by their respective room numbers, that are stored in roomList.
-     *
-     * @return Stringbuilder of the rooms within roomList
-     */
-    public StringBuilder listOfRooms() {
-        StringBuilder s = new StringBuilder();
-        s.append("List of Rooms:\n");
 
+    /**
+     * Return a list of rooms distinguished by their respective room numbers, that are stored in roomList with the
+     * given specifications. Call listOfRooms(0, 0) to list all rooms.
+     *
+     * @return List of the rooms within roomList that meet specs
+     */
+    public List<Room> listOfRooms(int seating, int proj) {
+        List<Room> rooms = new ArrayList<>();
         for (Room room : roomList) {
-            s.append("Room Number ");
-            s.append(room.getRoomNumber());
-            s.append(" (capacity: ");
-            s.append(room.getRoomCapacity());
-            s.append(") \n");
+            if ((room.getSeating() == seating || seating == 0) && (room.getProj() == proj || proj == 0)) {
+                rooms.add(room);
+            }
         }
-        return s;
+        return rooms;
     }
 
     /**
@@ -403,4 +407,3 @@ public class EventManager implements Serializable {
         return null;
     }
 }
-
