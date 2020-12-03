@@ -256,8 +256,7 @@ public class Event implements Serializable{
         this.dietaryList.add(item.trim());
         System.out.println("Success");
       }
-      if (this.dietaryRequestList.contains(item.trim()))
-        this.dietaryRequestList.remove(item.trim());
+      this.dietaryRequestList.remove(item.trim());
     }
   }
 
@@ -272,8 +271,7 @@ public class Event implements Serializable{
         this.accessibilityList.add(item.trim());
         System.out.println("Success");
       }
-      if (this.accessibilityReqList.contains(item.trim()))
-        this.accessibilityReqList.remove(item.trim());
+      this.accessibilityReqList.remove(item.trim());
     }
   }
 
@@ -282,24 +280,24 @@ public class Event implements Serializable{
    * @return String of all approved requests
    */
   public String getAddressedList(){
-    String addressed = "";
+    StringBuilder addressed = new StringBuilder();
     if (this.dietaryList.isEmpty() && this.accessibilityList.isEmpty())
       return "There are no addressed requests \n";
     if (!this.dietaryList.isEmpty()){
-      addressed += "Dietary Restrictions addressed: \n";
+      addressed.append("Dietary Restrictions addressed: \n");
       for (String item : this.dietaryList){
-        addressed += item;
-        addressed += "\n";
+        addressed.append(item);
+        addressed.append("\n");
       }
     }
     if (!this.accessibilityList.isEmpty()){
-      addressed += "Accessibility Requirements addressed: \n";
+      addressed.append("Accessibility Requirements addressed: \n");
       for (String item : this.accessibilityList){
-        addressed += item;
-        addressed += "\n";
+        addressed.append(item);
+        addressed.append("\n");
       }
     }
-    return addressed;
+    return String.valueOf(addressed);
   }
 
   /**
@@ -307,29 +305,29 @@ public class Event implements Serializable{
    * @return String of all pending requests
    */
   public String getPendingList(){
-    String pending = "";
+    StringBuilder pending = new StringBuilder();
     int count = 0;
     if (!this.dietaryRequestList.isEmpty()){
-      pending += "Dietary Restrictions requested: \n";
+      pending.append("Dietary Restrictions requested: \n");
       for (String item : this.dietaryRequestList){
-        pending += item;
-        pending += " - ";
-        pending += count;
-        pending += "\n";
+        pending.append(item);
+        pending.append(" - ");
+        pending.append(count);
+        pending.append("\n");
         count ++;
       }
     }
     if (!this.accessibilityReqList.isEmpty()){
-      pending += "Accessibility Requirements requested: \n";
+      pending.append("Accessibility Requirements requested: \n");
       for (String item : this.accessibilityReqList){
-        pending += item;
-        pending += " - ";
-        pending += count;
-        pending += "\n";
+        pending.append(item);
+        pending.append(" - ");
+        pending.append(count);
+        pending.append("\n");
         count ++;
       }
     }
-    return pending;
+    return String.valueOf(pending);
   }
 
   /**
