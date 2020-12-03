@@ -303,9 +303,9 @@ public class EventSystem {
                else if (j == 2)
                    removeSelfFromEvent(em.indexEvent(i));
                else if (j == 3)
-                   System.out.println(em.getAddressedList(i));
+                   System.out.println(em.getAddressedList(em.indexEvent(i)));
                else if (j == 4){
-                   if (em.signUpUsertoEvent(em.getEventFromId(i), am.getUser(currentUser))) {
+                   if (em.checkEventAttending(em.indexEvent(i), am.getUser(currentUser))) {
                        System.out.println("Do you have dietary restrictions or accessibility requirements?");
                        additionalRequest(em.getEventFromId(i));
                    }
@@ -490,10 +490,11 @@ public class EventSystem {
             System.out.println("Failed");
         } else {
             System.out.println("Success");
-            if(!am.checkAccountType(currentUser).equals("Speaker") &&
-                    !am.checkAccountType(currentUser).equals("Organizer"))
+            if(!am.checkAccountType(currentUser).equals("speaker") &&
+                    !am.checkAccountType(currentUser).equals("organizer")){
                 System.out.println("Do you have dietary restrictions or accessibility requirements?");
-            additionalRequest(e);
+                additionalRequest(e);
+            }
         }
         saveAll();
     }

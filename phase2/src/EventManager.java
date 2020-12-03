@@ -419,12 +419,17 @@ public class EventManager implements Serializable {
     }
 
     /**
-     * Takes in an int of id of an event and returns the approved requirements of the event
-     * @param i int id of event
-     * @return String of approved requirements
+     * Takes event and user and checks if the user is an attendee of this event
+     * @param e Event
+     * @param user User
+     * @return true if the user is attending the event
      */
-    public String getAddressedList(int i){
-        return getEventFromId(i).getAddressedList();
+    public boolean checkEventAttending(Event e, User user){
+        for (User u : e.getAttendees()){
+            if (u.equals(user))
+                return true;
+        }
+        return false;
     }
 
     /**
