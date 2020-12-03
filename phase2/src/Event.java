@@ -51,14 +51,12 @@ public class Event implements Serializable{
    * Returns the id of event
    * @return unique id for event
    */
-
   public Integer getEventId(){return id;}
 
   /**
    * getter for event name
    * @return name of event
    */
-
   public String getEventName(){
     return eventName;
   }
@@ -67,7 +65,6 @@ public class Event implements Serializable{
    * getter for event time start
    * @return time of event start
    */
-
   public LocalDateTime getEventStartTime(){
     return eventStartTime;
   }
@@ -82,7 +79,6 @@ public class Event implements Serializable{
    * setter for event time start
    * @param t- new time to be started at
    */
-
   public void setEventStartTime(LocalDateTime t){
     eventStartTime =t;
   }
@@ -91,7 +87,6 @@ public class Event implements Serializable{
    * getter for attendees of event
    * @return attendees of event
    */
-
   public List<User> getAttendees(){
     return attendees;
   }
@@ -114,7 +109,6 @@ public class Event implements Serializable{
    * removes one attendee from attendees
    * @param NewAttendee - user object of user leaving event
    */
-
   public void removeAttendee(User NewAttendee){
     attendees.removeIf(x -> x.getUsername().equals(NewAttendee.getUsername()));
   }
@@ -150,9 +144,12 @@ public class Event implements Serializable{
     }
     return false;
   }
-  public void addSpeaker(User s){if(!this.hasSpeaker(s))
-    eventSpeaker.add(s); }
-    /**
+  public void addSpeaker(User s){
+    if(!this.hasSpeaker(s))
+    eventSpeaker.add(s);
+  }
+
+  /**
    * getter for room of event
    * @return room object representing room of event
    */
@@ -207,6 +204,24 @@ public class Event implements Serializable{
   }
 
   /**
+   * Get a string of the specific dietary restriction requested
+   * @param num index of request
+   * @return string of dietary restriction
+   */
+  public String getDietaryRequest(int num){
+    return this.dietaryRequestList.get(num);
+  }
+
+  /**
+   * Get the specific accessibility requested
+   * @param num index of request
+   * @return string of request
+   */
+  public String getAccessibilityRequest(int num){
+    return this.accessibilityReqList.get(num);
+  }
+
+  /**
    * Add dietary request for the event
    * @param rtc string containing dietary restrictions
    */
@@ -218,8 +233,16 @@ public class Event implements Serializable{
     }
   }
 
-  public String getDietaryRequest(int num){
-    return this.dietaryRequestList.get(num);
+  /**
+   * Add accessibility request to list of pending request for this event
+   * @param acr string of all accessibility requests by a user at once
+   */
+  public void addAccessibilityRequest(String acr){
+    String[] al = acr.split(",", 0);
+    for (String item : al){
+      if (!item.isEmpty() && !this.accessibilityList.contains(item) && !this.accessibilityReqList.contains(item))
+        this.accessibilityReqList.add(item.trim());
+    }
   }
 
   /**
@@ -229,35 +252,35 @@ public class Event implements Serializable{
   public void addDietaryRestriction(String rtc){
     String[] dl = rtc.split(",", 0);
     for (String item : dl){
-      if (!item.isEmpty() && !this.dietaryList.contains(item))
+      if (!item.isEmpty() && !this.dietaryList.contains(item)){
         this.dietaryList.add(item.trim());
+        System.out.println("Success");
+      }
       if (this.dietaryRequestList.contains(item.trim()))
         this.dietaryRequestList.remove(item.trim());
     }
   }
 
-  public void addAccessibilityRequest(String acr){
-    String[] al = acr.split(",", 0);
-    for (String item : al){
-      if (!item.isEmpty() && !this.accessibilityList.contains(item) && !this.accessibilityReqList.contains(item))
-        this.accessibilityReqList.add(item.trim());
-    }
-  }
-
+  /**
+   * Add on to the accessibility requirements for this event
+   * @param acr String of requirements to be added
+   */
   public void addAccessibilityRequirement(String acr){
     String[] al = acr.split(",", 0);
     for (String item : al){
-      if (!item.isEmpty() && !this.accessibilityList.contains(item))
+      if (!item.isEmpty() && !this.accessibilityList.contains(item)){
         this.accessibilityList.add(item.trim());
+        System.out.println("Success");
+      }
       if (this.accessibilityReqList.contains(item.trim()))
         this.accessibilityReqList.remove(item.trim());
     }
   }
 
-  public String getAccessibilityRequest(int num){
-    return this.accessibilityReqList.get(num);
-  }
-
+  /**
+   * Get all approved requests
+   * @return String of all approved requests
+   */
   public String getAddressedList(){
     String addressed = "";
     if (this.dietaryList.isEmpty() && this.accessibilityList.isEmpty())
@@ -279,6 +302,10 @@ public class Event implements Serializable{
     return addressed;
   }
 
+  /**
+   * Get all pending requests
+   * @return String of all pending requests
+   */
   public String getPendingList(){
     String pending = "";
     int count = 0;
@@ -307,12 +334,16 @@ public class Event implements Serializable{
 
   /**
    * Return the size of dietary request list
-   * @return the size of dietary request list
+   * @return int of the size of dietary request list
    */
   public int getDietaryReqListSize(){
     return this.dietaryRequestList.size();
   }
 
+  /**
+   * Return the size of accessibility request list
+   * @return int of the size of accessibility request list
+   */
   public int getAccessibilityReqListSize(){
     return this.accessibilityReqList.size();
   }

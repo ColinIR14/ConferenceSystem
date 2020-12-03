@@ -201,7 +201,7 @@ public class EventSystem {
                         }
                         System.out.println("Does your room have a projector or screen? Enter 1 for yes and 2 for no");
                         int proj = Integer.parseInt(in.nextLine());
-                        if (proj != 0 && proj != 1) {
+                        if (proj != 2 && proj != 1) {
                             System.out.println("Invalid input. Please enter 1 or 2 next time.");
                             break;
                         }

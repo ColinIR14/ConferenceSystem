@@ -95,7 +95,6 @@ public class EventManager implements Serializable {
         if (isVip.equals("1")) {
             tempevent.setIsVip();
         }
-
         nextId += 1;
         for (Event x : eventList) {
             if (x.equals(tempevent)) {
@@ -253,7 +252,6 @@ public class EventManager implements Serializable {
      * @param e Event of which the speaker will be changed.
      * @param speaker Speaker who will newly speak at the Event.
      */
-
     public boolean removeSpeaker(Event e, User speaker){
         for(Event x:eventList){
             if(x.equals(e)){
@@ -266,7 +264,6 @@ public class EventManager implements Serializable {
             }
         }
         return false;
-
     }
     public void addSpeaker(Event e, User speaker) {
         for (Event x : eventList) {
@@ -366,7 +363,6 @@ public class EventManager implements Serializable {
      * @param user User in question
      * @return ArrayList of events attendee is going to.
      */
-
     public ArrayList<Event> getEventsAttending(User user) {
         ArrayList<Event> eventsAttending = new ArrayList<>();
         for (Event event: eventList) {
@@ -408,6 +404,11 @@ public class EventManager implements Serializable {
         return events;
     }
 
+    /**
+     * Takes in an int and return the associated event
+     * @param num int id
+     * @return Event of the given id
+     */
     public Event getEventFromId(int num){
         for (Event e: eventList) {
             if (e.getEventId() == num){
@@ -417,50 +418,104 @@ public class EventManager implements Serializable {
         return null;
     }
 
+    /**
+     * Takes in an int of id of an event and returns the approved requirements of the event
+     * @param i int id of event
+     * @return String of approved requirements
+     */
     public String getAddressedList(int i){
         return getEventFromId(i).getAddressedList();
     }
 
+    /**
+     * Takes in an event and returns the approved requirements of the event
+     * @param e Event
+     * @return String of approved requirements
+     */
     public String getAddressedList(Event e){
         return e.getAddressedList();
     }
 
+    /**
+     * Takes in event and string and add the dietary requests to the event as pending
+     * @param e Event
+     * @param rtc String of requests
+     */
     public void addDietaryRequest(Event e, String rtc){
         e.addDietaryRequest(rtc);
     }
 
+    /**
+     * Takes in event and string and add the dietary requests to the event as approved
+     * @param e Event
+     * @param rtc String of requests
+     */
     public void addDietaryRestriction(Event e, String rtc){
         e.addDietaryRestriction(rtc);
     }
 
+    /**
+     * Takes in event and string and add the accessibility requests to the event as pending
+     * @param e Event
+     * @param acr string of requests
+     */
     public void addAccessibilityRequest(Event e, String acr){
         e.addAccessibilityRequest(acr);
     }
 
+    /**
+     * Takes in event and string and add the accessibility requests to the event as approved
+     * @param e Event
+     * @param acr string of requests
+     */
     public void addAccessibilityRequirement(Event e, String acr){
         e.addAccessibilityRequirement(acr);
     }
 
+    /**
+     * Takes in event and int and generates the dietary request at the given index
+     * @param e Event
+     * @param num int index of request
+     * @return string of request at given index
+     */
     public String getDietaryRequest(Event e, int num){
         return e.getDietaryRequest(num);
     }
 
+    /**
+     * Takes in event adn int and generates the accessibility request at the given index
+     * @param e Event
+     * @param num int index of request
+     * @return string of request at given index
+     */
     public String getAccessibilityRequest(Event e, int num){
         return e.getAccessibilityRequest(num);
     }
 
+    /**
+     * Takes in event and find the size of list of dietary requests
+     * @param e Event
+     * @return int of size of list
+     */
     public int getDietaryReqListSize(Event e){
         return e.getDietaryReqListSize();
     }
 
+    /**
+     * Takes in event and find the size of list of accessibility requests
+     * @param e Event
+     * @return int of size of list
+     */
     public int getAccessibilityReqListSize(Event e){
         return e.getAccessibilityReqListSize();
     }
 
+    /**
+     * Takes in event and generates the string of the list of pending requests
+     * @param e Event
+     * @return String of all pending requests
+     */
     public String getPendingList(Event e){
         return e.getPendingList();
     }
-
-
-
 }

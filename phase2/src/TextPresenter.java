@@ -48,8 +48,8 @@ public class TextPresenter {
                 "Send messages to all attendees of event (8)\n" +
                 "See All users in event (9)\n" +
                 "Change event capacity (10)\n" +
-                "View pending requests(12)\n" +
-                "View addressed requests(13)\n" +
+                "View pending requests(11)\n" +
+                "View addressed requests(12)\n" +
                 "Main menu (0)\n");
         System.out.println("Enter the number corresponding to the desired action");
     }
