@@ -17,6 +17,7 @@ public class Event implements Serializable{
   private ArrayList<User> eventSpeaker;
   private Integer eventCapacity;
   private transient  DateTimeFormatter d = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+  private boolean isVip;
 
 
   /**Constructor for Event
@@ -182,7 +183,20 @@ public class Event implements Serializable{
     }
   }
 
+  /**
+   * getter for event's VIP status.
+   *  @return boolean representing if an event is VIP exclusive.
+   */
+  public boolean getIsVip() {
+    return isVip;
+  }
 
+  /**
+   * setter for event's VIP status.
+   */
+  public void setIsVip() {
+    isVip = true;
+  }
 
   /**
    * Overriding of equals to return true iff events clash,ie are their times overlap and are in the same room,

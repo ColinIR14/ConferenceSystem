@@ -89,10 +89,11 @@ public class TextPresenter {
         System.out.println("Add Organizer account (1)\n" +
                 "Add Speaker account (2)\n" +
                 "Add Attendee account (3)\n" +
-                "Remove account (4)\n" +
-                "Reset password (5)\n" +
-                "List all users (6)\n" +
-                "Main menu (7)\n");
+                "Add VIP account (4)\n" +
+                "Remove account (5)\n" +
+                "Change password (6)\n" +
+                "List all users (7)\n" +
+                "Main menu (8)\n");
         System.out.println("Please enter a one-character input selection.");
     }
 

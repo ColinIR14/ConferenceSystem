@@ -16,9 +16,9 @@ public class User implements Serializable{
 
     /**
      * Constructor for creating User.
-     * @param username String of the new user's username
-     * @param password String of the new user's password
-     * @param accountType String of the user's account type: must be one of "presenter", "organizer", or "attendee".
+     * @param username String of user's username.
+     * @param password String of user's password.
+     * @param accountType String of user's account type: must be one of "presenter", "organizer", "attendee", or "vip".
      */
     public User(String username, String password, String accountType) {
         this.username = username;
