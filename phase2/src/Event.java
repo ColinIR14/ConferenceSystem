@@ -17,6 +17,11 @@ public class Event implements Serializable{
   private ArrayList<User> eventSpeaker;
   private Integer eventCapacity;
   private transient  DateTimeFormatter d = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+  private boolean isVip;
+  private ArrayList<String> dietaryList;
+  private ArrayList<String> dietaryRequestList;
+  private ArrayList<String> accessibilityReqList;
+  private ArrayList<String> accessibilityList;
 
 
   /**Constructor for Event
@@ -36,6 +41,10 @@ public class Event implements Serializable{
     this.eventRoom=EventRoom;
     this.eventSpeaker=EventSpeaker;
     this.eventCapacity=EventCapacity;
+    this.dietaryList = new ArrayList<>();
+    this.dietaryRequestList = new ArrayList<>();
+    this.accessibilityList = new ArrayList<>();
+    this.accessibilityReqList = new ArrayList<>();
   }
 
   /**
@@ -182,7 +191,131 @@ public class Event implements Serializable{
     }
   }
 
+  /**
+   * getter for event's VIP status.
+   *  @return boolean representing if an event is VIP exclusive.
+   */
+  public boolean getIsVip() {
+    return isVip;
+  }
 
+  /**
+   * setter for event's VIP status.
+   */
+  public void setIsVip() {
+    isVip = true;
+  }
+
+  /**
+   * Add dietary request for the event
+   * @param rtc string containing dietary restrictions
+   */
+  public void addDietaryRequest(String rtc){
+    String [] dl = rtc.split(",", 0);
+    for (String item : dl){
+      if (!item.isEmpty() && !this.dietaryList.contains(item) && !this.dietaryRequestList.contains(item))
+        this.dietaryRequestList.add(item.trim());
+    }
+  }
+
+  public String getDietaryRequest(int num){
+    return this.dietaryRequestList.get(num);
+  }
+
+  /**
+   * Add on to the dietary restriction list for this event
+   * @param rtc String name of dietary restriction
+   */
+  public void addDietaryRestriction(String rtc){
+    String[] dl = rtc.split(",", 0);
+    for (String item : dl){
+      if (!item.isEmpty() && !this.dietaryList.contains(item))
+        this.dietaryList.add(item.trim());
+      if (this.dietaryRequestList.contains(item.trim()))
+        this.dietaryRequestList.remove(item.trim());
+    }
+  }
+
+  public void addAccessibilityRequest(String acr){
+    String[] al = acr.split(",", 0);
+    for (String item : al){
+      if (!item.isEmpty() && !this.accessibilityList.contains(item) && !this.accessibilityReqList.contains(item))
+        this.accessibilityReqList.add(item.trim());
+    }
+  }
+
+  public void addAccessibilityRequirement(String acr){
+    String[] al = acr.split(",", 0);
+    for (String item : al){
+      if (!item.isEmpty() && !this.accessibilityList.contains(item))
+        this.accessibilityList.add(item.trim());
+      if (this.accessibilityReqList.contains(item.trim()))
+        this.accessibilityReqList.remove(item.trim());
+    }
+  }
+
+  public String getAccessibilityRequest(int num){
+    return this.accessibilityReqList.get(num);
+  }
+
+  public String getAddressedList(){
+    String addressed = "";
+    if (this.dietaryList.isEmpty() && this.accessibilityList.isEmpty())
+      return "There are no addressed requests \n";
+    if (!this.dietaryList.isEmpty()){
+      addressed += "Dietary Restrictions addressed: \n";
+      for (String item : this.dietaryList){
+        addressed += item;
+        addressed += "\n";
+      }
+    }
+    if (!this.accessibilityList.isEmpty()){
+      addressed += "Accessibility Requirements addressed: \n";
+      for (String item : this.accessibilityList){
+        addressed += item;
+        addressed += "\n";
+      }
+    }
+    return addressed;
+  }
+
+  public String getPendingList(){
+    String pending = "";
+    int count = 0;
+    if (!this.dietaryRequestList.isEmpty()){
+      pending += "Dietary Restrictions requested: \n";
+      for (String item : this.dietaryRequestList){
+        pending += item;
+        pending += " - ";
+        pending += count;
+        pending += "\n";
+        count ++;
+      }
+    }
+    if (!this.accessibilityReqList.isEmpty()){
+      pending += "Accessibility Requirements requested: \n";
+      for (String item : this.accessibilityReqList){
+        pending += item;
+        pending += " - ";
+        pending += count;
+        pending += "\n";
+        count ++;
+      }
+    }
+    return pending;
+  }
+
+  /**
+   * Return the size of dietary request list
+   * @return the size of dietary request list
+   */
+  public int getDietaryReqListSize(){
+    return this.dietaryRequestList.size();
+  }
+
+  public int getAccessibilityReqListSize(){
+    return this.accessibilityReqList.size();
+  }
 
   /**
    * Overriding of equals to return true iff events clash,ie are their times overlap and are in the same room,

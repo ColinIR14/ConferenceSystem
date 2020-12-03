@@ -292,7 +292,9 @@ public class EventSystem {
                if(input1 .equals("back")) mainMenu();
                int i = Integer.parseInt(input1);
                System.out.println("Add self to event(1)\n" +
-                        "Remove self from event(2)");
+                        "Remove self from event(2)\n" +
+                        "View addressed requests(3)\n" +
+                        "Additional request(4)\n");
                System.out.println("Enter number you want to do(\"back\" for main menu)");
                String input =in.nextLine();
                if(input.equals("back")) mainMenu();
@@ -300,6 +302,17 @@ public class EventSystem {
                if (j == 1) addSelfToEvent(em.indexEvent(i));
                else if (j == 2)
                    removeSelfFromEvent(em.indexEvent(i));
+               else if (j == 3)
+                   System.out.println(em.getAddressedList(i));
+               else if (j == 4){
+                   if (em.signUpUsertoEvent(em.getEventFromId(i), am.getUser(currentUser))) {
+                       System.out.println("Do you have dietary restrictions or accessibility requirements?");
+                       additionalRequest(em.getEventFromId(i));
+                   }
+                   else
+                       System.out.println("You need to be signed up for this event before asking additional " +
+                               "requests to this event");
+               }
                else {
                    System.out.println("Invalid input. Please try again.");
                    eventMenu();
@@ -357,6 +370,12 @@ public class EventSystem {
                 break;
             case "10":
                 changeEventCapacity(e);
+            case "11":
+                addressRequest(e);
+                break;
+            case "12":
+                System.out.println(em.getAddressedList(e));
+                break;
             case "0":
                 mainMenu();
                 break;
@@ -465,6 +484,52 @@ public class EventSystem {
             System.out.println("Failed");
         } else {
             System.out.println("Success");
+            if(!am.checkAccountType(currentUser).equals("Speaker") &&
+                    !am.checkAccountType(currentUser).equals("Organizer"))
+                System.out.println("Do you have dietary restrictions or accessibility requirements?");
+            additionalRequest(e);
+        }
+        saveAll();
+    }
+
+    /*
+    addition requests can be made by users to the event that they are attending
+     */
+    private void additionalRequest(Event e) throws IOException {
+        System.out.println("Dietary restrictions(1)\n" +
+                "Accessibility requirements(2)\n" +
+                "none (3)");
+        System.out.println("Enter the number corresponding to the desired action");
+        String input = in.nextLine();
+        switch (input){
+            case "1":
+                System.out.println("Please enter the name(s) of food that you can't eat due to any reason(when " +
+                        "entering more than one item, please use comma to separate the items without conjuntions)");
+                String rtc = in.nextLine();
+                if (rtc.equals("back")) {
+                    additionalRequest(e);
+                    break;
+                }
+                em.addDietaryRequest(e, rtc);
+                break;
+            case "2":
+                System.out.println("Please enter your request(s)(When entering more than one request, please use " +
+                        "comma to separate the individual request without conjunctions)");
+                String acr = in.nextLine();
+                if (acr.equals("back")) {
+                    additionalRequest(e);
+                    break;
+                }
+                em.addAccessibilityRequest(e, acr);
+                break;
+            case "3":
+                break;
+            default:
+                System.out.println("Invalid input, please try again");
+                additionalRequest(e);
+        }
+        if (input.equals("1") || input.equals("2")){
+            additionalRequest(e);
         }
         saveAll();
     }
@@ -548,6 +613,33 @@ public class EventSystem {
             System.out.println("Enter a number please");
             eventMenu();
         }
+    }
+
+    /*
+    Organizer can decide which requests to approve which ones to leave out
+     */
+    private void addressRequest(Event e) throws IOException {
+        boolean repeat = true;
+        if (em.getAccessibilityReqListSize(e) + em.getDietaryReqListSize(e) != 0){
+            System.out.println(em.getPendingList(e));
+            System.out.println("Please enter a number at the end of a request to approve(enter back to exit)");
+            String input = in.nextLine();
+            if (input.equals("back")){
+                repeat = false;
+            }
+            else if (Integer.parseInt(input) <= em.getDietaryReqListSize(e)-1){
+                em.addDietaryRestriction(e, em.getDietaryRequest(e, Integer.parseInt(input)));
+            }
+            else if (Integer.parseInt(input) <= em.getAccessibilityReqListSize(e)+em.getDietaryReqListSize(e)-1){
+                int newN = Integer.parseInt(input)-em.getDietaryReqListSize(e);
+                em.addAccessibilityRequirement(e, em.getAccessibilityRequest(e, newN));
+            }
+            saveAll();
+            if (repeat)
+                addressRequest(e);
+        }
+        else
+            System.out.println("There are no requests submitted \n");
     }
 
 

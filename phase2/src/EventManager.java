@@ -407,4 +407,51 @@ public class EventManager implements Serializable {
         }
         return null;
     }
+
+    public String getAddressedList(int i){
+        return getEventFromId(i).getAddressedList();
+    }
+
+    public String getAddressedList(Event e){
+        return e.getAddressedList();
+    }
+
+    public void addDietaryRequest(Event e, String rtc){
+        e.addDietaryRequest(rtc);
+    }
+
+    public void addDietaryRestriction(Event e, String rtc){
+        e.addDietaryRestriction(rtc);
+    }
+
+    public void addAccessibilityRequest(Event e, String acr){
+        e.addAccessibilityRequest(acr);
+    }
+
+    public void addAccessibilityRequirement(Event e, String acr){
+        e.addAccessibilityRequirement(acr);
+    }
+
+    public String getDietaryRequest(Event e, int num){
+        return e.getDietaryRequest(num);
+    }
+
+    public String getAccessibilityRequest(Event e, int num){
+        return e.getAccessibilityRequest(num);
+    }
+
+    public int getDietaryReqListSize(Event e){
+        return e.getDietaryReqListSize();
+    }
+
+    public int getAccessibilityReqListSize(Event e){
+        return e.getAccessibilityReqListSize();
+    }
+
+    public String getPendingList(Event e){
+        return e.getPendingList();
+    }
+
+
+
 }
