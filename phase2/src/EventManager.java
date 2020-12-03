@@ -34,6 +34,9 @@ public class EventManager implements Serializable {
                 if (user.isContainedIn(x.getAttendees())) {
                     return true;
                 } else {
+                    if (event.getIsVip() && !user.getAccountType().equals("vip")) {
+                        return true;
+                    }
                     return !x.addAttendee(user);
                 }
             }
@@ -75,7 +78,7 @@ public class EventManager implements Serializable {
      * an Event in Eventlist clashes with EventTime and EventSpeaker of Event being added.
      * Otherwise, add the Event to eventList and return true.
      */
-    public boolean addNewEvent(String EventName, LocalDateTime EventTime,LocalDateTime EventEnd, int EventRoomNumber, ArrayList<User> EventSpeaker, int EventCapacity) {
+    public boolean addNewEvent(String EventName, LocalDateTime EventTime, LocalDateTime EventEnd, int EventRoomNumber, ArrayList<User> EventSpeaker, int EventCapacity, String isVip) {
         Room r = null;
         for (Room room : roomList) {
             if (room.getRoomNumber() == EventRoomNumber) {
@@ -89,6 +92,10 @@ public class EventManager implements Serializable {
             return false;
         }
         Event tempevent = new Event(nextId, EventName, EventTime,EventEnd, r, EventSpeaker, EventCapacity);
+        if (isVip.equals("1")) {
+            tempevent.setIsVip();
+        }
+
         nextId += 1;
         for (Event x : eventList) {
             if (x.equals(tempevent)) {
@@ -195,6 +202,8 @@ public class EventManager implements Serializable {
             s.append(i);
             s.append("  Event Name-");
             s.append(eventList.get(i).getEventName());
+            s.append("  VIP Exclusive-");
+            s.append(eventList.get(i).getIsVip());
             s.append("  Room Number-");
             s.append(eventList.get(i).getEventRoom().getRoomNumber());
             s.append("  Event Capacity-");

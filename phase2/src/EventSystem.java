@@ -388,6 +388,12 @@ public class EventSystem {
     private void addEvent() throws IOException {
         System.out.println("Please enter the event name.");
         String name = in.nextLine();
+        System.out.println("Do you want to make this event VIP exclusive?\n  Yes (1)\n  No (2)");
+        String isVip = in.nextLine();
+        if (!isVip.equals("1") && !isVip.equals("2")) {
+            System.out.println("Sorry invalid input! Please try adding a new event again.");
+            eventMenu();
+        }
         System.out.println("Please enter the start date for the event. (dd/MM/yyyy hh:mm:ss)");
         String date = in.nextLine();
         try {
@@ -453,7 +459,7 @@ public class EventSystem {
                     speakers.add(am.getUser(speaker));
                 }
             }
-            if (em.addNewEvent(name, date2,date4 ,room, speakers, capacity)) {
+            if (em.addNewEvent(name, date2,date4 ,room, speakers, capacity, isVip)) {
                 System.out.println("Successfully Added!\n");
             } else {
                 System.out.println("Failed to add");
@@ -1100,14 +1106,18 @@ public class EventSystem {
                     accountMenu();
                     break;
                 case "4":
-                    removeAccount();
+                    addAccount("vip");
                     accountMenu();
                     break;
                 case "5":
-                    changePassword();
+                    removeAccount();
                     accountMenu();
                     break;
                 case "6":
+                    changePassword();
+                    accountMenu();
+                    break;
+                case "7":
                     if (am.checkAccountType(currentUser).equals("organizer")) {
                         System.out.println(am.toString());
                     } else {
@@ -1115,7 +1125,7 @@ public class EventSystem {
                     }
                     accountMenu();
                     break;
-                case "7":
+                case "8":
                     mainMenu();
                     break;
                 default:
