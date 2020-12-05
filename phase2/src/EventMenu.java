@@ -397,18 +397,24 @@ public class EventMenu {
     }
 
     private void addUserToEvent(Event e) throws IOException {
-        tp.printAddUserToEvent("username");
-        String username = in.nextLine();
-        if (am.checkAccountType(username).equals("speaker")){
-            tp.printAddUserToEvent("not attendee");
+        try {
+            tp.printAddUserToEvent("username");
+            String username = in.nextLine();
+            if (am.checkAccountType(username).equals("speaker")) {
+                tp.printAddUserToEvent("not attendee");
+            } else if (em.signUpUsertoEvent(e, am.getUser(username))) {
+                tp.printAddUserToEvent("fail");
+            } else {
+                tp.printAddUserToEvent("success");
+            }
+            saveAll();
         }
-        else if (em.signUpUsertoEvent(e, am.getUser(username))) {
-            tp.printAddUserToEvent("fail");
-        } else {
-            tp.printAddUserToEvent("success");
+        catch(NullPointerException h){
+            System.out.println("Not a user");
+            eventMenu();
         }
-        saveAll();
     }
+
 
     private void removeSelfFromEvent(Event e) throws IOException {
         if (em.cancelUseratEvent(e, am.getUser(currentUser))) {

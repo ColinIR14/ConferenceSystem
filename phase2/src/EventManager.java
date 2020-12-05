@@ -384,6 +384,10 @@ public class EventManager implements Serializable {
             if (x.getAttendees().contains(u))
                 x.removeAttendee(u);
         }
+        for(Event x:eventList){
+            if (x.getSpeaker().contains(u))
+                x.removeSpeaker(u);
+        }
     }
 
     /**

@@ -135,9 +135,10 @@ public class AccountMenu {
             if (am.getUser(username) == null) {
                 tp.printRemoveAccount("user error");
             } else {
-                am.deleteUser(username, am.getUser(username).getPassword());
-                am.removeMessageableFromList(am.getUser(username));
+
                 em.removeUserFromEvent(am.getUser(username));
+                am.removeMessageableFromList(am.getUser(username));
+                am.deleteUser(username, am.getUser(username).getPassword());
                 tp.printSuccess();
             }
             accountMenu();
