@@ -32,8 +32,6 @@ public class MessageMenu {
     */
     public void messageMenu() throws IOException {
         tp.messageMenuPrompt();
-        System.out.println("Please enter an one-character input selection. (Enter 'back' at anypoint if you want to go " +
-                "cancel action in further steps)");
         String input = in.nextLine();
         switch (input) {
             case "1":
@@ -49,8 +47,7 @@ public class MessageMenu {
                 break;
             case "3":
                 System.out.println(mm.getMessageable((am.getUser(currentUser)).getMessageable()));
-                System.out.println("Please enter the user(username) you want to add to contact or enter \"back\" if you wish to go back:");
-
+                tp.printMessageMenu3("username");
                 String usern = in.nextLine();
                 if (usern.equals("back")) {
                     messageMenu();
@@ -59,14 +56,14 @@ public class MessageMenu {
                     mm.addMessageable(am.getUser(currentUser), am.getUser(usern));
                 }
                 else {
-                    System.out.println("User doesn't exist");
+                    tp.printMessageMenu3("no user");
                 }
                 saveAll();
                 messageMenu();
                 break;
             case "4":
                 System.out.println(mm.getMessageable((am.getUser(currentUser)).getMessageable()));
-                System.out.println("Please enter the user(username) you want to remove from your contact, enter \"back\" to go back:");
+                tp.printMessageMenu4();
                 String username = in.nextLine();
                 if (username.equals("back"))
                     messageMenu();
@@ -78,13 +75,13 @@ public class MessageMenu {
             case "5":
                 try {
                     if (!am.checkAccountType(currentUser).equals("organizer")) {
-                        System.out.println("You're not an organizer");
+                        tp.printMessageMenu5("not organizer");
                         messageMenu();
                         break;
                     }
-                    System.out.println("Current event list:\n");
+                    tp.printMessageMenu5("event list");
                     System.out.println(em.eventdetails());
-                    System.out.println("Enter Number of Event you want to manipulate");
+                    tp.printMessageMenu5("number of events");
                     String in2 = in.nextLine();
                     if (in2.equals("back")) {
                         messageMenu();
@@ -97,11 +94,11 @@ public class MessageMenu {
                     break;
                 }
                 catch(NumberFormatException e){
-                    System.out.println("Enter a number please");
+                    tp.printMessageMenu5("non-number");
                     messageMenu();
                 }
                 catch(IndexOutOfBoundsException e){
-                    System.out.println("Enter a valid index please");
+                    tp.printMessageMenu5("invalid index");
                     messageMenu();
                 }
                 break;
@@ -113,7 +110,7 @@ public class MessageMenu {
                 es.mainMenu();
                 break;
             default:
-                System.out.println("Invalid input, please retry");
+                tp.printMessageMenuDefault();
                 messageMenu();
         }
         saveAll();
@@ -127,17 +124,16 @@ public class MessageMenu {
     */
     private void seeArchive(User us) throws IOException {
         if (mm.getArchivedMessage(us).size()==0) {
-            System.out.println("\nYou have no archived messages!");
+            tp.printSeeArchive("no messages");
             messageMenu();
         }
-        System.out.println("\nYour archived messages:");
+        tp.printSeeArchive("archive");
         int i = 1;
         for(Message m : mm.getArchivedMessage(us)){
             System.out.println(i + ". "+ m.getContentToString());
             i += 1;
         }
-        System.out.println("\n----------");
-        System.out.println("Select the message by the number in the front for further actions or type \"back\" to go back");
+        tp.printSeeArchive("message selection");
         String ans = in.nextLine();
         if (ans.equals("back")) {
             messageMenu();
@@ -149,11 +145,11 @@ public class MessageMenu {
                     specificMessageMenu(us, a, true);
                 }
                 else{
-                    System.out.println("Invalid Input");
+                    tp.printSeeArchive("invalid");
                     seeArchive(us);
                 }
             }catch (NumberFormatException e){
-                System.out.println("Invalid Input.");
+                tp.printSeeArchive("invalid");
                 seeArchive(us);
             }
         }
@@ -163,9 +159,9 @@ public class MessageMenu {
     * A menu for previewing all messages of a user.
     */
     private void viewMessageMenu(User us) throws IOException {
-        System.out.println("\nMessage Preview \n");
+        tp.printViewMessageMenu("title");
         System.out.println(seeMessages(us));
-        System.out.println("\n" + "Select message by entering the number in the front for details and further actions or type \"back\" to go back");
+        tp.printViewMessageMenu("message selection");
         String ans = in.nextLine();
         if (ans.equals("back")) {
             messageMenu();
@@ -177,11 +173,11 @@ public class MessageMenu {
                     specificMessageMenu(us, a, false);
                 }
                 else{
-                    System.out.println("Invalid Input");
+                    tp.printViewMessageMenu("invalid");
                     viewMessageMenu(us);
                 }
             }catch (NumberFormatException e){
-                System.out.println("Invalid Input.");
+                tp.printViewMessageMenu("invalid");
                 viewMessageMenu(us);
             }
         }
@@ -200,7 +196,7 @@ public class MessageMenu {
         }
         currentMessage.setViewed(true);
         System.out.println(currentMessage.getContentToString());
-        tp.specificMessageMenuPrompt();
+        tp.specificMessageMenuPrompt("options");
         String at = in.nextLine();
         switch(at){
             case "1":
@@ -210,21 +206,21 @@ public class MessageMenu {
                 break;
             case "2":
                 if (currentMessage.getArchived()) {
-                    System.out.println("The message is already in archive.");
+                    tp.specificMessageMenuPrompt("case 2");
                 }
                 else {
                     currentMessage.setArchived(true);
-                    System.out.println("Message archived!");
+                    tp.specificMessageMenuPrompt("case 3 in archive");
                 }
                 saveAll();
                 break;
             case "3":
                 if (!currentMessage.getArchived()) {
-                    System.out.println("The message is not in archive.");
+                    tp.specificMessageMenuPrompt("case 3 not in archive");
                 }
                 else {
                     currentMessage.setArchived(false);
-                    System.out.println("Message removed from archive!");
+                    tp.specificMessageMenuPrompt("case 3 message removed");
                 }
                 saveAll();
                 break;
@@ -232,15 +228,15 @@ public class MessageMenu {
                 if (!currentMessage.getSender().isContainedIn(us.getMessageable())) {
                     mm.addMessageable(us, am.getUser(currentMessage.getSender().getUsername()));
                 }
-                System.out.println("Please enter your message:");
+                tp.specificMessageMenuPrompt("case 4 instruction");
                 String content = in.nextLine();
                 if(mm.sendMessage(us, currentMessage.getSender(), content)) {
                     if (am.checkAccountType(am.getName(currentMessage.getSender())).equals("organizer")) {
-                        System.out.println("Warning: You have sent a message to an Organizer. You may not get a reply.");
+                        tp.specificMessageMenuPrompt("case 4 message organizer");
                     } else if (am.checkAccountType(am.getName(currentMessage.getSender())).equals("speaker")) {
-                        System.out.println("Warning: You have sent a message to a Speaker. You may not get a reply if you are not attending his/her talk.");
+                        tp.specificMessageMenuPrompt("case 4 message speaker");
                     }
-                    System.out.println("Message sent successfully.");
+                    tp.specificMessageMenuPrompt("message sent");
                     saveAll();
                 }
                 break;
@@ -253,7 +249,7 @@ public class MessageMenu {
                 viewMessageMenu(us);
                 break;
             default:
-                System.out.println("Invalid input, try again.");
+                tp.specificMessageMenuPrompt("default invalid");
                 specificMessageMenu(us, a, inarchive);
                 break;
         }
@@ -268,7 +264,7 @@ public class MessageMenu {
     send message menu for speaker.
     */
     private void sendMessageSpeaker(User sender) throws IOException {
-        tp.sendMessageSpeakerPrompt();
+        tp.printSendMessageSpeaker("options");
         ArrayList<User> validUser = new ArrayList<>();
         for (Event event : em.getEventsOfSpeaker(sender)){
             validUser.addAll(event.getAttendees());
@@ -279,16 +275,16 @@ public class MessageMenu {
         else {
             switch (input) {
                 case "1":
-                    System.out.println("Please enter your message:");
+                    tp.printSendMessageSpeaker("case 1 instruction");
                     String content = in.nextLine();
                     for (Event event : em.getEventsOfSpeaker(sender))
                         mm.sendEventMessage(sender, event, content);
-                    System.out.println("Success!");
+                    tp.printSendMessageSpeaker("case 1 success");
                     saveAll();
                     break;
                 case "2":
                     if (em.getEventsOfSpeaker(sender).size() == 0){
-                        System.out.println("You are not speaking at any events.");
+                        tp.printSendMessageSpeaker("case 2 not speaking");
                         messageMenu();
                         break;
                     }
@@ -299,14 +295,14 @@ public class MessageMenu {
                         messageMenu();
                         break;
                     }
-                    System.out.println("Please enter your message:");
+                    tp.printSendMessageSpeaker("case 2 instruction");
                     String content2 = in.nextLine();
                     mm.sendMessage1(sender, am.getUser(receiver), content2);
-                    System.out.println("Success!");
+                    tp.printSendMessageSpeaker("case 2 success");
                     saveAll();
                     break;
                 default:
-                    System.out.println("Invalid input, try again");
+                    tp.printSendMessageSpeaker("default invalid");
                     messageMenu();
             }
 
@@ -317,16 +313,16 @@ public class MessageMenu {
     Send message menu for organizer.
     */
     private void sendMessageOrganizer(User sender) throws IOException{
-        tp.sendMessageOrganizerPrompt();
+        tp.printSendMessageOrganizer("options");
         String input = in.nextLine();
         if (input.equals("back")){
             messageMenu();
         }
         if (!(input.equals("1")||input.equals("2")||input.equals("3")||input.equals("back"))){
-            System.out.println("Invalid input, try again");
+            tp.printSendMessageOrganizer("invalid");
             sendMessageOrganizer(am.getUser(currentUser));
         }
-        System.out.println("Please enter your message:");
+        tp.printSendMessageOrganizer("message instruction");
         String content = in.nextLine();
         switch (input) {
             case "1":
@@ -334,7 +330,7 @@ public class MessageMenu {
                     if (am.checkAccountType(am.getName(user)).equals("speaker"))
                         mm.sendMessage1(sender, user, content);
                 }
-                System.out.println("Message sent");
+                tp.printSendMessageOrganizer("case 1 sent");
                 saveAll();
                 break;
             case "2":
@@ -342,15 +338,15 @@ public class MessageMenu {
                     if (am.checkAccountType(am.getName(user)).equals("attendee"))
                         mm.sendMessage1(sender, user, content);
                 }
-                System.out.println("Message sent");
+                tp.printSendMessageOrganizer("case 2 sent");
                 saveAll();
                 break;
             case "3":
-                System.out.println("Enter the username of user you want to send");
+                tp.printSendMessageOrganizer("case 3 username");
                 String receiver = in.nextLine();
                 if (am.checkUser(receiver))
                     mm.sendMessage1(sender, am.getUser(receiver), content);
-                System.out.println("Message sent");
+                tp.printSendMessageOrganizer("case 3 sent");
         }
     }
 
@@ -358,7 +354,7 @@ public class MessageMenu {
     * Take sender user and ask for content of message and receiver and will send to message.
     */
     private void sendMessage(User us) throws IOException {
-        System.out.println("Please enter your message:");
+        tp.printSendMessage("instruction");
         String content = in.nextLine();
         if (content.equals("back"))
             messageMenu();
@@ -367,11 +363,11 @@ public class MessageMenu {
             String receiver = "";
             if (str.length() != 0) {
                 System.out.println(str);
-                System.out.println("Please enter the recipient of the message.");
+                tp.printSendMessage("recipient input");
                 receiver = in.nextLine();
             }
             else{
-                System.out.println("You have no contact please add contact first ");
+                tp.printSendMessage("no contacts");
                 messageMenu();
             }
             if (receiver.equals("back"))
@@ -379,14 +375,14 @@ public class MessageMenu {
             else {
                 if(mm.sendMessage(us, am.getUser(receiver), content)) {
                     if (am.checkAccountType(am.getName(am.getUser(receiver))).equals("organizer")){
-                        System.out.println("Warning: You have sent a message to an Organizer. You may not get a reply.");
+                        tp.printSendMessage("warning message organizer");
                     }
                     else if(am.checkAccountType(am.getName(am.getUser(receiver))).equals("speaker")){
-                        System.out.println("Warning: You have sent a message to a Speaker. You may not get a reply if you are not attending his/her talk.");
+                        tp.printSendMessage("warning message speaker");
                     }
-                    System.out.println("Message sent successfully.");
+                    tp.printSendMessage("message sent");
                 } else {
-                    System.out.println("Message not sent.");
+                    tp.printSendMessage("message not sent");
                 }
             }
         }

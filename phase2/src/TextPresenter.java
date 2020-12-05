@@ -400,27 +400,158 @@ public class TextPresenter {
                 "Send event message (Organizers only) (5)\n" +
                 "View archived messages (6)\n"+
                 "Main menu (7)\n");
+        System.out.println("Please enter an one-character input selection. (Enter 'back' at anypoint if you want" +
+                " to go cancel action in further steps)");
     }
 
-    public void specificMessageMenuPrompt(){
-        System.out.println("\nMark this message as unread. (1)");
-        System.out.println("Archive this message. (2)");
-        System.out.println("Remove from archive. (3)");
-        System.out.println("Directly reply to this message. This will automatically add the sender to your contact!(4)");
-        System.out.println("Delete this message. (5)");
-        System.out.println("Go back. (6)");
-        System.out.println("Please enter a number to indicate your choice");
+    public void printMessageMenu3(String input){
+        if (input.equals("username")) {
+            System.out.println("Please enter the user(username) you want to add to contact or enter \"back\" if" +
+                    " you wish to go back:");
+        } else if (input.equals("no user")) {
+            System.out.println("User doesn't exist");
+        }
     }
 
-    public void sendMessageSpeakerPrompt(){
-        System.out.println("Send message to all attendees to your talk(s) (1) \n" +
-                "Send message to individual attendee attending your talk(s) (2)");
+    public void printMessageMenu4(){
+        System.out.println("Please enter the user(username) you want to remove from your contact, enter" +
+                " \"back\" to go back:");
     }
 
-    public void sendMessageOrganizerPrompt(){
-        System.out.println("Send message to all speakers (1)\n" +
-                "Send message to all attendees (2)\n" +
-                "Send message (3)\n" +
-                "Type \"back\" to go back");
+    public void printMessageMenu5(String input){
+        if (input.equals("not organizer")) {
+            System.out.println("You're not an organizer");
+        } else if (input.equals("event list")) {
+            System.out.println("Current event list:\n");
+        } else if (input.equals("number of events")) {
+            System.out.println("Enter Number of Event you want to manipulate");
+        } else if (input.equals("non-number")) {
+            System.out.println("Enter a number please");
+        } else if (input.equals("invalid index")) {
+            System.out.println("Enter a valid index please");
+        }
     }
+
+    public void printMessageMenuDefault(){
+        System.out.println("Invalid input, please retry");
+    }
+
+    public void printSeeArchive(String input){
+        if (input.equals("no messages")) {
+            System.out.println("\nYou have no archived messages!");
+        } else if (input.equals("archive")) {
+            System.out.println("\nYour archived messages:");
+        } else if (input.equals("message selection")) {
+            System.out.println("\n----------");
+            System.out.println("Select the message by the number in the front for further actions or type" +
+                    " \"back\" to go back");
+        } else if (input.equals("invalid")) {
+            System.out.println("Invalid Input");
+        }
+    }
+
+    public void printViewMessageMenu(String input){
+        if (input.equals("title")) {
+            System.out.println("\nMessage Preview \n");
+        } else if (input.equals("message selection")) {
+            System.out.println("\n" + "Select message by entering the number in the front for details and further" +
+                    " actions or type \"back\" to go back");
+        } else if (input.equals("invalid")) {
+            System.out.println("Invalid Input");
+        }
+    }
+
+
+    public void specificMessageMenuPrompt(String input){
+        if (input.equals("options")) {
+            System.out.println("\nMark this message as unread. (1)");
+            System.out.println("Archive this message. (2)");
+            System.out.println("Remove from archive. (3)");
+            System.out.println("Directly reply to this message. This will automatically add the sender to your" +
+                    " contact!(4)");
+            System.out.println("Delete this message. (5)");
+            System.out.println("Go back. (6)");
+            System.out.println("Please enter a number to indicate your choice");
+        } else if (input.equals("case 2")) {
+            System.out.println("The message is already in archive.");
+        } else if (input.equals("case 3 in archive")) {
+            System.out.println("Message archived!");
+        } else if (input.equals("case 3 not in archive")) {
+            System.out.println("The message is not in archive.");
+        } else if (input.equals("case 3 message removed")) {
+            System.out.println("Message removed from archive!");
+        } else if (input.equals("case 4 instruction")) {
+            System.out.println("Please enter your message:");
+        } else if (input.equals("case 4 message organizer")) {
+            System.out.println("Warning: You have sent a message to an Organizer. You may not get a reply.");
+        } else if (input.equals("case 4 message speaker")) {
+            System.out.println("Warning: You have sent a message to a Speaker. You may not get a reply if you are" +
+                    " not attending his/her talk.");
+        } else if (input.equals("message sent")) {
+            System.out.println("Message sent successfully.");
+        } else if (input.equals("default invalid")) {
+            System.out.println("Invalid input, try again.");
+        }
+    }
+
+    public void printSendMessageSpeaker(String input){
+        if (input.equals("options")) {
+            System.out.println("Send message to all attendees to your talk(s) (1) \n" +
+                    "Send message to individual attendee attending your talk(s) (2)");
+        } else if (input.equals("case 1 instruction")) {
+            System.out.println("Please enter your message:");
+        } else if (input.equals("case 1 success")) {
+            System.out.println("Success!");
+        } else if (input.equals("case 2 not speaking")) {
+            System.out.println("You are not speaking at any events.");
+        } else if (input.equals("case 2 instruction")) {
+            System.out.println("Please enter your message:");
+        } else if (input.equals("case 2 success")) {
+            System.out.println("Success!");
+        } else if (input.equals("default invalid")) {
+        }
+    }
+
+
+
+    public void printSendMessageOrganizer(String input){
+        if (input.equals("options")) {
+            System.out.println("Send message to all speakers (1)\n" +
+                    "Send message to all attendees (2)\n" +
+                    "Send message (3)\n" +
+                    "Type \"back\" to go back");
+        } else if (input.equals("invalid")) {
+            System.out.println("Invalid input, try again");
+        } else if (input.equals("message instruction")) {
+            System.out.println("Please enter your message:");
+        } else if (input.equals("case 1 sent")) {
+            System.out.println("Message sent");
+        } else if (input.equals("case 2 sent")) {
+            System.out.println("Message sent");
+        } else if (input.equals("case 3 username")) {
+            System.out.println("Enter the username of user you want to send");
+        } else if (input.equals("case 3 sent")) {
+            System.out.println("Message sent");
+        }
+    }
+
+    public void printSendMessage(String input){
+        if (input.equals("instruction")) {
+            System.out.println("Please enter your message:");
+        } else if (input.equals("recipient input")) {
+            System.out.println("Please enter the recipient of the message.");
+        } else if (input.equals("no contacts")) {
+            System.out.println("You have no contact please add contact first ");
+        } else if (input.equals("warning message organizer")) {
+            System.out.println("Warning: You have sent a message to an Organizer. You may not get a reply.");
+        } else if (input.equals("warning message speaker")) {
+            System.out.println("Warning: You have sent a message to a Speaker. You may not get a reply if you are not" +
+                    " attending his/her talk.");
+        } else if (input.equals("message sent")) {
+            System.out.println("Message sent successfully.");
+        } else if (input.equals("message not sent")) {
+            System.out.println("Message not sent.");
+        }
+    }
+
 }
