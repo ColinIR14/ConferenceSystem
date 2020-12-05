@@ -27,9 +27,9 @@ public class EventMenu {
 
     // TODO: Add Javadoc for eventMenu()
     public void eventMenu() throws IOException {
-        System.out.println("Event Menu\n");
+        tp.eventMenuOrganizerPrompt("title");
         if (am.checkAccountType(currentUser).equals("organizer")) {
-            tp.eventMenuPrompt();
+            tp.eventMenuOrganizerPrompt("options");
             String input = in.nextLine();
             switch (input) {
                 case "2":
@@ -42,40 +42,40 @@ public class EventMenu {
                             eventMenu();
                             break;
                         }
-                        System.out.println("Enter Event Number of the event you want to manipulate");
+                        tp.printEventMenuOrganizer1("event number");
                         int i = Integer.parseInt(in.nextLine());
                         specificEventMenu(em.indexEvent(i));
                         break;
                     } catch (IndexOutOfBoundsException e) {
-                        System.out.println("Invalid index please try again");
+                        tp.printEventMenuOrganizer1("invalid index");
                         eventMenu();
                     } catch (NumberFormatException e) {
-                        System.out.println("Please enter a number!");
+                        tp.printEventMenuOrganizer1("non-number input");
                         eventMenu();
                     }
                 }
                 case "3": {
                     try {
-                        System.out.println("Please enter a room number (integer only)");
+                        tp.printEventMenuOrganizer3("room number");
                         int roomNum = Integer.parseInt(in.nextLine());
-                        System.out.println("Please enter the room capacity (integer only)");
+                        tp.printEventMenuOrganizer3("room capacity");
                         int roomCapacity = Integer.parseInt(in.nextLine());
-                        System.out.println("Enter 1 if your room consists of rows of chairs and 2 if your room has tables");
+                        tp.printEventMenuOrganizer3("room chairs and tables");
                         int seating = Integer.parseInt(in.nextLine());
                         if (seating != 1 && seating != 2) {
-                            System.out.println("Invalid input. Please enter 1 or 2 next time.");
+                            tp.printEventMenuOrganizer3("chairs and tables error");
                             break;
                         }
-                        System.out.println("Does your room have a projector or screen? Enter 1 for yes and 2 for no");
+                        tp.printEventMenuOrganizer3("projector");
                         int proj = Integer.parseInt(in.nextLine());
                         if (proj != 2 && proj != 1) {
-                            System.out.println("Invalid input. Please enter 1 or 2 next time.");
+                            tp.printEventMenuOrganizer3("projector error");
                             break;
                         }
                         em.addRoom(roomNum, seating, proj, roomCapacity);
                         break;
                     } catch (NumberFormatException e) {
-                        System.out.println("Enter number please");
+                        tp.printEventMenuOrganizer3("number error");
                         eventMenu();
                     }
                 }
@@ -91,38 +91,37 @@ public class EventMenu {
                             s.append("\n");
                         }
                         System.out.println(s);
-                        System.out.println("Please enter the room number to be removed.");
+                        tp.printEventMenuOrganizer4("remove room number");
                         int room = Integer.parseInt(in.nextLine());
                         //if (em.getListOfRoomsOccupied().contains(room))
                         if (!em.isoccupied(room) && em.checkRoom(room)) {
                             em.removeRoom(room);
-                            System.out.println("Successfully removed!\n");
+                            tp.printEventMenuOrganizer4("remove success");
                         }
                         else{
-                            System.out.println("Sorry, there are events assigned to this room, or there is no room with that number.\n");
+                            tp.printEventMenuOrganizer4("event already assigned");
                         }
                         break;
                     } catch (NumberFormatException e) {
-                        System.out.println("Enter a number please");
+                        tp.printEventMenuOrganizer4("number error");
                         eventMenu();
                     }
                 case "5":
                     es.mainMenu();
                     break;
                 default:
-                    System.out.println("Invalid input. Please try again.");
+                    tp.printEventMenuOrganizer5("invalid input");
                     eventMenu();
             }
             saveAll();
         }
         else if (am.checkAccountType(currentUser).equals("speaker")){
-            System.out.println("List Your Talks(1)\nSend message to all attendees in talks(2)\nMain menu(3)");
-            System.out.println("Please enter a one input character selection ");
+            tp.eventMenuSpeakerPrompt();
             String input = in.nextLine();
             switch (input){
                 case "1":
                     if(em.getEventsOfSpeaker(am.getUser(currentUser)).size() == 0){
-                        System.out.println("You are not speaking at any events.");
+                        tp.printEventMenuSpeaker1();
                         eventMenu();
                         break;
                     }
@@ -131,7 +130,7 @@ public class EventMenu {
                     eventMenu();
                     break;
                 case "2":
-                    System.out.println("Enter message:");
+                    tp.printEventMenuSpeaker2();
                     String content = in.nextLine();
                     for(Event x:em.getEventsOfSpeaker(am.getUser(currentUser))){
                         mm.sendEventMessage(am.getUser(currentUser),x,content);
@@ -142,27 +141,23 @@ public class EventMenu {
                     es.mainMenu();
                     break;
                 default:
-                    System.out.println("Invalid input, try again.");
+                    tp.printEventMenuSpeakerDefault();
                     eventMenu();
             }
         }
         else {
             try{
-                System.out.println("Current event list:\n");
+                tp.eventMenuAttendeePrompt("event list");
                 System.out.println(em.eventdetails());
-                System.out.println("Events you are attending:\n");
+                tp.eventMenuAttendeePrompt("event attendance");
                 for (Event event: em.getEventsAttending(am.getUser(currentUser))) {
                     System.out.println(event);
                 }
-                System.out.println("Enter Number of Event you want to manipulate(\"back\" for main menu)");
+                tp.eventMenuAttendeePrompt("number of events");
                 String input1= in.nextLine();
                 if(input1 .equals("back")) es.mainMenu();
                 int i = Integer.parseInt(input1);
-                System.out.println("Add self to event(1)\n" +
-                        "Remove self from event(2)\n" +
-                        "View addressed requests(3)\n" +
-                        "Additional request(4)\n");
-                System.out.println("Enter number you want to do(\"back\" for main menu)");
+                tp.eventMenuAttendeePrompt("events submenu");
                 String input =in.nextLine();
                 if(input.equals("back")) es.mainMenu();
                 int j = Integer.parseInt(input);
@@ -173,24 +168,23 @@ public class EventMenu {
                     System.out.println(em.getAddressedList(em.indexEvent(i)));
                 else if (j == 4){
                     if (em.checkEventAttending(em.indexEvent(i), am.getUser(currentUser))) {
-                        System.out.println("Do you have dietary restrictions or accessibility requirements?");
+                        tp.printEventMenuAttendee4("dietary restrictions");
                         additionalRequest(em.getEventFromId(i));
                     }
                     else
-                        System.out.println("You need to be signed up for this event before asking additional " +
-                                "requests to this event");
+                        tp.printEventMenuAttendee4("other");
                 }
                 else {
-                    System.out.println("Invalid input. Please try again.");
+                    tp.printEventMenuAttendee4("error");
                     eventMenu();
                 }
             }
             catch(NumberFormatException e){
-                System.out.println("Enter number please");
+                tp.eventMenuOrganizerPrompt("number error");
                 eventMenu();
             }
             catch(IndexOutOfBoundsException e){
-                System.out.println("Invalid input.Please try again");
+                tp.eventMenuOrganizerPrompt("input error");
                 eventMenu();
             }
 
@@ -200,7 +194,7 @@ public class EventMenu {
     }
 
     private void specificEventMenu(Event e) throws IOException {
-        tp.specificEventMenuPrompt();
+        tp.specificEventMenuPrompt("options");
         String next = in.nextLine();
         switch (next) {
             case "1":
@@ -229,7 +223,7 @@ public class EventMenu {
                 break;
             case "9":
                 if (em.getAttendees(e).length() == 0){
-                    System.out.println("No attendees");
+                    tp.specificEventMenuPrompt("case 9");
                 }
                 else {
                     System.out.println(em.getAttendees(e));
@@ -247,52 +241,50 @@ public class EventMenu {
                 es.mainMenu();
                 break;
             default:
-                System.out.println("Invalid input. Please try again.");
+                tp.specificEventMenuPrompt("default");
                 specificEventMenu(e);
         }
         eventMenu();
     }
 
     private void addEvent() throws IOException {
-        System.out.println("Please enter the event name.");
+        tp.addEventPrompt("event name");
         String name = in.nextLine();
-        System.out.println("Do you want to make this event VIP exclusive?\n  Yes (1)\n  No (2)");
+        tp.addEventPrompt("vip exclusive");
         String isVip = in.nextLine();
         if (!isVip.equals("1") && !isVip.equals("2")) {
-            System.out.println("Sorry invalid input! Please try adding a new event again.");
+            tp.addEventPrompt("vip invalid input");
             eventMenu();
         }
-        System.out.println("Please enter the start date for the event. (dd/MM/yyyy hh:mm:ss)");
+        tp.addEventPrompt("event start date");
         String date = in.nextLine();
         try {
             LocalDateTime date2=LocalDateTime.parse(date, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
             if (date2.getHour()>17 || date2.getHour() <9){
-                System.out.println("Sorry, events can only be between 9am and 5 pm.");
+                tp.addEventPrompt("invalid start date");
                 eventMenu();
             }
-            System.out.println("Please enter the end date for the event. (dd/MM/yyyy hh:mm:ss)");
+            tp.addEventPrompt("event end date");
             String date3 = in.nextLine();
 
             LocalDateTime date4=LocalDateTime.parse(date3, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"));
             if (date4.getHour()>17 || date4.getHour() <9){
-                System.out.println("Sorry, events can only be between 9am and 5 pm.");
+                tp.addEventPrompt("invalid end date");
                 eventMenu();}
             if(date4.isBefore(date2)){
-                System.out.println("Start Time cannot be after End time");
+                tp.addEventPrompt("start after end");
                 eventMenu();
             }
-
-            System.out.println("Input your seating requirement:\nDon't care (0) \nRows of chairs (1) \nTables (2) ");
+            tp.addEventPrompt("seating information");
             int seating = Integer.parseInt(in.nextLine());
             if (seating < 0 || seating > 3) {
-                System.out.println("Sorry, invalid input.");
+                tp.addEventPrompt("invalid seating");
                 eventMenu();
             }
-
-            System.out.println("Do you require a screen/projector? \nDon't care (0) \nYes(1) \nNo (2)");
+            tp.addEventPrompt("screen information");
             int proj = Integer.parseInt(in.nextLine());
             if (proj < 0 || proj > 2) {
-                System.out.println("Sorry, invalid input.");
+                tp.addEventPrompt("invalid screening");
                 eventMenu();
             }
 
@@ -310,38 +302,38 @@ public class EventMenu {
                 s.append(")\n");
             }
             System.out.println(s);
-            System.out.println("Please enter the room number for this event. (The room must be created first)");
+            tp.addEventPrompt("event room number");
             int room = Integer.parseInt(in.nextLine());
-            System.out.println("Please enter the max number of attendees for this event. (The event capacity can't be over the room capacity)");
+            tp.addEventPrompt("event max attendees");
             int capacity = Integer.parseInt(in.nextLine());
             ArrayList<User> speakers =new ArrayList<>();
             String speaker ="fdiof";
             while(!speaker.equals("end")) {
-                System.out.println("Please enter the speaker's username.You can add more than one speaker,input 'end' to finish ");
+                tp.addEventPrompt("speaker username");
                 speaker = in.nextLine();
                 if(!speaker.equals("end")){
                     if (!am.checkAccountType(am.getName(am.getUser(speaker))).equals("speaker")) {
-                        System.out.println("Sorry, this isn't a speaker! Please enter (2) to try adding an event again.\n");
+                        tp.addEventPrompt("invalid speaker");
                         eventMenu();
                     }
                     speakers.add(am.getUser(speaker));
                 }
             }
             if (em.addNewEvent(name, date2,date4 ,room, speakers, capacity, isVip)) {
-                System.out.println("Successfully Added!\n");
+                tp.addEventPrompt("event success");
             } else {
-                System.out.println("Failed to add");
+                tp.addEventPrompt("event fail");
             }
 
         } catch (DateTimeParseException e) {
-            System.out.println("Invalid Date sorry! Please enter (2) to try adding an event again.\n");
+            tp.addEventPrompt("invalid date");
             eventMenu();
         } catch (NumberFormatException e) {
-            System.out.println("Enter a number for room please. Please enter (2) to try adding an event again.\n");
+            tp.addEventPrompt("invalid room number");
             eventMenu();
         }
         catch(NullPointerException e){
-            System.out.println("Not a valid username.Try again");
+            tp.addEventPrompt("invalid username");
             eventMenu();
         }
         saveAll();
@@ -355,12 +347,12 @@ public class EventMenu {
 
     private void addSelfToEvent(Event e) throws IOException {
         if (em.signUpUsertoEvent(e, am.getUser(currentUser))) {
-            System.out.println("Failed");
+            tp.printAddSelfToEvent("fail");
         } else {
-            System.out.println("Success");
+            tp.printAddSelfToEvent("success");
             if(!am.checkAccountType(currentUser).equals("speaker") &&
                     !am.checkAccountType(currentUser).equals("organizer")){
-                System.out.println("Do you have dietary restrictions or accessibility requirements?");
+                tp.printAddSelfToEvent("dietary inquiry");
                 additionalRequest(e);
             }
         }
@@ -371,15 +363,11 @@ public class EventMenu {
     * addition requests can be made by users to the event that they are attending.
     */
     private void additionalRequest(Event e) throws IOException {
-        System.out.println("Dietary restrictions(1)\n" +
-                "Accessibility requirements(2)\n" +
-                "none (3)");
-        System.out.println("Enter the number corresponding to the desired action");
+        tp.printAdditionalRequest("menu");
         String input = in.nextLine();
         switch (input){
             case "1":
-                System.out.println("Please enter the name(s) of food that you can't eat due to any reason(when " +
-                        "entering more than one item, please use comma to separate the items without conjuntions)");
+                tp.printAdditionalRequest("case 1");
                 String rtc = in.nextLine();
                 if (rtc.equals("back")) {
                     additionalRequest(e);
@@ -388,8 +376,7 @@ public class EventMenu {
                 em.addDietaryRequest(e, rtc);
                 break;
             case "2":
-                System.out.println("Please enter your request(s)(When entering more than one request, please use " +
-                        "comma to separate the individual request without conjunctions)");
+                tp.printAdditionalRequest("case 2");
                 String acr = in.nextLine();
                 if (acr.equals("back")) {
                     additionalRequest(e);
@@ -400,7 +387,7 @@ public class EventMenu {
             case "3":
                 break;
             default:
-                System.out.println("Invalid input, please try again");
+                tp.printAdditionalRequest("default");
                 additionalRequest(e);
         }
         if (input.equals("1") || input.equals("2")){
@@ -410,38 +397,37 @@ public class EventMenu {
     }
 
     private void addUserToEvent(Event e) throws IOException {
-        System.out.println("Enter username you wish to add");
+        tp.printAddUserToEvent("username");
         String username = in.nextLine();
         if (am.checkAccountType(username).equals("speaker")){
-            System.out.println("Can't add speaker to as an attendee " +
-                    "(please create an attendee account to attend events)");
+            tp.printAddUserToEvent("not attendee");
         }
         else if (em.signUpUsertoEvent(e, am.getUser(username))) {
-            System.out.println("Failed");
+            tp.printAddUserToEvent("fail");
         } else {
-            System.out.println("Success");
+            tp.printAddUserToEvent("success");
         }
         saveAll();
     }
 
     private void removeSelfFromEvent(Event e) throws IOException {
         if (em.cancelUseratEvent(e, am.getUser(currentUser))) {
-            System.out.println("Successfully Removed");
+            tp.printRemoveSelfFromEvent("success");
         } else {
-            System.out.println("Failed to remove user");
+            tp.printRemoveSelfFromEvent("fail");
         }
         saveAll();
     }
 
     private void removeUserFromEvent(Event e) throws IOException {
-        System.out.println("Enter username you want to remove");
+        tp.printRemoveUserFromEvent("username");
         String username = in.nextLine();
         if (!am.getName(am.getUser(username)).equals("invalid")) {//"invalid" is placeholder user returned if username doesn't match with anything in am
             if (em.cancelUseratEvent(e, am.getUser(username))) {
-                System.out.println("Successfully Removed");
+                tp.printRemoveUserFromEvent("success");
             }
         } else {
-            System.out.println("Failed to remove user");
+            tp.printRemoveUserFromEvent("fail");
         }
         saveAll();
     }
@@ -450,42 +436,42 @@ public class EventMenu {
     * change the speaker of a given event.
     */
     private void changeSpeaker(Event e) throws IOException {
-        System.out.println("Enter username of new speaker");
+        tp.printChangeSpeaker("username");
         String username = in.nextLine();
         if (!am.getUser(username).getAccountType().equals("speaker")) {
-            System.out.println("Not a speaker,sorry!");
+            tp.printChangeSpeaker("invalid speaker");
         } else {
             em.addSpeaker(e, am.getUser(username));
         }
         saveAll();
     }
     private void removeSpeaker(Event e) throws IOException{
-        System.out.println("Enter username of speaker to be removed:");
+        tp.printRemoveSpeaker("username");
         String username = in.nextLine();
         if (!am.getUser(username).getAccountType().equals("speaker")) {
-            System.out.println("Not a speaker,sorry!");}
+            tp.printRemoveSpeaker("invalid speaker");}
         else{
             if(em.removeSpeaker(e,am.getUser(username)))
-                System.out.println("Successfully Removed");
+                tp.printRemoveSpeaker("success");
             else
-                System.out.println("Failed to remove");
+                tp.printRemoveSpeaker("fail");
         }
         saveAll();
     }
 
     private void changeEventCapacity(Event event) throws IOException{
         try {
-            System.out.println("Please enter the new capacity for the event.");
+            tp.printChangeEventCapacity("new capacity");
             int capacity = Integer.parseInt(in.nextLine());
             if (em.setEventCapacity(event, capacity)){
-                System.out.println("Successfully modified!\n");
+                tp.printChangeEventCapacity("success");
             }
             else{
-                System.out.println("The new event capacity is over the room capacity.\n");
+                tp.printChangeEventCapacity("larger number");
             }
             //break;
         } catch (NumberFormatException e) {
-            System.out.println("Enter a number please");
+            tp.printChangeEventCapacity("invalid number");
             eventMenu();
         }
     }
@@ -497,7 +483,7 @@ public class EventMenu {
         boolean repeat = true;
         if (em.getAccessibilityReqListSize(e) + em.getDietaryReqListSize(e) != 0){
             System.out.println(em.getPendingList(e));
-            System.out.println("Please enter a number at the end of a request to approve(enter back to exit)");
+            tp.printAddressRequest("number");
             String input = in.nextLine();
             if (input.equals("back")){
                 repeat = false;
@@ -514,7 +500,7 @@ public class EventMenu {
                 addressRequest(e);
         }
         else
-            System.out.println("There are no requests submitted \n");
+            tp.printAddressRequest("no requests");
     }
 
     // TODO: Add Javadoc for sendMessageToEventMembers(e)
@@ -522,7 +508,7 @@ public class EventMenu {
     * send message to all attendees of given event
     */
     public void sendMessageToEventMembers(Event e) throws IOException {
-        System.out.println("Enter message you wish to send");
+        tp.printSendMessageToEventMembers();
         String message = in.nextLine();
         mm.sendEventMessage(am.getUser(currentUser), e, message);
         saveAll();

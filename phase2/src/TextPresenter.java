@@ -1,3 +1,5 @@
+import java.sql.SQLOutput;
+
 public class TextPresenter {
 
     /*
@@ -105,31 +107,283 @@ public class TextPresenter {
     * EVENTMENU METHODS
     */
 
-    public void eventMenuPrompt(){
-        System.out.println(
-                "View and Select event to manipulate (1)\n" +
-                        "Add event (2)\n" +
-                        "Add room (3)\n" +
-                        "Remove room (4)\n" +
-                        "Main Menu (5)\n");
-        System.out.println("Please enter a one-character input selection.");
+    public void eventMenuOrganizerPrompt(String input){
+        if (input.equals("title")){
+            System.out.println("Event Menu\n");
+        } else if (input.equals("options")) {
+            System.out.println(
+                    "View and Select event to manipulate (1)\n" +
+                            "Add event (2)\n" +
+                            "Add room (3)\n" +
+                            "Remove room (4)\n" +
+                            "Main Menu (5)\n");
+            System.out.println("Please enter a one-character input selection.");
+        } else if (input.equals("number error")) {
+            System.out.println("Enter number please");
+        } else if (input.equals("input error")) {
+            System.out.println("Invalid input.Please try again");
+        }
     }
 
-    public void specificEventMenuPrompt(){
-        System.out.println("Cancel Event (1)\n" +
-                "Add self to event (2)\n" +
-                "Add user to event(3)\n" +
-                "Add speaker to event (4)\n+" +
-                "Remove Speaker from event(5)\n"+
-                "Remove user from event (6)\n+" +
-                "Remove self from event (7)\n" +
-                "Send messages to all attendees of event (8)\n" +
-                "See All users in event (9)\n" +
-                "Change event capacity (10)\n" +
-                "View pending requests(11)\n" +
-                "View addressed requests(12)\n" +
-                "Main menu (0)\n");
-        System.out.println("Enter the number corresponding to the desired action");
+    public void printEventMenuOrganizer1(String input) {
+        if (input.equals("event number")) {
+            System.out.println("Enter Event Number of the event you want to manipulate");
+        } else if (input.equals("invalid index")) {
+            System.out.println("Invalid index please try again");
+        } else if (input.equals("non-number input")) {
+            System.out.println("Please enter a number!");
+        }
+    }
+
+    public void printEventMenuOrganizer3(String input) {
+        if (input.equals("room number")) {
+            System.out.println("Please enter a room number (integer only)");
+        } else if (input.equals("room capacity")) {
+            System.out.println("Please enter the room capacity (integer only)");
+        } else if (input.equals("room chairs and tables")) {
+            System.out.println("Enter 1 if your room consists of rows of chairs and 2 if your room has tables");
+        } else if (input.equals("chairs and tables error")) {
+            System.out.println("Invalid input. Please enter 1 or 2 next time.");
+        } else if (input.equals("projector")) {
+            System.out.println("Does your room have a projector or screen? Enter 1 for yes and 2 for no");
+        } else if (input.equals("projector error")) {
+            System.out.println("Invalid input. Please enter 1 or 2 next time.");
+        } else if (input.equals("number error")) {
+            System.out.println("Enter number please");
+        }
+    }
+
+    public void printEventMenuOrganizer4(String input) {
+        if (input.equals("remove room number")) {
+            System.out.println("Please enter the room number to be removed.");
+        } else if (input.equals("remove success")) {
+            System.out.println("Successfully removed!\n");
+        } else if (input.equals("event already assigned")) {
+            System.out.println("Sorry, there are events assigned to this room, or there is no room with that number.\n");
+        } else if (input.equals("number error")) {
+            System.out.println("Enter a number please");
+        }
+    }
+
+    public void printEventMenuOrganizer5(String input) {
+        if (input.equals("invalid input")){
+            System.out.println("Invalid input. Please try again.");
+        }
+    }
+
+    public void eventMenuSpeakerPrompt(){
+        System.out.println("List Your Talks(1)\nSend message to all attendees in talks(2)\nMain menu(3)");
+        System.out.println("Please enter a one input character selection ");
+    }
+
+    public void printEventMenuSpeaker1() {
+        System.out.println("You are not speaking at any events.");
+    }
+
+    public void printEventMenuSpeaker2() {
+        System.out.println("Enter message:");
+    }
+
+    public void printEventMenuSpeakerDefault() {
+        System.out.println("Invalid input, try again.");
+    }
+
+    public void eventMenuAttendeePrompt(String input) {
+        if (input.equals("event list")){
+            System.out.println("Current event list:\n");
+        } else if (input.equals("event attendance")) {
+            System.out.println("Events you are attending:\n");
+        } else if (input.equals("number of events")) {
+            System.out.println("Enter Number of Event you want to manipulate(\"back\" for main menu)");
+        } else if (input.equals("events submenu")) {
+            System.out.println("Add self to event(1)\n" +
+                    "Remove self from event(2)\n" +
+                    "View addressed requests(3)\n" +
+                    "Additional request(4)\n");
+            System.out.println("Enter number you want to do(\"back\" for main menu)");
+        }
+    }
+
+    public void printEventMenuAttendee4(String input) {
+        if (input.equals("dietary restrictions")){
+            System.out.println("Do you have dietary restrictions or accessibility requirements?");
+        } else if (input.equals("other")) {
+            System.out.println("You need to be signed up for this event before asking additional " +
+                    "requests to this event");
+        }
+        else if (input.equals("error")) {
+            System.out.println("Invalid input. Please try again.");
+        }
+    }
+
+    public void specificEventMenuPrompt(String input){
+        if (input.equals("options")) {
+            System.out.println("Cancel Event (1)\n" +
+                    "Add self to event (2)\n" +
+                    "Add user to event(3)\n" +
+                    "Add speaker to event (4)\n+" +
+                    "Remove Speaker from event(5)\n" +
+                    "Remove user from event (6)\n+" +
+                    "Remove self from event (7)\n" +
+                    "Send messages to all attendees of event (8)\n" +
+                    "See All users in event (9)\n" +
+                    "Change event capacity (10)\n" +
+                    "View pending requests(11)\n" +
+                    "View addressed requests(12)\n" +
+                    "Main menu (0)\n");
+            System.out.println("Enter the number corresponding to the desired action");
+        } else if (input.equals("case 9")) {
+            System.out.println("No attendees");
+        } else if (input.equals("default")) {
+            System.out.println("No attendees");
+        }
+    }
+
+
+    public void addEventPrompt(String input){
+        if (input.equals("event name")) {
+            System.out.println("Please enter the event name.");
+        } else if (input.equals("vip exclusive")) {
+            System.out.println("Do you want to make this event VIP exclusive?\n  Yes (1)\n  No (2)");
+        } else if (input.equals("vip invalid input")) {
+            System.out.println("Sorry invalid input! Please try adding a new event again.");
+        } else if (input.equals("event start date")) {
+            System.out.println("Please enter the start date for the event. (dd/MM/yyyy hh:mm:ss)");
+        } else if (input.equals("invalid start date")) {
+            System.out.println("Sorry, events can only be between 9am and 5 pm.");
+        } else if (input.equals("event end date")) {
+            System.out.println("Please enter the end date for the event. (dd/MM/yyyy hh:mm:ss)");
+        } else if (input.equals("invalid end date")) {
+            System.out.println("Sorry, events can only be between 9am and 5 pm.");
+        } else if (input.equals("start after end")) {
+            System.out.println("Start Time cannot be after End time");
+        } else if (input.equals("seating information")) {
+            System.out.println("Input your seating requirement:\nDon't care (0) \nRows of chairs (1) \nTables (2) ");
+        } else if (input.equals("invalid seating")) {
+            System.out.println("Sorry, invalid input.");
+        } else if (input.equals("screen information")) {
+            System.out.println("Do you require a screen/projector? \nDon't care (0) \nYes(1) \nNo (2)");
+        } else if (input.equals("invalid screening")) {
+            System.out.println("Sorry, invalid input.");
+        } else if (input.equals("event room number")) {
+            System.out.println("Please enter the room number for this event. (The room must be created first)");
+        } else if (input.equals("event max attendees")) {
+            System.out.println("Please enter the max number of attendees for this event. (The event capacity can't be over the room capacity)");
+        } else if (input.equals("speaker username")) {
+            System.out.println("Please enter the speaker's username.You can add more than one speaker,input 'end' to finish ");
+        } else if (input.equals("invalid speaker")) {
+            System.out.println("Sorry, this isn't a speaker! Please enter (2) to try adding an event again.\n");
+        } else if (input.equals("event success")) {
+            System.out.println("Successfully Added!\n");
+        } else if (input.equals("event fail")) {
+            System.out.println("Failed to add");
+        } else if (input.equals("invalid date")) {
+            System.out.println("Invalid Date sorry! Please enter (2) to try adding an event again.\n");
+        } else if (input.equals("invalid room number")) {
+            System.out.println("Enter a number for room please. Please enter (2) to try adding an event again.\n");
+        } else if (input.equals("invalid username")) {
+            System.out.println("Not a valid username.Try again");
+        }
+    }
+
+    public void printAddSelfToEvent(String input) {
+        if (input.equals("fail")) {
+            System.out.println("Failed");
+        } else if (input.equals("success")) {
+            System.out.println("Success");
+        } else if (input.equals("dietary inquiry")) {
+            System.out.println("Do you have dietary restrictions or accessibility requirements?");
+        }
+    }
+
+    public void printAdditionalRequest(String input) {
+        if (input.equals("menu")) {
+            System.out.println("Dietary restrictions(1)\n" +
+                    "Accessibility requirements(2)\n" +
+                    "none (3)");
+            System.out.println("Enter the number corresponding to the desired action");
+        } else if (input.equals("case 1")) {
+            System.out.println("Please enter the name(s) of food that you can't eat due to any reason(when " +
+                    "entering more than one item, please use comma to separate the items without conjuntions)");
+        } else if (input.equals("case 2")) {
+            System.out.println("Please enter your request(s)(When entering more than one request, please use " +
+                    "comma to separate the individual request without conjunctions)");
+        } else if (input.equals("default")) {
+            System.out.println("Invalid input, please try again");
+        }
+    }
+
+    public void printAddUserToEvent(String input) {
+        if (input.equals("username")) {
+            System.out.println("Enter username you wish to add");
+        } else if (input.equals("not attendee")){
+            System.out.println("Can't add speaker to as an attendee " +
+                    "(please create an attendee account to attend events)");
+        } else if (input.equals("fail")) {
+            System.out.println("Failed");
+        } else if (input.equals("success")) {
+            System.out.println("Success");
+        }
+    }
+    public void printRemoveSelfFromEvent(String input) {
+        if (input.equals("success")) {
+            System.out.println("Successfully Removed");
+        } else if (input.equals("fail")) {
+            System.out.println("Failed to remove user");
+        }
+    }
+    public void printRemoveUserFromEvent(String input) {
+        if (input.equals("username")) {
+            System.out.println("Enter username you want to remove");
+        } else if (input.equals("success")) {
+            System.out.println("Successfully Removed");
+        } else if (input.equals("fail")) {
+            System.out.println("Failed to remove user");
+        }
+    }
+
+    public void printChangeSpeaker(String input) {
+        if (input.equals("username")) {
+            System.out.println("Enter username of new speaker");
+        } else if (input.equals("invalid speaker")) {
+            System.out.println("Not a speaker,sorry!");
+        }
+    }
+
+    public void printRemoveSpeaker(String input) {
+        if (input.equals("username")) {
+            System.out.println("Enter username of speaker to be removed:");
+        } else if (input.equals("invalid speaker")) {
+            System.out.println("Not a speaker,sorry!");
+        } else if (input.equals("success")) {
+            System.out.println("Successfully Removed");
+        } else if (input.equals("fail")) {
+            System.out.println("Failed to remove");
+        }
+    }
+
+    public void printChangeEventCapacity(String input) {
+        if (input.equals("new capacity")) {
+            System.out.println("Please enter the new capacity for the event.");
+        } else if (input.equals("success")) {
+            System.out.println("Successfully modified!\n");
+        } else if (input.equals("larger number")) {
+            System.out.println("The new event capacity is over the room capacity.\n");
+        } else if (input.equals("invalid number")) {
+            System.out.println("Enter a number please");
+        }
+    }
+
+    public void printAddressRequest(String input) {
+        if (input.equals("number")) {
+            System.out.println("Please enter a number at the end of a request to approve(enter back to exit)");
+        } else if (input.equals("no requests")) {
+            System.out.println("There are no requests submitted \n");
+        }
+    }
+
+    public void printSendMessageToEventMembers() {
+        System.out.println("Enter message you wish to send");
     }
 
     // TODO: Implement all the presenter methods for MessageMenu
