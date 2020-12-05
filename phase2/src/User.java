@@ -111,8 +111,8 @@ public class User implements Serializable{
      * @param users A List of Users
      * @return return true iff this user is contained in the List of Users taken in
      */
-    public boolean isContainedIn(List<User> users){
-        for (User u : users){
+    public boolean isContainedIn(List<User> users) {
+        for (User u : users) {
             if (u.equals(this))
                 return true;
         }

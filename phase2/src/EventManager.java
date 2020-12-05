@@ -197,21 +197,21 @@ public class EventManager implements Serializable {
             return s;
         }
         for (int i = 0; i < eventList.size(); i++) {
-            s.append("Event Number-");
+            s.append("  Event Number - ");
             s.append(i);
-            s.append("  Event Name-");
+            s.append("  Event Name - ");
             s.append(eventList.get(i).getEventName());
-            s.append("  VIP Exclusive-");
+            s.append("  VIP Exclusive - ");
             s.append(eventList.get(i).getIsVip());
-            s.append("  Room Number-");
+            s.append("  Room Number - ");
             s.append(eventList.get(i).getEventRoom().getRoomNumber());
-            s.append("  Event Capacity-");
+            s.append("  Event Capacity - ");
             s.append(eventList.get(i).getEventCapacity());
-            s.append("  Event Start Time-");
+            s.append("  Event Start Time - ");
             s.append(d.format(eventList.get(i).getEventStartTime()));
-            s.append(" Event End Time-");
+            s.append(" Event End Time - ");
             s.append(d.format(eventList.get(i).getEventEndTime()));//to string here!is this good?
-            s.append("  Event Speakers-");
+            s.append("  Event Speakers - ");
             if(!eventList.get(i).getSpeaker().isEmpty()){
                 for(User j:eventList.get(i).getSpeaker()) {
                     s.append(j.getUsername());

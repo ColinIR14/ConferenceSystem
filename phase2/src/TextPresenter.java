@@ -1,18 +1,34 @@
-import java.util.Scanner;
-
 public class TextPresenter {
 
-    /**
-     * Show the welcome screen to user when the program is started
-     */
-    public void welcome() {
-        System.out.println("Welcome to the Conference Manager program! Type 'L' to log in or 'N' to create a new attendee account.");
+    /*
+    * GENERAL METHODS
+    */
+
+    public void printSuccess() {
+        System.out.println("Success!");
+    }
+
+    public void printInvalidInput() {
+        System.out.println("Invalid input! Please try again.");
     }
 
     /*
-    Prompts user for username and password, and returns them in an array to help other functions.
+    * EVENTSYSTEM METHODS
     */
-    public void userInfoPrompt(String input) {
+
+    public void printWelcome(String input) {
+        if (input.equals("menu")) {
+            System.out.println("Welcome to the Conference Manager program!\n\nType 'L' to log in.\nType 'N' to create a new attendee account (Contact a current admin if you need an organizer account, or use the default admin login).\nType 'C' to close the program.");
+        } else if (input.equals("username length")) {
+            System.out.println("Your username must be at least 5 characters long.");
+        } else if (input.equals("username error")) {
+            System.out.println("Sorry, the user name has already been taken or is invalid.");
+        } else if (input.equals("new attendee")) {
+            System.out.println("Welcome new attendee! \n");
+        }
+    }
+
+    public void printLogInInfo(String input) {
         if (input.equals("username")) {
             System.out.println("Input username:");
         }
@@ -21,11 +37,73 @@ public class TextPresenter {
         }
     }
 
-    public void mainMenuPrompt(){
+    public void printLogInError() {
+        System.out.println("Sorry wrong username or password, please try again.");
+    }
+
+    public void printMainMenu() {
         System.out.println("Main Menu\n");
         System.out.println("Events (E)\nMessages (M)\nAccount (A)\nSign out (S)\n");
         System.out.println("Please enter a one-letter input selection.");
     }
+
+    /*
+    * ACCOUNTMENU METHODS
+    */
+
+    public void printAccountMenu(String input) {
+        if (input.equals("title")) {
+            System.out.println("Account Menu\n");
+        } else if (input.equals("organizer")) {
+            System.out.println("Add Organizer account (1)\n" +
+                    "Add Speaker account (2)\n" +
+                    "Add Attendee account (3)\n" +
+                    "Add VIP account (4)\n" +
+                    "Remove account (5)\n" +
+                    "Change password (6)\n" +
+                    "List all users (7)\n" +
+                    "Main menu (8)");
+            System.out.println("Please enter a one-character input selection.");
+        } else if (input.equals("non organizer")) {
+            System.out.println("Delete account (1)\n" +
+                    "Reset password (2)\n" +
+                    "Main menu (3)");
+            System.out.println("Please enter a one-character input selection.");
+        } else { // Prints all users (Case 7)
+            System.out.println(input);
+        }
+    }
+
+    public void printAddAccount(String input) {
+        if (input.equals("username")) {
+            System.out.println("Please create their username (five characters or longer) or type 'back' to cancel.");
+        } else if (input.equals("password")) {
+            System.out.println("Please create their password or type 'back' to cancel.");
+        } else if (input.equals("add error")) {
+            System.out.println("Sorry, the username has already been taken or is invalid. Please try again.");
+        }
+    }
+
+    public void printRemoveAccount(String input) {
+        if (input.equals("username")) {
+            System.out.println("Please enter the username of the user you want to remove or type 'back' to cancel.");
+        } else if (input.equals("user error")) {
+            System.out.println("Sorry, this user does not exist and couldn't be removed. Please try again.");
+        } else if (input.equals("password")) {
+            System.out.println("Please enter your password or type 'back' to cancel.");
+        } else if (input.equals("self error")) {
+            System.out.println("Sorry, your password is not correct. Please try again.");
+        }
+    }
+
+    public void printChangePassword() {
+        System.out.println("Please enter your new password or type 'back' to cancel.");
+    }
+
+    // TODO: Implement all the presenter methods for EventMenu
+    /*
+    * EVENTMENU METHODS
+    */
 
     public void eventMenuPrompt(){
         System.out.println(
@@ -53,6 +131,11 @@ public class TextPresenter {
                 "Main menu (0)\n");
         System.out.println("Enter the number corresponding to the desired action");
     }
+
+    // TODO: Implement all the presenter methods for MessageMenu
+    /*
+    * MESSAGEMENU METHODS
+    */
 
     public void messageMenuPrompt(){
         System.out.println("\nMessage Menu:\n");
@@ -86,19 +169,4 @@ public class TextPresenter {
                 "Send message (3)\n" +
                 "Type \"back\" to go back");
     }
-
-    public void accountMenuPrompt(){
-        System.out.println("Add Organizer account (1)\n" +
-                "Add Speaker account (2)\n" +
-                "Add Attendee account (3)\n" +
-                "Add VIP account (4)\n" +
-                "Remove account (5)\n" +
-                "Change password (6)\n" +
-                "List all users (7)\n" +
-                "Main menu (8)\n");
-        System.out.println("Please enter a one-character input selection.");
-    }
-
-
-
 }

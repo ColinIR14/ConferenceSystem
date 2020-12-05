@@ -31,9 +31,9 @@ public class AccountManager implements Serializable{
      * @param password String of the new user's password
      * @return a boolean if the User has been successfully added
      */
-    public boolean addNewUser(String username, String password, String accountType){
-        for (User currentUser : userList){
-            if (currentUser.getUsername().equals(username) || username.length() < 5){
+    public boolean addNewUser(String username, String password, String accountType) {
+        for (User currentUser : userList) {
+            if (currentUser.getUsername().equals(username) || username.length() < 5) {
                 return false; //duplicate username
             }
         }
@@ -60,10 +60,10 @@ public class AccountManager implements Serializable{
      * @param password a String of password provided by the User
      * @return a boolean if the User has been successfully logged in
      */
-    public boolean logInUser(String username, String password){
-        for (User u : userList){
-            if (u.getUsername().equals(username)){
-                if (u.getPassword().equals(password)){
+    public boolean logInUser(String username, String password) {
+        for (User u : userList) {
+            if (u.getUsername().equals(username)) {
+                if (u.getPassword().equals(password)) {
                     //compare password
                     u.setLogInStatus(true);
                     currentUser = u;
@@ -100,9 +100,9 @@ public class AccountManager implements Serializable{
      * @param password the password of the user to be deleted
      * @return A boolean. True iff the deletion is successful.
      */
-    public boolean deleteUser(String username, String password){
-        for (User currentUser : userList){
-            if (currentUser.getUsername().equals(username) && currentUser.getPassword().equals(password)){
+    public boolean deleteUser(String username, String password) {
+        for (User currentUser : userList) {
+            if (currentUser.getUsername().equals(username) && currentUser.getPassword().equals(password)) {
                 logOffUser(currentUser); //log off
                 userList.remove(currentUser); //delete account
                 return true;
@@ -116,9 +116,9 @@ public class AccountManager implements Serializable{
      * @param username the username of the User to be checked
      * @return A string representing the type of the account(User).
      */
-    public String checkAccountType(String username){
-        for (User currentUser : userList){
-            if (currentUser.getUsername().equals(username)){
+    public String checkAccountType(String username) {
+        for (User currentUser : userList) {
+            if (currentUser.getUsername().equals(username)) {
                 return currentUser.getAccountType();
             }
         }
@@ -129,9 +129,9 @@ public class AccountManager implements Serializable{
      * @return A String representing the user's usernames
      */
     @Override
-    public String toString(){
+    public String toString() {
         StringBuilder userNameList = new StringBuilder("Users in the system:\n");
-        for(User u : userList){
+        for(User u : userList) {
             userNameList.append(u.getUsername()).append(" ").append(u.getAccountType()).append("\n");
         }
         return userNameList.toString();
@@ -140,11 +140,11 @@ public class AccountManager implements Serializable{
     /**
      * Returns the User object given by the username.
      * @param username A String representing the username of the User
-     * @return An instance of User that has the username
+     * @return An instance of User that has the username or null if the User doesn't exist.
      */
-    public User getUser(String username){
-        for (User currentUser : userList){
-            if (currentUser.getUsername().equals(username)){
+    public User getUser(String username) {
+        for (User currentUser : userList) {
+            if (currentUser.getUsername().equals(username)) {
             return currentUser;}
         }
         return null;
@@ -166,8 +166,8 @@ public class AccountManager implements Serializable{
      * @return true or false if the user exists
      */
     public boolean checkUser(String username){
-        for (User user : userList){
-            if (user.getUsername().equals(username)){
+        for (User user : userList) {
+            if (user.getUsername().equals(username)) {
                 return true;
             }
         }
@@ -179,7 +179,7 @@ public class AccountManager implements Serializable{
      * @param sender User sending message
      * @param receiver User receiving message
      */
-    public void removeMessageable(User sender, User receiver){
+    public void removeMessageable(User sender, User receiver) {
         if (receiver.isContainedIn(sender.getMessageable())) {
             sender.removeMessageable(receiver);
             System.out.println("Removed.");
@@ -193,8 +193,8 @@ public class AccountManager implements Serializable{
      * Takes User user and remove user from contact of all users in list.
      * @param user User to be removed from contacts
      */
-    public void removeMessageableFromList(User user){
-        for (User u : userList){
+    public void removeMessageableFromList(User user) {
+        for (User u : userList) {
             u.removeMessageable(user);
         }
     }

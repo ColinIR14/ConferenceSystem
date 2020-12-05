@@ -390,15 +390,17 @@ public class Event implements Serializable{
       d = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
     }
     StringBuilder s = new StringBuilder();
-    s.append("  Event Name- ");
+    s.append("  Event Name - ");
     s.append(this.getEventName());
-    s.append("  Room Number- ");
+    s.append("  VIP Exclusive - ");
+    s.append(this.getIsVip());
+    s.append("  Room Number - ");
     s.append(this.getEventRoom().getRoomNumber());
-    s.append("  Event Start Time- ");
+    s.append("  Event Start Time - ");
     s.append(d.format(this.getEventStartTime()));
-    s.append("  Event End Time- ");
+    s.append("  Event End Time - ");
     s.append(d.format(this.getEventEndTime()));
-    s.append("  Event Speakers- ");
+    s.append("  Event Speakers - ");
     if(!this.getSpeaker().isEmpty()){
       for(User j:this.getSpeaker()){
         s.append(j.getUsername());
