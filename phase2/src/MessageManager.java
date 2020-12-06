@@ -99,9 +99,8 @@ public class MessageManager implements Serializable{
     public void addMessageable(User sender, User receiver){
         if (!receiver.isContainedIn(sender.getMessageable())) {
             sender.addMessageable(receiver);
-            System.out.println("Suscessfully added!");
-        }
-        else{
+            System.out.println(receiver.getUsername() + " is added to your contact.");
+        } else {
             System.out.println("The user is already in your contact");
         }
     }

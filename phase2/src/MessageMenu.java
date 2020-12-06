@@ -225,19 +225,23 @@ public class MessageMenu {
                 saveAll();
                 break;
             case "4":
-                if (!currentMessage.getSender().isContainedIn(us.getMessageable())) {
-                    mm.addMessageable(us, am.getUser(currentMessage.getSender().getUsername()));
-                }
-                tp.specificMessageMenuPrompt("case 4 instruction");
-                String content = in.nextLine();
-                if(mm.sendMessage(us, currentMessage.getSender(), content)) {
-                    if (am.checkAccountType(am.getName(currentMessage.getSender())).equals("organizer")) {
-                        tp.specificMessageMenuPrompt("case 4 message organizer");
-                    } else if (am.checkAccountType(am.getName(currentMessage.getSender())).equals("speaker")) {
-                        tp.specificMessageMenuPrompt("case 4 message speaker");
+                try {
+                    if (!currentMessage.getSender().isContainedIn(us.getMessageable())) {
+                        mm.addMessageable(us, am.getUser(currentMessage.getSender().getUsername()));
                     }
-                    tp.specificMessageMenuPrompt("message sent");
-                    saveAll();
+                    tp.specificMessageMenuPrompt("case 4 instruction");
+                    String content = in.nextLine();
+                    if (mm.sendMessage(us, currentMessage.getSender(), content)) {
+                        if (am.checkAccountType(am.getName(currentMessage.getSender())).equals("organizer")) {
+                            tp.specificMessageMenuPrompt("case 4 message organizer");
+                        } else if (am.checkAccountType(am.getName(currentMessage.getSender())).equals("speaker")) {
+                            tp.specificMessageMenuPrompt("case 4 message speaker");
+                        }
+                        tp.specificMessageMenuPrompt("message sent");
+                        saveAll();
+                    }
+                } catch (NullPointerException e){
+                    System.out.println("User does not exist or deleted.");
                 }
                 break;
             case "5":
