@@ -2,7 +2,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
-
+/**
+ * A Message Menu and its sub-menus, part of the controller.
+ */
 public class MessageMenu {
 
     private AccountManager am;
@@ -22,14 +24,15 @@ public class MessageMenu {
         this.es = new EventSystem(am, em, mm, currentUser);
     }
 
-    // TODO: Add Javadoc for messageMenu()
-    /*
-    * messageMenu allows logged in user to view messages sent to them, send message to other user in contact, add user to
-    * contact, remove user from contact. Only Organizer type user are allowed to send event message. And user can choose
-    * to return to the main menu at the beginning of message menu or return to beginning of message menu.
-    * Notes, unless organizer type, user can only send message to users that are in the user's contact.
-    * Functions added: Preview messages, Archived messages.
-    */
+
+    /**
+     * messageMenu allows logged in user to view messages sent to them, send message to other user in contact, add user to
+     * contact, remove user from contact. Only Organizer type user are allowed to send event message. And user can choose
+     * to return to the main menu at the beginning of message menu or return to beginning of message menu.
+     * Notes, unless organizer type, user can only send message to users that are in the user's contact.
+     * Functions added: Preview messages, Archived messages.
+     * @throws IOException if there's no serialized file for MessageManager.
+     */
     public void messageMenu() throws IOException {
         tp.messageMenuPrompt();
         String input = in.nextLine();

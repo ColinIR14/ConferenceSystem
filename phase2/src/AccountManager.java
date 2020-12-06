@@ -204,7 +204,7 @@ public class AccountManager implements Serializable{
     }
 
     /**
-     * Get userlist.
+     * Get the userlist (list of all users in the system).
      * @return ArrayList of user
      */
     public ArrayList<User> getUserList(){
