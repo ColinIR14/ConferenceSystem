@@ -1,3 +1,9 @@
+package ControllersAndOuterLayers;
+
+import UseCase.AccountManager;
+import UseCase.EventManager;
+import UseCase.MessageManager;
+
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -17,7 +23,7 @@ public class EventSystem {
     private String currentUser;
 
     /**
-     * Constructor for creating EventSystem.
+     * Constructor for creating Controllers.EventSystem.
      * @param am the programs account manager.
      * @param em the programs event manager.
      * @param mm the programs message manager.
@@ -29,7 +35,7 @@ public class EventSystem {
     }
 
     /**
-     * Alternative Constructor for creating EventSystem.
+     * Alternative Constructor for creating Controllers.EventSystem.
      * @param am the programs account manager.
      * @param em the programs event manager.
      * @param mm the programs message manager.

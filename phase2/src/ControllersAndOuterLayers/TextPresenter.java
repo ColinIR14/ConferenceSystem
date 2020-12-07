@@ -1,3 +1,5 @@
+package ControllersAndOuterLayers;
+
 import java.sql.SQLOutput;
 
 public class TextPresenter {
@@ -21,11 +23,11 @@ public class TextPresenter {
     }
 
     /*
-    * EventSystem METHODS
+    * Controllers.EventSystem METHODS
     */
 
     /**
-     * Prints text for Welcome method in EventSystem
+     * Prints text for Welcome method in Controllers.EventSystem
      * @param input String which triggers the response to be printed
      */
     public void printWelcome(String input) {
@@ -40,7 +42,7 @@ public class TextPresenter {
         }
     }
     /**
-     * Prints text for LogInInfo method in EventSystem
+     * Prints text for LogInInfo method in Controllers.EventSystem
      * @param input String which triggers the response to be printed
      */
     public void printLogInInfo(String input) {
@@ -52,14 +54,14 @@ public class TextPresenter {
         }
     }
     /**
-     * Prints text for LogInError method in EventSystem
+     * Prints text for LogInError method in Controllers.EventSystem
      */
     public void printLogInError() {
         System.out.println("Sorry wrong username or password, please try again.");
     }
 
     /**
-     * Prints text for MainMenu method in EventSystem
+     * Prints text for MainMenu method in Controllers.EventSystem
      */
     public void printMainMenu() {
         System.out.println("Main Menu\n");
@@ -68,11 +70,11 @@ public class TextPresenter {
     }
 
     /*
-    * AccountMenu METHODS
+    * Controllers.AccountMenu METHODS
     */
 
     /**
-     * Prints text for AccountMenu method in AccountMenu
+     * Prints text for Controllers.AccountMenu method in Controllers.AccountMenu
      * @param input String which triggers the response to be printed
      */
     public void printAccountMenu(String input) {
@@ -98,7 +100,7 @@ public class TextPresenter {
         }
     }
     /**
-     * Prints text for AddAcrount method in AccountMenu
+     * Prints text for AddAcrount method in Controllers.AccountMenu
      * @param input String which triggers the response to be printed
      */
     public void printAddAccount(String input) {
@@ -112,7 +114,7 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for RemoveAccount method in AccountMenu
+     * Prints text for RemoveAccount method in Controllers.AccountMenu
      * @param input String which triggers the response to be printed
      */
     public void printRemoveAccount(String input) {
@@ -128,23 +130,23 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for ChangePassword method in AccountMenu
+     * Prints text for ChangePassword method in Controllers.AccountMenu
      */
     public void printChangePassword() {
         System.out.println("Please enter your new password or type 'back' to cancel.");
     }
 
     /*
-    * EventMenu METHODS
+    * Controllers.EventMenu METHODS
     */
 
     /**
-     * Prints text for the Organizer's menu in eventMenu method in EventMenu
+     * Prints text for the Organizer's menu in eventMenu method in Controllers.EventMenu
      * @param input String which triggers the response to be printed
      */
     public void eventMenuOrganizerPrompt(String input){
         if (input.equals("title")){
-            System.out.println("Event Menu\n");
+            System.out.println("Entities.Event Menu\n");
         } else if (input.equals("options")) {
             System.out.println(
                     "View and Select event to manipulate (1)\n" +
@@ -161,12 +163,12 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for the Organizer's menu case 1 in eventMenu method in EventMenu
+     * Prints text for the Organizer's menu case 1 in eventMenu method in Controllers.EventMenu
      * @param input String which triggers the response to be printed
      */
     public void printEventMenuOrganizer1(String input) {
         if (input.equals("event number")) {
-            System.out.println("Enter Event Number of the event you want to manipulate");
+            System.out.println("Enter Entities.Event Number of the event you want to manipulate");
         } else if (input.equals("invalid index")) {
             System.out.println("Invalid index please try again");
         } else if (input.equals("non-number input")) {
@@ -175,7 +177,7 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for the Organizer's menu case 3 in eventMenu method in EventMenu
+     * Prints text for the Organizer's menu case 3 in eventMenu method in Controllers.EventMenu
      * @param input String which triggers the response to be printed
      */
     public void printEventMenuOrganizer3(String input) {
@@ -197,7 +199,7 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for the Organizer's menu case 4 in eventMenu method in EventMenu
+     * Prints text for the Organizer's menu case 4 in eventMenu method in Controllers.EventMenu
      * @param input String which triggers the response to be printed
      */
     public void printEventMenuOrganizer4(String input) {
@@ -213,7 +215,7 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for the Organizer's menu case 5 in eventMenu method in EventMenu
+     * Prints text for the Organizer's menu case 5 in eventMenu method in Controllers.EventMenu
      * @param input String which triggers the response to be printed
      */
     public void printEventMenuOrganizer5(String input) {
@@ -223,7 +225,7 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for the Speaker's menu in eventMenu method in EventMenu
+     * Prints text for the Speaker's menu in eventMenu method in Controllers.EventMenu
      */
     public void eventMenuSpeakerPrompt(){
         System.out.println("List Your Talks(1)\nSend message to all attendees in talks(2)\nMain menu(3)");
@@ -231,28 +233,28 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for the Speaker's menu case 1 in eventMenu method in EventMenu
+     * Prints text for the Speaker's menu case 1 in eventMenu method in Controllers.EventMenu
      */
     public void printEventMenuSpeaker1() {
         System.out.println("You are not speaking at any events.");
     }
 
     /**
-     * Prints text for the Speaker's menu case 2 in eventMenu method in EventMenu
+     * Prints text for the Speaker's menu case 2 in eventMenu method in Controllers.EventMenu
      */
     public void printEventMenuSpeaker2() {
         System.out.println("Enter message:");
     }
 
     /**
-     * Prints text for the Speaker's menu default in eventMenu method in EventMenu
+     * Prints text for the Speaker's menu default in eventMenu method in Controllers.EventMenu
      */
     public void printEventMenuSpeakerDefault() {
         System.out.println("Invalid input, try again.");
     }
 
     /**
-     * Prints text for the Attendee's menu in eventMenu method in EventMenu
+     * Prints text for the Attendee's menu in eventMenu method in Controllers.EventMenu
      * @param input String which triggers the response to be printed
      */
     public void eventMenuAttendeePrompt(String input) {
@@ -261,7 +263,7 @@ public class TextPresenter {
         } else if (input.equals("event attendance")) {
             System.out.println("Events you are attending:\n");
         } else if (input.equals("number of events")) {
-            System.out.println("Enter Number of Event you want to manipulate(\"back\" for main menu)");
+            System.out.println("Enter Number of Entities.Event you want to manipulate(\"back\" for main menu)");
         } else if (input.equals("events submenu")) {
             System.out.println("Add self to event(1)\n" +
                     "Remove self from event(2)\n" +
@@ -272,7 +274,7 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for the Attendee's menu case 4 in eventMenu method in EventMenu
+     * Prints text for the Attendee's menu case 4 in eventMenu method in Controllers.EventMenu
      * @param input String which triggers the response to be printed
      */
     public void printEventMenuAttendee4(String input) {
@@ -288,12 +290,12 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for the specificEventMenu method in EventMenu
+     * Prints text for the specificEventMenu method in Controllers.EventMenu
      * @param input String which triggers the response to be printed
      */
     public void specificEventMenuPrompt(String input){
         if (input.equals("options")) {
-            System.out.println("Cancel Event (1)\n" +
+            System.out.println("Cancel Entities.Event (1)\n" +
                     "Add self to event (2)\n" +
                     "Add user to event(3)\n" +
                     "Add speaker to event (4)\n+" +
@@ -315,7 +317,7 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for the addEvent method in EventMenu
+     * Prints text for the addEvent method in Controllers.EventMenu
      * @param input String which triggers the response to be printed
      */
     public void addEventPrompt(String input){
@@ -365,7 +367,7 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for the addSelfToEvent method in EventMenu
+     * Prints text for the addSelfToEvent method in Controllers.EventMenu
      * @param input String which triggers the response to be printed
      */
     public void printAddSelfToEvent(String input) {
@@ -379,7 +381,7 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for the AdditionalRequest method in EventMenu
+     * Prints text for the AdditionalRequest method in Controllers.EventMenu
      * @param input String which triggers the response to be printed
      */
     public void printAdditionalRequest(String input) {
@@ -400,7 +402,7 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for the addUserToEvent method in EventMenu
+     * Prints text for the addUserToEvent method in Controllers.EventMenu
      * @param input String which triggers the response to be printed
      */
     public void printAddUserToEvent(String input) {
@@ -417,7 +419,7 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for the removeSelfFromEvent method in EventMenu
+     * Prints text for the removeSelfFromEvent method in Controllers.EventMenu
      * @param input String which triggers the response to be printed
      */
     public void printRemoveSelfFromEvent(String input) {
@@ -429,7 +431,7 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for the removeUserFromEvent method in EventMenu
+     * Prints text for the removeUserFromEvent method in Controllers.EventMenu
      * @param input String which triggers the response to be printed
      */
     public void printRemoveUserFromEvent(String input) {
@@ -443,7 +445,7 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for the changeSpeaker method in EventMenu
+     * Prints text for the changeSpeaker method in Controllers.EventMenu
      * @param input String which triggers the response to be printed
      */
     public void printChangeSpeaker(String input) {
@@ -455,7 +457,7 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for the removeSpeaker method in EventMenu
+     * Prints text for the removeSpeaker method in Controllers.EventMenu
      * @param input String which triggers the response to be printed
      */
     public void printRemoveSpeaker(String input) {
@@ -471,7 +473,7 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for the changeEventCapacity method in EventMenu
+     * Prints text for the changeEventCapacity method in Controllers.EventMenu
      * @param input String which triggers the response to be printed
      */
     public void printChangeEventCapacity(String input) {
@@ -487,7 +489,7 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for the addressRequest method in EventMenu
+     * Prints text for the addressRequest method in Controllers.EventMenu
      * @param input String which triggers the response to be printed
      */
     public void printAddressRequest(String input) {
@@ -499,21 +501,21 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for the sendMessageToEventMembers method in EventMenu
+     * Prints text for the sendMessageToEventMembers method in Controllers.EventMenu
      */
     public void printSendMessageToEventMembers() {
         System.out.println("Enter message you wish to send");
     }
 
     /*
-    * MessageMenu METHODS
+    * Controllers.MessageMenu METHODS
     */
 
     /**
-     * Prints text for the messageMenu method in MessageMenu by presenting options
+     * Prints text for the messageMenu method in Controllers.MessageMenu by presenting options
      */
     public void messageMenuPrompt(){
-        System.out.println("\nMessage Menu:\n");
+        System.out.println("\nEntities.Message Menu:\n");
         System.out.println("Preview messages (1)\n" +
                 "Send message (2)\n" +
                 "View or Add contact (3)\n" +
@@ -526,7 +528,7 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for case 3 in the messageMenu method in MessageMenu
+     * Prints text for case 3 in the messageMenu method in Controllers.MessageMenu
      * @param input String which triggers the response to be printed
      */
     public void printMessageMenu3(String input){
@@ -534,12 +536,12 @@ public class TextPresenter {
             System.out.println("Please enter the user(username) you want to add to contact or enter \"back\" if" +
                     " you wish to go back:");
         } else if (input.equals("no user")) {
-            System.out.println("User doesn't exist");
+            System.out.println("Entities.User doesn't exist");
         }
     }
 
     /**
-     * Prints text for case 4 in the messageMenu method in MessageMenu
+     * Prints text for case 4 in the messageMenu method in Controllers.MessageMenu
      */
     public void printMessageMenu4(){
         System.out.println("Please enter the user(username) you want to remove from your contact, enter" +
@@ -547,7 +549,7 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for case 5 in the messageMenu method in MessageMenu
+     * Prints text for case 5 in the messageMenu method in Controllers.MessageMenu
      * @param input String which triggers the response to be printed
      */
     public void printMessageMenu5(String input){
@@ -556,7 +558,7 @@ public class TextPresenter {
         } else if (input.equals("event list")) {
             System.out.println("Current event list:\n");
         } else if (input.equals("number of events")) {
-            System.out.println("Enter Number of Event you want to manipulate");
+            System.out.println("Enter Number of Entities.Event you want to manipulate");
         } else if (input.equals("non-number")) {
             System.out.println("Enter a number please");
         } else if (input.equals("invalid index")) {
@@ -565,14 +567,14 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for default in the messageMenu method in MessageMenu
+     * Prints text for default in the messageMenu method in Controllers.MessageMenu
      */
     public void printMessageMenuDefault(){
         System.out.println("Invalid input, please retry");
     }
 
     /**
-     * Prints text for seeArchive method in MessageMenu
+     * Prints text for seeArchive method in Controllers.MessageMenu
      * @param input String which triggers the response to be printed
      */
     public void printSeeArchive(String input){
@@ -590,12 +592,12 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for viewMessageMenu method in MessageMenu
+     * Prints text for viewMessageMenu method in Controllers.MessageMenu
      * @param input String which triggers the response to be printed
      */
     public void printViewMessageMenu(String input){
         if (input.equals("title")) {
-            System.out.println("\nMessage Preview \n");
+            System.out.println("\nEntities.Message Preview \n");
         } else if (input.equals("message selection")) {
             System.out.println("\n" + "Select message by entering the number in the front for details and further" +
                     " actions or type \"back\" to go back");
@@ -605,7 +607,7 @@ public class TextPresenter {
     }
 
     /**
-     * Prints text for specificMessageMenu method in MessageMenu
+     * Prints text for specificMessageMenu method in Controllers.MessageMenu
      * @param input String which triggers the response to be printed
      */
     public void specificMessageMenuPrompt(String input){
@@ -621,11 +623,11 @@ public class TextPresenter {
         } else if (input.equals("case 2")) {
             System.out.println("The message is already in archive.");
         } else if (input.equals("case 3 in archive")) {
-            System.out.println("Message archived!");
+            System.out.println("Entities.Message archived!");
         } else if (input.equals("case 3 not in archive")) {
             System.out.println("The message is not in archive.");
         } else if (input.equals("case 3 message removed")) {
-            System.out.println("Message removed from archive!");
+            System.out.println("Entities.Message removed from archive!");
         } else if (input.equals("case 4 instruction")) {
             System.out.println("Please enter your message:");
         } else if (input.equals("case 4 message organizer")) {
@@ -634,14 +636,14 @@ public class TextPresenter {
             System.out.println("Warning: You have sent a message to a Speaker. You may not get a reply if you are" +
                     " not attending his/her talk.");
         } else if (input.equals("message sent")) {
-            System.out.println("Message sent successfully.");
+            System.out.println("Entities.Message sent successfully.");
         } else if (input.equals("default invalid")) {
             System.out.println("Invalid input, try again.");
         }
     }
 
     /**
-     * Prints text for sendMessageSpeaker method in MessageMenu
+     * Prints text for sendMessageSpeaker method in Controllers.MessageMenu
      * @param input String which triggers the response to be printed
      */
     public void printSendMessageSpeaker(String input){
@@ -664,7 +666,7 @@ public class TextPresenter {
 
 
     /**
-     * Prints text for sendMessageOrganizer method in MessageMenu
+     * Prints text for sendMessageOrganizer method in Controllers.MessageMenu
      * @param input String which triggers the response to be printed
      */
     public void printSendMessageOrganizer(String input){
@@ -678,18 +680,18 @@ public class TextPresenter {
         } else if (input.equals("message instruction")) {
             System.out.println("Please enter your message:");
         } else if (input.equals("case 1 sent")) {
-            System.out.println("Message sent");
+            System.out.println("Entities.Message sent");
         } else if (input.equals("case 2 sent")) {
-            System.out.println("Message sent");
+            System.out.println("Entities.Message sent");
         } else if (input.equals("case 3 username")) {
             System.out.println("Enter the username of user you want to send");
         } else if (input.equals("case 3 sent")) {
-            System.out.println("Message sent");
+            System.out.println("Entities.Message sent");
         }
     }
 
     /**
-     * Prints text for sendMessage method in MessageMenu
+     * Prints text for sendMessage method in Controllers.MessageMenu
      * @param input String which triggers the response to be printed
      */
     public void printSendMessage(String input){
@@ -705,9 +707,9 @@ public class TextPresenter {
             System.out.println("Warning: You have sent a message to a Speaker. You may not get a reply if you are not" +
                     " attending his/her talk.");
         } else if (input.equals("message sent")) {
-            System.out.println("Message sent successfully.");
+            System.out.println("Entities.Message sent successfully.");
         } else if (input.equals("message not sent")) {
-            System.out.println("Message not sent.");
+            System.out.println("Entities.Message not sent.");
         }
     }
 

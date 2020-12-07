@@ -1,3 +1,9 @@
+package UseCase;
+
+import Entities.Event;
+import Entities.Room;
+import Entities.User;
+
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.Serializable;
@@ -13,7 +19,7 @@ public class EventManager implements Serializable, PropertyChangeListener {
     private ArrayList<Room> roomOccupied;
 
     /**
-     * Constructor for creating EventManager, making the eventList and a counter for id number.
+     * Constructor for creating UseCase.EventManager, making the eventList and a counter for id number.
      */
     public EventManager() {
         eventList = new ArrayList<>();
@@ -23,11 +29,11 @@ public class EventManager implements Serializable, PropertyChangeListener {
     }
 
     /**
-     * Add the user to the attendees list of the Event called eventname.
+     * Add the user to the attendees list of the Entities.Event called eventname.
      *
-     * @param event Event object to be added
-     * @param user  User that will be added to the Event
-     * @return boolean false if the Event with eventname exists and the user is not in the Event's Attendees list.
+     * @param event Entities.Event object to be added
+     * @param user  Entities.User that will be added to the Entities.Event
+     * @return boolean false if the Entities.Event with eventname exists and the user is not in the Entities.Event's Attendees list.
      * Otherwise, return true.
      */
     public boolean signUpUsertoEvent(Event event, User user) {
@@ -47,11 +53,11 @@ public class EventManager implements Serializable, PropertyChangeListener {
     }
 
     /**
-     * Remove the user from the attendees list of the Event called eventname.
+     * Remove the user from the attendees list of the Entities.Event called eventname.
      *
-     * @param event Event object to be removed
-     * @param user  User that will be removed from the Event
-     * @return boolean true if the Event with eventname exists and the user is in the Event's Attendees list.
+     * @param event Entities.Event object to be removed
+     * @param user  Entities.User that will be removed from the Entities.Event
+     * @return boolean true if the Entities.Event with eventname exists and the user is in the Entities.Event's Attendees list.
      * Otherwise, return false.
      */
     public boolean cancelUseratEvent(Event event, User user) {
@@ -68,17 +74,17 @@ public class EventManager implements Serializable, PropertyChangeListener {
     }
 
     /**
-     * Adds a new Event to the eventList.
-     * Note: This method requires Roomnumber instead of Room.
+     * Adds a new Entities.Event to the eventList.
+     * Note: This method requires Roomnumber instead of Entities.Room.
      *
-     * @param EventName    String of the Event's name
-     * @param EventTime    Time of when the Event will take place
-     * @param EventRoomNumber    Int representing room number of where the Event will take place
-     * @param EventSpeaker Speaker of who will speak at the Event
-     * @return boolean false if the Event is already in Eventlist, an Event in Eventlist has the same name as
-     * the Event being added, an Event in Eventlist clashes with EventTime and EventRoom of Event being added or
-     * an Event in Eventlist clashes with EventTime and EventSpeaker of Event being added.
-     * Otherwise, add the Event to eventList and return true.
+     * @param EventName    String of the Entities.Event's name
+     * @param EventTime    Time of when the Entities.Event will take place
+     * @param EventRoomNumber    Int representing room number of where the Entities.Event will take place
+     * @param EventSpeaker Speaker of who will speak at the Entities.Event
+     * @return boolean false if the Entities.Event is already in Eventlist, an Entities.Event in Eventlist has the same name as
+     * the Entities.Event being added, an Entities.Event in Eventlist clashes with EventTime and EventRoom of Entities.Event being added or
+     * an Entities.Event in Eventlist clashes with EventTime and EventSpeaker of Entities.Event being added.
+     * Otherwise, add the Entities.Event to eventList and return true.
      */
     public boolean addNewEvent(String EventName, LocalDateTime EventTime, LocalDateTime EventEnd, int EventRoomNumber, ArrayList<User> EventSpeaker, int EventCapacity, String isVip) {
         Room r = null;
@@ -119,7 +125,7 @@ public class EventManager implements Serializable, PropertyChangeListener {
 
     /**
      * Set the room number
-     * @param r the Room object taken in
+     * @param r the Entities.Room object taken in
      * @param num the number to be set
      */
     public void setRoomNum(Room r, int num){
@@ -128,7 +134,7 @@ public class EventManager implements Serializable, PropertyChangeListener {
 
     /**
      * Set the room capacity
-     * @param r the Room object taken in
+     * @param r the Entities.Room object taken in
      * @param num the number to be set
      */
     public void setRoomCapacity(Room r, int num){
@@ -136,7 +142,7 @@ public class EventManager implements Serializable, PropertyChangeListener {
     }
 
     /**
-     * Creates and adds a new Room to the roomList.
+     * Creates and adds a new Entities.Room to the roomList.
      *
      * @param i room number that will be added to the list
      */
@@ -144,7 +150,7 @@ public class EventManager implements Serializable, PropertyChangeListener {
         boolean t = false;
         for (Room room : roomList) {
             if (room.getRoomNumber() == i) {
-                System.out.println("Room already added!");
+                System.out.println("Entities.Room already added!");
                 t = true;
                 break;
             }
@@ -186,7 +192,7 @@ public class EventManager implements Serializable, PropertyChangeListener {
     }
 
     /**
-     * Return a list of events stored in eventList with their respective details: Event number, name, room number,
+     * Return a list of events stored in eventList with their respective details: Entities.Event number, name, room number,
      * start time and speaker.
      *
      * @return Stringbuilder of the events in eventList and their event information
@@ -199,21 +205,21 @@ public class EventManager implements Serializable, PropertyChangeListener {
             return s;
         }
         for (int i = 0; i < eventList.size(); i++) {
-            s.append("  Event Number - ");
+            s.append("  Entities.Event Number - ");
             s.append(i);
-            s.append("  Event Name - ");
+            s.append("  Entities.Event Name - ");
             s.append(eventList.get(i).getEventName());
             s.append("  VIP Exclusive - ");
             s.append(eventList.get(i).getIsVip());
-            s.append("  Room Number - ");
+            s.append("  Entities.Room Number - ");
             s.append(eventList.get(i).getEventRoom().getRoomNumber());
-            s.append("  Event Capacity - ");
+            s.append("  Entities.Event Capacity - ");
             s.append(eventList.get(i).getEventCapacity());
-            s.append("  Event Start Time - ");
+            s.append("  Entities.Event Start Time - ");
             s.append(d.format(eventList.get(i).getEventStartTime()));
-            s.append(" Event End Time - ");
+            s.append(" Entities.Event End Time - ");
             s.append(d.format(eventList.get(i).getEventEndTime()));//to string here!is this good?
-            s.append("  Event Speakers - ");
+            s.append("  Entities.Event Speakers - ");
             if(!eventList.get(i).getSpeaker().isEmpty()){
                 for(User j:eventList.get(i).getSpeaker()) {
                     s.append(j.getUsername());
@@ -228,19 +234,19 @@ public class EventManager implements Serializable, PropertyChangeListener {
     }
 
     /**
-     * Return a specific indexed Event within eventList.
+     * Return a specific indexed Entities.Event within eventList.
      *
-     * @param i int of the wanted Event in eventList
-     * @return Event at the index of the int inputted
+     * @param i int of the wanted Entities.Event in eventList
+     * @return Entities.Event at the index of the int inputted
      */
     public Event indexEvent(int i) {
         return eventList.get(i);
     }
 
     /**
-     * Removes a specific Event from eventList.
+     * Removes a specific Entities.Event from eventList.
      *
-     * @param e Event that is wanted to be removed from eventList.
+     * @param e Entities.Event that is wanted to be removed from eventList.
      */
     public void cancelEvent(Event e) {
         if (!eventList.remove(e)) {
@@ -249,10 +255,10 @@ public class EventManager implements Serializable, PropertyChangeListener {
     }
 
     /**
-     * Changes the speaker at a specified Event.
+     * Changes the speaker at a specified Entities.Event.
      *
-     * @param e Event of which the speaker will be changed.
-     * @param speaker Speaker who will newly speak at the Event.
+     * @param e Entities.Event of which the speaker will be changed.
+     * @param speaker Speaker who will newly speak at the Entities.Event.
      */
     public boolean removeSpeaker(Event e, User speaker){
         for(Event x:eventList){
@@ -303,8 +309,8 @@ public class EventManager implements Serializable, PropertyChangeListener {
     /**
      * Return a list of attendees who will be going to a specific event.
      *
-     * @param e Event of which the user wants to see the list of attendees of
-     * @return Stringbuilder of usernames of attendees who will being going to the Event.
+     * @param e Entities.Event of which the user wants to see the list of attendees of
+     * @return Stringbuilder of usernames of attendees who will being going to the Entities.Event.
      */
     public StringBuilder getAttendees(Event e){
         StringBuilder s = new StringBuilder();
@@ -333,7 +339,7 @@ public class EventManager implements Serializable, PropertyChangeListener {
 
     /**
      * Checks if a room has already been made.
-     * @param room Room number
+     * @param room Entities.Room number
      * @return boolean true if a room with 'room' number exists and false if it doesn't.
      */
     public boolean checkRoom(int room){
@@ -347,7 +353,7 @@ public class EventManager implements Serializable, PropertyChangeListener {
 
     /**
      * Checks if an event has already been created.
-     * @param num Event Id
+     * @param num Entities.Event Id
      * @return boolean true if an event with 'num' id exists and false if it doesn't.
      */
     public boolean checkEvent(int num){
@@ -362,7 +368,7 @@ public class EventManager implements Serializable, PropertyChangeListener {
     /**
      * Return the list of events which a specific user will be attending.
      *
-     * @param user User in question
+     * @param user Entities.User in question
      * @return ArrayList of events attendee is going to.
      */
     public ArrayList<Event> getEventsAttending(User user) {
@@ -379,7 +385,7 @@ public class EventManager implements Serializable, PropertyChangeListener {
 
     /**
      * When removing a user, we must remove him from all events he is attending
-     * @param evt-U Event representing User to be removed
+     * @param evt-U Entities.Event representing Entities.User to be removed
      */
     public void propertyChange(PropertyChangeEvent evt){
         for(Event x:eventList){
@@ -394,7 +400,7 @@ public class EventManager implements Serializable, PropertyChangeListener {
 
     /**
      * Takes user and generate a list of event of the given speaker
-     * @param s User speaker
+     * @param s Entities.User speaker
      * @return list of events
      */
     public ArrayList<Event> getEventsOfSpeaker(User s){
@@ -413,7 +419,7 @@ public class EventManager implements Serializable, PropertyChangeListener {
     /**
      * Takes in an int and return the associated event
      * @param num int id
-     * @return Event of the given id
+     * @return Entities.Event of the given id
      */
     public Event getEventFromId(int num){
         for (Event e: eventList) {
@@ -426,8 +432,8 @@ public class EventManager implements Serializable, PropertyChangeListener {
 
     /**
      * Takes event and user and checks if the user is an attendee of this event
-     * @param e Event
-     * @param user User
+     * @param e Entities.Event
+     * @param user Entities.User
      * @return true if the user is attending the event
      */
     public boolean checkEventAttending(Event e, User user){
@@ -440,7 +446,7 @@ public class EventManager implements Serializable, PropertyChangeListener {
 
     /**
      * Takes in an event and returns the approved requirements of the event
-     * @param e Event
+     * @param e Entities.Event
      * @return String of approved requirements
      */
     public String getAddressedList(Event e){
@@ -449,7 +455,7 @@ public class EventManager implements Serializable, PropertyChangeListener {
 
     /**
      * Takes in event and string and add the dietary requests to the event as pending
-     * @param e Event
+     * @param e Entities.Event
      * @param rtc String of requests
      */
     public void addDietaryRequest(Event e, String rtc){
@@ -458,7 +464,7 @@ public class EventManager implements Serializable, PropertyChangeListener {
 
     /**
      * Takes in event and string and add the dietary requests to the event as approved
-     * @param e Event
+     * @param e Entities.Event
      * @param rtc String of requests
      */
     public void addDietaryRestriction(Event e, String rtc){
@@ -467,7 +473,7 @@ public class EventManager implements Serializable, PropertyChangeListener {
 
     /**
      * Takes in event and string and add the accessibility requests to the event as pending
-     * @param e Event
+     * @param e Entities.Event
      * @param acr string of requests
      */
     public void addAccessibilityRequest(Event e, String acr){
@@ -476,7 +482,7 @@ public class EventManager implements Serializable, PropertyChangeListener {
 
     /**
      * Takes in event and string and add the accessibility requests to the event as approved
-     * @param e Event
+     * @param e Entities.Event
      * @param acr string of requests
      */
     public void addAccessibilityRequirement(Event e, String acr){
@@ -485,7 +491,7 @@ public class EventManager implements Serializable, PropertyChangeListener {
 
     /**
      * Takes in event and int and generates the dietary request at the given index
-     * @param e Event
+     * @param e Entities.Event
      * @param num int index of request
      * @return string of request at given index
      */
@@ -495,7 +501,7 @@ public class EventManager implements Serializable, PropertyChangeListener {
 
     /**
      * Takes in event adn int and generates the accessibility request at the given index
-     * @param e Event
+     * @param e Entities.Event
      * @param num int index of request
      * @return string of request at given index
      */
@@ -505,7 +511,7 @@ public class EventManager implements Serializable, PropertyChangeListener {
 
     /**
      * Takes in event and find the size of list of dietary requests
-     * @param e Event
+     * @param e Entities.Event
      * @return int of size of list
      */
     public int getDietaryReqListSize(Event e){
@@ -514,7 +520,7 @@ public class EventManager implements Serializable, PropertyChangeListener {
 
     /**
      * Takes in event and find the size of list of accessibility requests
-     * @param e Event
+     * @param e Entities.Event
      * @return int of size of list
      */
     public int getAccessibilityReqListSize(Event e){
@@ -523,7 +529,7 @@ public class EventManager implements Serializable, PropertyChangeListener {
 
     /**
      * Takes in event and generates the string of the list of pending requests
-     * @param e Event
+     * @param e Entities.Event
      * @return String of all pending requests
      */
     public String getPendingList(Event e){

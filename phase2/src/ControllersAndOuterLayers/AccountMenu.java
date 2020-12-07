@@ -1,3 +1,10 @@
+package ControllersAndOuterLayers;
+
+import Entities.User;
+import UseCase.AccountManager;
+import UseCase.EventManager;
+import UseCase.MessageManager;
+
 import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.Scanner;

@@ -1,7 +1,11 @@
+package Entities;
+
+import Entities.User;
+
 import java.io.Serializable;
 
 /**
- * A Message class. Used for storing and passing user messages.
+ * A Entities.Message class. Used for storing and passing user messages.
  */
 public class Message implements Serializable{
     private User sender;
@@ -11,12 +15,12 @@ public class Message implements Serializable{
     private boolean archived;
 
     /**
-     * Creates a Message with given sender, receiver, and content.
+     * Creates a Entities.Message with given sender, receiver, and content.
      * sender stores the sender of the message, receiver stores the receiver of the message, and content stores the
-     * message content. Message instances will be stored in a message.ser file for easy reading/writing, this file has
+     * message content. Entities.Message instances will be stored in a message.ser file for easy reading/writing, this file has
      * implemented serializable.
-     * @param sender User that sent the message
-     * @param receiver User that receives the message
+     * @param sender Entities.User that sent the message
+     * @param receiver Entities.User that receives the message
      * @param content String of the message
      */
     public Message(User sender, User receiver, String content){
@@ -27,16 +31,16 @@ public class Message implements Serializable{
     }
 
     /**
-     * Returns the sender User of this message.
-     * @return User that sent this message
+     * Returns the sender Entities.User of this message.
+     * @return Entities.User that sent this message
      */
     public User getSender() {
         return this.sender;
     }
 
     /**
-     * Returns the receiver User of this message.
-     * @return User that receives this message
+     * Returns the receiver Entities.User of this message.
+     * @return Entities.User that receives this message
      */
     public User getReceiver(){
         return this.receiver;

@@ -1,3 +1,9 @@
+import ControllersAndOuterLayers.EventSystem;
+import ControllersAndOuterLayers.Gateway;
+import UseCase.AccountManager;
+import UseCase.EventManager;
+import UseCase.MessageManager;
+
 public class Main {
     public static void main(String[] args) throws ClassNotFoundException {
         Gateway g = new Gateway();

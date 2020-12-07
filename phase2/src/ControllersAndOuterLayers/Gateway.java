@@ -1,9 +1,15 @@
+package ControllersAndOuterLayers;
+
+import UseCase.AccountManager;
+import UseCase.EventManager;
+import UseCase.MessageManager;
+
 import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * A Gateway class. Used for communicating to the database. (Under construction)
+ * A ControllersAndOuterLayers.Gateway class. Used for communicating to the database. (Under construction)
  */
 
 public class Gateway {
@@ -13,11 +19,11 @@ public class Gateway {
 
 
     /**
-     * Reads AccountManger from file. If there is no existing file, it will create a new AccountManager with the
+     * Reads AccountManger from file. If there is no existing file, it will create a new UseCase.AccountManager with the
      * default Organizer account in it.
      * @param path The path of the file.
-     * @return An instance of the saved AccountManager.
-     * @throws ClassNotFoundException Throws the exception if no AccountManager save is found. *Should be avoided*
+     * @return An instance of the saved UseCase.AccountManager.
+     * @throws ClassNotFoundException Throws the exception if no UseCase.AccountManager save is found. *Should be avoided*
      */
     public AccountManager readAccountManagerFromFile(String path) throws ClassNotFoundException {
         try {
@@ -29,7 +35,7 @@ public class Gateway {
             input.close();
             return am;
         } catch (IOException ex) {
-            logger.log(Level.INFO, "Cannot read from input file, returning" + " a new AccountManager.", ex);
+            logger.log(Level.INFO, "Cannot read from input file, returning" + " a new UseCase.AccountManager.", ex);
             AccountManager am = new AccountManager();
             am.addNewUser("admin", "prime", "organizer");
             return am;
@@ -37,8 +43,8 @@ public class Gateway {
     }
 
     /**
-     * Save the AccountManager to file.
-     * @param am the AccountManager to be saved.
+     * Save the UseCase.AccountManager to file.
+     * @param am the UseCase.AccountManager to be saved.
      * @param filePath the path of the save file. Creates a new .ser file there is no existing saves.
      * @throws IOException if problems encountered
      */
@@ -51,10 +57,10 @@ public class Gateway {
     }
 
     /**
-     * Reads EventManager from file.
+     * Reads UseCase.EventManager from file.
      * @param path The path of the file.
-     * @return An instance of the saved EventManager.
-     * @throws ClassNotFoundException Throws the exception if no EventManager save is found. *Should be avoided*
+     * @return An instance of the saved UseCase.EventManager.
+     * @throws ClassNotFoundException Throws the exception if no UseCase.EventManager save is found. *Should be avoided*
      */
     public EventManager readEventManagerFromFile(String path) throws ClassNotFoundException {
         try {
@@ -66,14 +72,14 @@ public class Gateway {
             input.close();
             return em;
         } catch (IOException ex) {
-            logger.log(Level.INFO, "Cannot read from input file, returning" + " a new EventManager.", ex);
+            logger.log(Level.INFO, "Cannot read from input file, returning" + " a new UseCase.EventManager.", ex);
             return new EventManager();
         }
     }
 
     /**
-     * Save the EventManager to file.
-     * @param em the EventManager to be saved.
+     * Save the UseCase.EventManager to file.
+     * @param em the UseCase.EventManager to be saved.
      * @param filePath the path of the save file. Creates a new .ser file there is no existing saves.
      * @throws IOException if problems encountered
      */
@@ -86,10 +92,10 @@ public class Gateway {
     }
 
     /**
-     * Reads MessageManager from file.
+     * Reads UseCase.MessageManager from file.
      * @param path The path of the file.
-     * @return An instance of the saved MessageManager.
-     * @throws ClassNotFoundException Throws the exception if no MessageManager save is found. *Should be avoided*
+     * @return An instance of the saved UseCase.MessageManager.
+     * @throws ClassNotFoundException Throws the exception if no UseCase.MessageManager save is found. *Should be avoided*
      */
     public MessageManager readMessageManagerFromFile(String path) throws ClassNotFoundException {
         try {
@@ -101,14 +107,14 @@ public class Gateway {
             input.close();
             return mm;
         } catch (IOException ex) {
-            logger.log(Level.INFO, "Cannot read from input file, returning" + " a new MessageManager.", ex);
+            logger.log(Level.INFO, "Cannot read from input file, returning" + " a new UseCase.MessageManager.", ex);
             return new MessageManager();
         }
     }
 
     /**
-     * Save the MessageManager to file.
-     * @param mm the MessageManager to be saved.
+     * Save the UseCase.MessageManager to file.
+     * @param mm the UseCase.MessageManager to be saved.
      * @param filePath the path of the save file. Creates a new .ser file there is no existing saves.
      * @throws IOException if problems encountered
      */

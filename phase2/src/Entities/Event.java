@@ -1,3 +1,5 @@
+package Entities;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -24,15 +26,15 @@ public class Event implements Serializable{
   private ArrayList<String> accessibilityList;
 
 
-  /**Constructor for Event
-   * @param id - unique id for Event
-   * @param EventName - Name of Event
-   * @param EventRoom - Room instance of Room of Event
-   * @param EventTime - Start Time of Event
-   * @param EventSpeaker - Speaker of Event
+  /**Constructor for Entities.Event
+   * @param id - unique id for Entities.Event
+   * @param EventName - Name of Entities.Event
+   * @param EventRoom - Entities.Room instance of Entities.Room of Entities.Event
+   * @param EventTime - Start Time of Entities.Event
+   * @param EventSpeaker - Speaker of Entities.Event
    * @param EventCapacity - Maximum Number of Attendee
    */
-  public Event(Integer id,String EventName,LocalDateTime EventTime,LocalDateTime eventEndTime,Room EventRoom,ArrayList<User> EventSpeaker, Integer EventCapacity){//constructor without list of attendees
+  public Event(Integer id, String EventName, LocalDateTime EventTime, LocalDateTime eventEndTime, Room EventRoom, ArrayList<User> EventSpeaker, Integer EventCapacity){//constructor without list of attendees
     this.id=id;
     this.eventName=EventName;
     this.eventStartTime =EventTime;
@@ -93,12 +95,12 @@ public class Event implements Serializable{
 
   /**
    * Allows attendee to be added to event
-   * @param NewAttendee- User object containing new attendee to join event
+   * @param NewAttendee- Entities.User object containing new attendee to join event
    * @return true iff the event can accept the user and the user isn't already added(if it can it adds the user)
    */
   public boolean addAttendee(User NewAttendee){
     //ArrayList<String> attendeesUsernames = new ArrayList<>();
-    //for (User x:attendees) attendeesUsernames.add(x.getUsername());
+    //for (Entities.User x:attendees) attendeesUsernames.add(x.getUsername());
     if(attendees.size()<eventRoom.getRoomCapacity() && !NewAttendee.isContainedIn(attendees)) {
       attendees.add(NewAttendee);
       return true;}
@@ -158,7 +160,7 @@ public class Event implements Serializable{
   }
 
   /**
-   * setter for event Room
+   * setter for event Entities.Room
    * @param r room object representing new room for event
    */
   public void setEventRoom(Room r){
@@ -349,7 +351,7 @@ public class Event implements Serializable{
   /**
    * Overriding of equals to return true iff events clash,ie are their times overlap and are in the same room,
    * or their times overlap and have the same speaker, or have the same name.
-   * @param e-Event to be compared to
+   * @param e-Entities.Event to be compared to
    * @return true if and only if the two events clash.
    */
   @Override
@@ -390,17 +392,17 @@ public class Event implements Serializable{
       d = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
     }
     StringBuilder s = new StringBuilder();
-    s.append("  Event Name - ");
+    s.append("  Entities.Event Name - ");
     s.append(this.getEventName());
     s.append("  VIP Exclusive - ");
     s.append(this.getIsVip());
-    s.append("  Room Number - ");
+    s.append("  Entities.Room Number - ");
     s.append(this.getEventRoom().getRoomNumber());
-    s.append("  Event Start Time - ");
+    s.append("  Entities.Event Start Time - ");
     s.append(d.format(this.getEventStartTime()));
-    s.append("  Event End Time - ");
+    s.append("  Entities.Event End Time - ");
     s.append(d.format(this.getEventEndTime()));
-    s.append("  Event Speakers - ");
+    s.append("  Entities.Event Speakers - ");
     if(!this.getSpeaker().isEmpty()){
       for(User j:this.getSpeaker()){
         s.append(j.getUsername());

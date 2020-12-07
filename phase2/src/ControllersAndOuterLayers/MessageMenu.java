@@ -1,9 +1,18 @@
+package ControllersAndOuterLayers;
+
+import Entities.Event;
+import Entities.Message;
+import Entities.User;
+import UseCase.AccountManager;
+import UseCase.EventManager;
+import UseCase.MessageManager;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 /**
- * A Message Menu and its sub-menus, part of the controller.
+ * A Entities.Message Menu and its sub-menus, part of the controller.
  */
 public class MessageMenu {
 
@@ -31,7 +40,7 @@ public class MessageMenu {
      * to return to the main menu at the beginning of message menu or return to beginning of message menu.
      * Notes, unless organizer type, user can only send message to users that are in the user's contact.
      * Functions added: Preview messages, Archived messages.
-     * @throws IOException if there's no serialized file for MessageManager.
+     * @throws IOException if there's no serialized file for UseCase.MessageManager.
      */
     public void messageMenu() throws IOException {
         tp.messageMenuPrompt();
@@ -244,7 +253,7 @@ public class MessageMenu {
                         saveAll();
                     }
                 } catch (NullPointerException e){
-                    System.out.println("User does not exist or deleted.");
+                    System.out.println("Entities.User does not exist or deleted.");
                 }
                 break;
             case "5":

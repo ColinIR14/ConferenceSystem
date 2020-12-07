@@ -1,3 +1,12 @@
+package ControllersAndOuterLayers;
+
+import Entities.Event;
+import Entities.Room;
+import Entities.User;
+import UseCase.AccountManager;
+import UseCase.EventManager;
+import UseCase.MessageManager;
+
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -86,7 +95,7 @@ public class EventMenu {
                         s.append("List of Rooms:\n");
 
                         for (Room room : roomList) {
-                            s.append("Room Number ");
+                            s.append("Entities.Room Number ");
                             s.append(room.getRoomNumber());
                             s.append("\n");
                         }
@@ -295,7 +304,7 @@ public class EventMenu {
             s.append("List of rooms that match your requirements:\n");
 
             for (Room room : roomList) {
-                s.append("Room Number ");
+                s.append("Entities.Room Number ");
                 s.append(room.getRoomNumber());
                 s.append(" (Capacity: ");
                 s.append(room.getRoomCapacity());
