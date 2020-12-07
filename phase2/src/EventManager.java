@@ -1,10 +1,12 @@
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventManager implements Serializable {
+public class EventManager implements Serializable, PropertyChangeListener {
     private ArrayList<Event> eventList;
     private static int nextId;
     private ArrayList<Room> roomList;
@@ -377,16 +379,16 @@ public class EventManager implements Serializable {
 
     /**
      * When removing a user, we must remove him from all events he is attending
-     * @param u-User to be removed
+     * @param evt-U Event representing User to be removed
      */
-    public void removeUserFromEvent(User u){
+    public void propertyChange(PropertyChangeEvent evt){
         for(Event x:eventList){
-            if (x.getAttendees().contains(u))
-                x.removeAttendee(u);
+            if (x.getAttendees().contains((User)evt.getOldValue()))
+                x.removeAttendee((User) evt.getOldValue());
         }
         for(Event x:eventList){
-            if (x.getSpeaker().contains(u))
-                x.removeSpeaker(u);
+            if (x.getSpeaker().contains((User)evt.getOldValue()))
+                x.removeSpeaker((User) evt.getOldValue());
         }
     }
 

@@ -1,3 +1,5 @@
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +8,7 @@ import java.util.List;
  * An Account Manager. A use case class for managing user's account.
  */
 
-public class AccountManager implements Serializable{
+public class AccountManager implements Serializable, PropertyChangeListener {
 
     private ArrayList<User> userList;
     public User currentUser;
@@ -191,11 +193,11 @@ public class AccountManager implements Serializable{
 
     /**
      * Takes User user and remove user from contact of all users in list.
-     * @param user User to be removed from contacts
+     * @param event -Event representing User to be removed from contacts
      */
-    public void removeMessageableFromList(User user) {
+    public void propertyChange(PropertyChangeEvent event) {
         for (User u : userList) {
-            u.removeMessageable(user);
+            u.removeMessageable((User)event.getOldValue());
         }
     }
 

@@ -1,3 +1,4 @@
+import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -11,6 +12,7 @@ public class AccountMenu {
     private Scanner in = new Scanner(System.in);
     private Gateway g = new Gateway();
     private TextPresenter tp = new TextPresenter();
+    private PropertyChangeSupport support;
 
     public AccountMenu(AccountManager am, EventManager em, MessageManager mm, String currentUser) {
         this.am = am;
@@ -18,6 +20,9 @@ public class AccountMenu {
         this.mm = mm;
         this.currentUser = currentUser;
         this.es = new EventSystem(am, em, mm, currentUser);
+        support = new PropertyChangeSupport(this);
+        support.addPropertyChangeListener(em);
+        support.addPropertyChangeListener(am);
     }
 
     // TODO: Add Javadoc for accountMenu()
@@ -136,8 +141,7 @@ public class AccountMenu {
                 tp.printRemoveAccount("user error");
             } else {
 
-                em.removeUserFromEvent(am.getUser(username));
-                am.removeMessageableFromList(am.getUser(username));
+                support.firePropertyChange("currentUser",am.getUser(username),null);
                 am.deleteUser(username, am.getUser(username).getPassword());
                 tp.printSuccess();
             }
@@ -148,10 +152,10 @@ public class AccountMenu {
             if (password.equals("back")){
                 accountMenu();
             }
+            User u = am.getUser(currentUser);
             if (am.deleteUser(currentUser, password)) {
                 tp.printSuccess();
-                am.removeMessageableFromList(am.getUser(currentUser));
-                em.removeUserFromEvent(am.getUser(currentUser));
+                support.firePropertyChange("currentUser",u,null);
                 es.welcome();
             } else {
                 tp.printRemoveAccount("self error");
