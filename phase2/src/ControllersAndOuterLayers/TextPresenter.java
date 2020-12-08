@@ -146,7 +146,7 @@ public class TextPresenter {
      */
     public void eventMenuOrganizerPrompt(String input){
         if (input.equals("title")){
-            System.out.println("Entities.Event Menu\n");
+            System.out.println("Event Menu\n");
         } else if (input.equals("options")) {
             System.out.println(
                     "View and Select event to manipulate (1)\n" +
@@ -168,7 +168,7 @@ public class TextPresenter {
      */
     public void printEventMenuOrganizer1(String input) {
         if (input.equals("event number")) {
-            System.out.println("Enter Entities.Event Number of the event you want to manipulate");
+            System.out.println("Enter Event Number of the event you want to manipulate");
         } else if (input.equals("invalid index")) {
             System.out.println("Invalid index please try again");
         } else if (input.equals("non-number input")) {
@@ -263,7 +263,7 @@ public class TextPresenter {
         } else if (input.equals("event attendance")) {
             System.out.println("Events you are attending:\n");
         } else if (input.equals("number of events")) {
-            System.out.println("Enter Number of Entities.Event you want to manipulate(\"back\" for main menu)");
+            System.out.println("Enter Number of Event you want to manipulate(\"back\" for main menu)");
         } else if (input.equals("events submenu")) {
             System.out.println("Add self to event(1)\n" +
                     "Remove self from event(2)\n" +
@@ -295,7 +295,7 @@ public class TextPresenter {
      */
     public void specificEventMenuPrompt(String input){
         if (input.equals("options")) {
-            System.out.println("Cancel Entities.Event (1)\n" +
+            System.out.println("Cancel Event (1)\n" +
                     "Add self to event (2)\n" +
                     "Add user to event(3)\n" +
                     "Add speaker to event (4)\n+" +
@@ -515,7 +515,7 @@ public class TextPresenter {
      * Prints text for the messageMenu method in Controllers.MessageMenu by presenting options
      */
     public void messageMenuPrompt(){
-        System.out.println("\nEntities.Message Menu:\n");
+        System.out.println("\nMessage Menu:\n");
         System.out.println("Preview messages (1)\n" +
                 "Send message (2)\n" +
                 "View or Add contact (3)\n" +
@@ -536,7 +536,7 @@ public class TextPresenter {
             System.out.println("Please enter the user(username) you want to add to contact or enter \"back\" if" +
                     " you wish to go back:");
         } else if (input.equals("no user")) {
-            System.out.println("Entities.User doesn't exist");
+            System.out.println("User doesn't exist");
         }
     }
 
@@ -558,7 +558,7 @@ public class TextPresenter {
         } else if (input.equals("event list")) {
             System.out.println("Current event list:\n");
         } else if (input.equals("number of events")) {
-            System.out.println("Enter Number of Entities.Event you want to manipulate");
+            System.out.println("Enter Number of Event you want to manipulate");
         } else if (input.equals("non-number")) {
             System.out.println("Enter a number please");
         } else if (input.equals("invalid index")) {
@@ -597,7 +597,7 @@ public class TextPresenter {
      */
     public void printViewMessageMenu(String input){
         if (input.equals("title")) {
-            System.out.println("\nEntities.Message Preview \n");
+            System.out.println("\nMessage Preview \n");
         } else if (input.equals("message selection")) {
             System.out.println("\n" + "Select message by entering the number in the front for details and further" +
                     " actions or type \"back\" to go back");
@@ -623,11 +623,11 @@ public class TextPresenter {
         } else if (input.equals("case 2")) {
             System.out.println("The message is already in archive.");
         } else if (input.equals("case 3 in archive")) {
-            System.out.println("Entities.Message archived!");
+            System.out.println("Message archived!");
         } else if (input.equals("case 3 not in archive")) {
             System.out.println("The message is not in archive.");
         } else if (input.equals("case 3 message removed")) {
-            System.out.println("Entities.Message removed from archive!");
+            System.out.println("Message removed from archive!");
         } else if (input.equals("case 4 instruction")) {
             System.out.println("Please enter your message:");
         } else if (input.equals("case 4 message organizer")) {
@@ -636,7 +636,7 @@ public class TextPresenter {
             System.out.println("Warning: You have sent a message to a Speaker. You may not get a reply if you are" +
                     " not attending his/her talk.");
         } else if (input.equals("message sent")) {
-            System.out.println("Entities.Message sent successfully.");
+            System.out.println("Message sent successfully.");
         } else if (input.equals("default invalid")) {
             System.out.println("Invalid input, try again.");
         }
@@ -680,13 +680,13 @@ public class TextPresenter {
         } else if (input.equals("message instruction")) {
             System.out.println("Please enter your message:");
         } else if (input.equals("case 1 sent")) {
-            System.out.println("Entities.Message sent");
+            System.out.println("Message sent");
         } else if (input.equals("case 2 sent")) {
-            System.out.println("Entities.Message sent");
+            System.out.println("Message sent");
         } else if (input.equals("case 3 username")) {
             System.out.println("Enter the username of user you want to send");
         } else if (input.equals("case 3 sent")) {
-            System.out.println("Entities.Message sent");
+            System.out.println("Message sent");
         }
     }
 
@@ -707,9 +707,9 @@ public class TextPresenter {
             System.out.println("Warning: You have sent a message to a Speaker. You may not get a reply if you are not" +
                     " attending his/her talk.");
         } else if (input.equals("message sent")) {
-            System.out.println("Entities.Message sent successfully.");
+            System.out.println("Message sent successfully.");
         } else if (input.equals("message not sent")) {
-            System.out.println("Entities.Message not sent.");
+            System.out.println("Message not sent.");
         }
     }
 

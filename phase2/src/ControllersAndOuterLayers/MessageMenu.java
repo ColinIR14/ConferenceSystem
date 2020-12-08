@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 /**
- * A Entities.Message Menu and its sub-menus, part of the controller.
+ * A Message Menu and its sub-menus, part of the controller.
  */
 public class MessageMenu {
 
@@ -253,7 +253,7 @@ public class MessageMenu {
                         saveAll();
                     }
                 } catch (NullPointerException e){
-                    System.out.println("Entities.User does not exist or deleted.");
+                    System.out.println("User does not exist or deleted.");
                 }
                 break;
             case "5":

@@ -95,7 +95,7 @@ public class EventMenu {
                         s.append("List of Rooms:\n");
 
                         for (Room room : roomList) {
-                            s.append("Entities.Room Number ");
+                            s.append("Room Number ");
                             s.append(room.getRoomNumber());
                             s.append("\n");
                         }
@@ -304,7 +304,7 @@ public class EventMenu {
             s.append("List of rooms that match your requirements:\n");
 
             for (Room room : roomList) {
-                s.append("Entities.Room Number ");
+                s.append("Room Number ");
                 s.append(room.getRoomNumber());
                 s.append(" (Capacity: ");
                 s.append(room.getRoomCapacity());

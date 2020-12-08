@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A Entities.Message Manager. A use case class for managing user messages.
+ * A Message Manager. A use case class for managing user messages.
  */
 
 public class MessageManager implements Serializable{
@@ -26,10 +26,10 @@ public class MessageManager implements Serializable{
     }
 
     /*
-     * Takes in sender, receiver, content, and creates a new Entities.Message with the given information.
+     * Takes in sender, receiver, content, and creates a new Message with the given information.
      * The sender and receiver can not be the same user. There may need be a restriction that will not allow users
      * to send information to organizers but need to discuss later.
-     * Returns a new Entities.Message instance with given arguments.
+     * Returns a new Message instance with given arguments.
      */
     private Message addMessage(User sender, User receiver, String content){
         return new Message(sender, receiver, content);
@@ -41,8 +41,8 @@ public class MessageManager implements Serializable{
      * then the message will be added to messageList.
      * The sender and receiver cannot be the same user.
      * Returns true or false to indicate whether the action was successful.
-     * @param sender Entities.User that requested to send a message
-     * @param receiver Entities.User that may receive a message
+     * @param sender User that requested to send a message
+     * @param receiver User that may receive a message
      * @param content String of the message
      * @return boolean indicating whether the action was successful
      */
@@ -56,8 +56,8 @@ public class MessageManager implements Serializable{
 
     /**
      * Takes sender, receiver, content, and add message to message list
-     * @param sender Entities.User that will send the message
-     * @param receiver Entities.User that will receive the message
+     * @param sender User that will send the message
+     * @param receiver User that will receive the message
      * @param content String of message
      */
     public void sendMessage1(User sender, User receiver, String content) {
@@ -69,8 +69,8 @@ public class MessageManager implements Serializable{
      * all attandees from a given event.
      * The sender needs to be an existing organizer or speaker.
      * Returns nothing.
-     * @param sender Entities.User that is either an organizer or speaker
-     * @param event Entities.Event that will be hosted with a list of attandees
+     * @param sender User that is either an organizer or speaker
+     * @param event Event that will be hosted with a list of attandees
      * @param content String of message
      */
     public void sendEventMessage(User sender, Event event, String content){
@@ -83,7 +83,7 @@ public class MessageManager implements Serializable{
      * Takes in receiver and generates an arrayList of messages that are sent to the given receiver.
      * The receiver must be an existing user.
      * Returns an arrayList of message
-     * @param receiver Entities.User that received some messages
+     * @param receiver User that received some messages
      * @return an arrayList of message
      */
     public ArrayList<Message> getUserMessages(User receiver){
@@ -99,8 +99,8 @@ public class MessageManager implements Serializable{
      * Takes in sender, receiver, and will add the receiver as a messageable user of sender.
      * The receiver and sender cannot be the same user.
      * Returns nothing.
-     * @param sender Entities.User that can then send message to the receiver
-     * @param receiver Entities.User that will be able to receive message from sender
+     * @param sender User that can then send message to the receiver
+     * @param receiver User that will be able to receive message from sender
      */
     public void addMessageable(User sender, User receiver){
         if (!receiver.isContainedIn(sender.getMessageable())) {
@@ -133,7 +133,7 @@ public class MessageManager implements Serializable{
 
     /**
      * Takes list of event to get users of event that can be messaged.
-     * @param eventList ArrayList of Entities.Event
+     * @param eventList ArrayList of Event
      * @return String of all users that can be messaged
      */
     public String getMessageableOfEvents(ArrayList<Event> eventList){
@@ -150,8 +150,8 @@ public class MessageManager implements Serializable{
     }
 
     /**
-     * A String builder for Entities.Message
-     * @param m takes in a Entities.Message object
+     * A String builder for Message
+     * @param m takes in a Message object
      * @return a message
      */
     public String messageStrBuilder(Message m){
@@ -159,8 +159,8 @@ public class MessageManager implements Serializable{
     }
 
     /**
-     * Returns teh archived messages from Entities.User.
-     * @param us the Entities.User for which it will get the archived messages.
+     * Returns teh archived messages from User.
+     * @param us the User for which it will get the archived messages.
      * @return an ArrayList of archived messages.
      */
     public ArrayList<Message> getArchivedMessage(User us){
