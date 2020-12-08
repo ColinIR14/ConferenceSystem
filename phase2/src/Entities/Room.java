@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * A Entities.Room class. An Entity class used for storing and passing room information.
+ * A Room class. An Entity class used for storing and passing room information.
  */
 public class Room implements Serializable {
     private int roomNumber;
@@ -46,16 +46,16 @@ public class Room implements Serializable {
     }
 
     /**
-     * Sets the RoomSchedule into a given List<Entities.Event>
-     * @param s a List<Entities.Event> variable representing the RoomSchedule
+     * Sets the RoomSchedule into a given List<Event>
+     * @param s a List<Event> variable representing the RoomSchedule
      */
     public void setRoomSchedule(List<Event> s){
         this.roomSchedule=s;
     }
 
     /**
-     * Returns the List<Entities.Event> stored in RoomSchedule
-     * @return a List<Entities.Event> variable representing the RoomSchedule
+     * Returns the List<Event> stored in RoomSchedule
+     * @return a List<Event> variable representing the RoomSchedule
      */
     public List<Event> getRoomSchedule(){
         return roomSchedule;

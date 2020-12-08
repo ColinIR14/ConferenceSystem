@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A Entities.User class. An entity class used to store and pass room information.
+ * A User class. An entity class used to store and pass room information.
  */
 public class User implements Serializable{
     private String password;
@@ -17,7 +17,7 @@ public class User implements Serializable{
 
 
     /**
-     * Constructor for creating Entities.User.
+     * Constructor for creating User.
      * @param username String of user's username.
      * @param password String of user's password.
      * @param accountType String of user's account type: must be one of "presenter", "organizer", "attendee", or "vip".
@@ -97,7 +97,7 @@ public class User implements Serializable{
     /**
      * Test if the take-in Object is a user or not, and whether the two Users have the same Username
      * @param object take-in an Object to compare with
-     * @return return true iff the take-in Object is a Entities.User and the two Users have the same Username
+     * @return return true iff the take-in Object is a User and the two Users have the same Username
      */
     @Override
     public boolean equals(Object object) {
@@ -109,7 +109,7 @@ public class User implements Serializable{
     }
 
     /**
-     * Check if this Entities.User is in the take-in List of Entities.User or not
+     * Check if this User is in the take-in List of User or not
      * @param users A List of Users
      * @return return true iff this user is contained in the List of Users taken in
      */
