@@ -35,7 +35,7 @@ public class Gateway {
             input.close();
             return am;
         } catch (IOException ex) {
-            logger.log(Level.INFO, "Cannot read from input file, returning" + " a new UseCase.AccountManager.", ex);
+            //logger.log(Level.INFO, "Cannot read from input file, returning" + " a new UseCase.AccountManager.", ex);
             AccountManager am = new AccountManager();
             am.addNewUser("admin", "prime", "organizer");
             return am;
@@ -72,7 +72,7 @@ public class Gateway {
             input.close();
             return em;
         } catch (IOException ex) {
-            logger.log(Level.INFO, "Cannot read from input file, returning" + " a new UseCase.EventManager.", ex);
+            //logger.log(Level.INFO, "Cannot read from input file, returning" + " a new UseCase.EventManager.", ex);
             return new EventManager();
         }
     }
@@ -107,7 +107,7 @@ public class Gateway {
             input.close();
             return mm;
         } catch (IOException ex) {
-            logger.log(Level.INFO, "Cannot read from input file, returning" + " a new UseCase.MessageManager.", ex);
+            //logger.log(Level.INFO, "Cannot read from input file, returning" + " a new UseCase.MessageManager.", ex);
             return new MessageManager();
         }
     }

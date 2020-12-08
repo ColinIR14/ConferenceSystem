@@ -217,4 +217,12 @@ public class AccountManager implements Serializable, PropertyChangeListener {
         return userList;
     }
 
+    public boolean checkInContact(User sender, User receiver){
+        try {
+            return receiver.isContainedIn(sender.getMessageable());
+        } catch(NullPointerException e){
+            return false;
+        }
+    }
+
 }

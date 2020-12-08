@@ -40,7 +40,7 @@ public class MessageMenu {
      * to return to the main menu at the beginning of message menu or return to beginning of message menu.
      * Notes, unless organizer type, user can only send message to users that are in the user's contact.
      * Functions added: Preview messages, Archived messages.
-     * @throws IOException if there's no serialized file for UseCase.MessageManager.
+     * @throws IOException if there's no serialized file for MessageManager.
      */
     public void messageMenu() throws IOException {
         tp.messageMenuPrompt();
@@ -338,10 +338,12 @@ public class MessageMenu {
             tp.printSendMessageOrganizer("invalid");
             sendMessageOrganizer(am.getUser(currentUser));
         }
-        tp.printSendMessageOrganizer("message instruction");
-        String content = in.nextLine();
+        //tp.printSendMessageOrganizer("message instruction");
+        //String content = in.nextLine();
         switch (input) {
             case "1":
+                tp.printSendMessageOrganizer("message instruction");
+                String content = in.nextLine();
                 for(User user : am.getUserList()){
                     if (am.checkAccountType(am.getName(user)).equals("speaker"))
                         mm.sendMessage1(sender, user, content);
@@ -350,9 +352,11 @@ public class MessageMenu {
                 saveAll();
                 break;
             case "2":
+                tp.printSendMessageOrganizer("message instruction");
+                String content1 = in.nextLine();
                 for (User user : am.getUserList()){
                     if (am.checkAccountType(am.getName(user)).equals("attendee"))
-                        mm.sendMessage1(sender, user, content);
+                        mm.sendMessage1(sender, user, content1);
                 }
                 tp.printSendMessageOrganizer("case 2 sent");
                 saveAll();
@@ -360,9 +364,15 @@ public class MessageMenu {
             case "3":
                 tp.printSendMessageOrganizer("case 3 username");
                 String receiver = in.nextLine();
-                if (am.checkUser(receiver))
-                    mm.sendMessage1(sender, am.getUser(receiver), content);
-                tp.printSendMessageOrganizer("case 3 sent");
+                if (am.checkUser(receiver)){
+                    tp.printSendMessageOrganizer("message instruction");
+                    String content2 = in.nextLine();
+                    mm.sendMessage1(sender, am.getUser(receiver), content2);
+                    tp.printSendMessageOrganizer("case 3 sent");
+                }
+                else{
+                    System.out.println("User does not exist.");
+                }
         }
     }
 
@@ -370,37 +380,36 @@ public class MessageMenu {
     * Take sender user and ask for content of message and receiver and will send to message.
     */
     private void sendMessage(User us) throws IOException {
-        tp.printSendMessage("instruction");
+        StringBuilder str = mm.getMessageable(am.getContactList(us));
+        String receiver = "";
+        if (str.length() != 0) {
+            System.out.println(str);
+            tp.printSendMessage("recipient input");
+            receiver = in.nextLine();
+            if (receiver.equals("back"))
+                messageMenu();
+        }
+        else{
+            tp.printSendMessage("no contacts");
+            messageMenu();
+        }
+        if (!am.checkInContact(us, am.getUser(receiver))){
+            System.out.println("User not in your contact / does not exist.");
+            messageMenu();
+        }
+        tp.printSendMessage("instruction"); //"plz enter message"
         String content = in.nextLine();
         if (content.equals("back"))
             messageMenu();
         else {
-            StringBuilder str = mm.getMessageable(am.getContactList(us));
-            String receiver = "";
-            if (str.length() != 0) {
-                System.out.println(str);
-                tp.printSendMessage("recipient input");
-                receiver = in.nextLine();
+            mm.sendMessage(us, am.getUser(receiver), content);
+            if (am.checkAccountType(am.getName(am.getUser(receiver))).equals("organizer")){
+                tp.printSendMessage("warning message organizer");
             }
-            else{
-                tp.printSendMessage("no contacts");
-                messageMenu();
+            else if(am.checkAccountType(am.getName(am.getUser(receiver))).equals("speaker")){
+                tp.printSendMessage("warning message speaker");
             }
-            if (receiver.equals("back"))
-                messageMenu();
-            else {
-                if(mm.sendMessage(us, am.getUser(receiver), content)) {
-                    if (am.checkAccountType(am.getName(am.getUser(receiver))).equals("organizer")){
-                        tp.printSendMessage("warning message organizer");
-                    }
-                    else if(am.checkAccountType(am.getName(am.getUser(receiver))).equals("speaker")){
-                        tp.printSendMessage("warning message speaker");
-                    }
-                    tp.printSendMessage("message sent");
-                } else {
-                    tp.printSendMessage("message not sent");
-                }
-            }
+            tp.printSendMessage("message sent");
         }
         saveAll();
     }
