@@ -1,7 +1,6 @@
 package Entities;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * A Room class. An Entity class used for storing and passing room information.
@@ -9,7 +8,6 @@ import java.util.List;
 public class Room implements Serializable {
     private int roomNumber;
     private int roomCapacity;
-    private List<Event> roomSchedule;
     private int seating;
     private int proj;
 
@@ -43,22 +41,6 @@ public class Room implements Serializable {
      */
     public int getRoomCapacity(){
         return roomCapacity;
-    }
-
-    /**
-     * Sets the RoomSchedule into a given List<Event>
-     * @param s a List<Event> variable representing the RoomSchedule
-     */
-    public void setRoomSchedule(List<Event> s){
-        this.roomSchedule=s;
-    }
-
-    /**
-     * Returns the List<Event> stored in RoomSchedule
-     * @return a List<Event> variable representing the RoomSchedule
-     */
-    public List<Event> getRoomSchedule(){
-        return roomSchedule;
     }
 
     /**

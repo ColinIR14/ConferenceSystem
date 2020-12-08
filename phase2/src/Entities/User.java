@@ -9,12 +9,11 @@ import java.util.List;
  */
 public class User implements Serializable{
     private String password;
-    private String username;
+    private final String username;
     private boolean logInStatus;
-    private List<User> messageable;
-    private List<Event> eventsAttending;
-    private String accountType;
-
+    private final List<User> messageable;
+    private final List<Event> eventsAttending;
+    private final String accountType;
 
     /**
      * Constructor for creating User.
@@ -31,8 +30,8 @@ public class User implements Serializable{
     }
 
     /**
-     * Getters and Setters for username, password, accountType, and LoginStatus. (All strings) */
-
+     * Getters and Setters for username, password, accountType, and LoginStatus. (All strings)
+     */
     public void setPassword(String newPassword) {
         this.password = newPassword;
     }
@@ -41,20 +40,12 @@ public class User implements Serializable{
         return password;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getUsername() {
         return username;
     }
 
     public void setLogInStatus(boolean b) {
         this.logInStatus = b;
-    }
-
-    public boolean getLoginStatus() {
-        return logInStatus;
     }
 
     public String getAccountType() {
@@ -72,26 +63,6 @@ public class User implements Serializable{
 
     public List<User> getMessageable() {
         return messageable;
-    }
-
-    public String messageableToString(){
-        StringBuilder userNameList = new StringBuilder("Contact list:");
-        for(User u : messageable){
-            userNameList.append(u.getUsername()).append("\n");
-        }
-        return userNameList.toString();
-    }
-
-    public List<Event> getEventsAttending() {
-        return eventsAttending;
-    }
-
-    public void setEventsAttending(List<Event> events) {
-        eventsAttending = events;
-    }
-
-    public void addEventAttending(Event e) {
-        eventsAttending.add(e);
     }
 
     /**

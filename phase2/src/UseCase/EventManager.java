@@ -13,13 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EventManager implements Serializable, PropertyChangeListener {
-    private ArrayList<Event> eventList;
+    private final ArrayList<Event> eventList;
     private static int nextId;
-    private ArrayList<Room> roomList;
-    private ArrayList<Room> roomOccupied;
+    private final ArrayList<Room> roomList;
+    private final ArrayList<Room> roomOccupied;
 
     /**
-     * Constructor for creating UseCase.EventManager, making the eventList and a counter for id number.
+     * Constructor for creating EventManager, making the eventList and a counter for id number.
      */
     public EventManager() {
         eventList = new ArrayList<>();
@@ -115,30 +115,12 @@ public class EventManager implements Serializable, PropertyChangeListener {
     }
 
     /**
-     * Return the number of events in eventList
-     *
-     * @return int of length of eventList
-     */
-    public int numEvents() {
-        return eventList.size();
-    }
-
-    /**
      * Set the room number
      * @param r the Room object taken in
      * @param num the number to be set
      */
     public void setRoomNum(Room r, int num){
         r.setRoomNumber((num));
-    }
-
-    /**
-     * Set the room capacity
-     * @param r the Room object taken in
-     * @param num the number to be set
-     */
-    public void setRoomCapacity(Room r, int num){
-        r.setRoomCapacity((num));
     }
 
     /**
@@ -273,6 +255,7 @@ public class EventManager implements Serializable, PropertyChangeListener {
         }
         return false;
     }
+
     public void addSpeaker(Event e, User speaker) {
         for (Event x : eventList) {
             if (x.equals(e)) {
@@ -352,20 +335,6 @@ public class EventManager implements Serializable, PropertyChangeListener {
     }
 
     /**
-     * Checks if an event has already been created.
-     * @param num Event Id
-     * @return boolean true if an event with 'num' id exists and false if it doesn't.
-     */
-    public boolean checkEvent(int num){
-        for (Event e: eventList) {
-            if (e.getEventId() == num){
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
      * Return the list of events which a specific user will be attending.
      *
      * @param user User in question
@@ -389,11 +358,11 @@ public class EventManager implements Serializable, PropertyChangeListener {
      */
     public void propertyChange(PropertyChangeEvent evt){
         for(Event x:eventList){
-            if (x.getAttendees().contains((User)evt.getOldValue()))
+            if (x.getAttendees().contains(evt.getOldValue()))
                 x.removeAttendee((User) evt.getOldValue());
         }
         for(Event x:eventList){
-            if (x.getSpeaker().contains((User)evt.getOldValue()))
+            if (x.getSpeaker().contains(evt.getOldValue()))
                 x.removeSpeaker((User) evt.getOldValue());
         }
     }
@@ -410,8 +379,6 @@ public class EventManager implements Serializable, PropertyChangeListener {
                 if (u.getUsername().equals(s.getUsername()))
                     events.add(x);
             }
-            //if(x.getSpeaker().getUsername().equals(s.getUsername())){
-            //  events.add(x);
         }
         return events;
     }

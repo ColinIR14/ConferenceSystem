@@ -14,16 +14,16 @@ import java.util.Scanner;
 
 public class EventSystem {
 
-    private Gateway g = new Gateway();
-    private TextPresenter tp = new TextPresenter();
-    private Scanner in = new Scanner(System.in);
-    private AccountManager am;
-    private EventManager em;
-    private MessageManager mm;
+    private final Gateway g = new Gateway();
+    private final TextPresenter tp = new TextPresenter();
+    private final Scanner in = new Scanner(System.in);
+    private final AccountManager am;
+    private final EventManager em;
+    private final MessageManager mm;
     private String currentUser;
 
     /**
-     * Constructor for creating Controllers.EventSystem.
+     * Constructor for creating EventSystem.
      * @param am the programs account manager.
      * @param em the programs event manager.
      * @param mm the programs message manager.
@@ -35,7 +35,7 @@ public class EventSystem {
     }
 
     /**
-     * Alternative Constructor for creating Controllers.EventSystem.
+     * Alternative Constructor for creating EventSystem.
      * @param am the programs account manager.
      * @param em the programs event manager.
      * @param mm the programs message manager.
@@ -60,15 +60,14 @@ public class EventSystem {
         }
     }
 
-    // TODO: Add Javadoc for welcome()
-    /*
-    Welcome is the first UI function called for the program, and allows the user to log in,
-    make a new attendee account, or exit. Once logged in, it directs the user to the main menu.
-
-    Note that to make an admin account, you may use the default admin login below:
-    Username: admin
-    Password: prime
-    */
+    /**
+     * Welcome is the first UI function called for the program, and allows the user to log in,
+     * make a new attendee account, or exit. Once logged in, it directs the user to the main menu.
+     * Note that to make an admin account, you may use the default admin login below:
+     * Username: admin
+     * Password: prime
+     * @throws IOException if there's no serialized file
+     */
     public void welcome() throws IOException {
         tp.printWelcome("menu");
         String next = in.nextLine();
@@ -109,7 +108,7 @@ public class EventSystem {
 
     /*
     Prompts user for username and password, and returns them in an array to help other functions.
-    */
+     */
     private String[] promptLoginInfo() {
         String[] arr = new String[2];
         tp.printLogInInfo("username");
@@ -123,7 +122,7 @@ public class EventSystem {
 
     /*
     Checks username and password and logs user in if their account if found.
-    */
+     */
     private boolean logIn(String username, String password) {
         if (am.logInUser(username, password)) {
             currentUser = username;
@@ -135,7 +134,7 @@ public class EventSystem {
     }
 
     /*
-     * Signs out the current user.
+    Signs out the current user.
      */
     private void signOut() throws IOException {
         am.logOffUser(am.currentUser);
@@ -145,17 +144,17 @@ public class EventSystem {
     }
 
     /*
-    * Terminates the program and saves all the managers.
-    */
+    Terminates the program and saves all the managers.
+     */
     private void closeProgram() throws IOException {
         saveAll();
     }
 
-    // TODO: Add Javadoc for mainMenu()
-    /*
-    Gives the user the main menu for the program. Allows user to access various submenus to use the program,
-    or to sign out.
-    */
+    /**
+     * Gives the user the main menu for the program. Allows user to access various submenus to use the program,
+     * or to sign out.
+     * @throws IOException if there's no serialized file
+     */
     public void mainMenu() throws IOException {
         tp.printMainMenu();
         String next = in.nextLine();
@@ -183,7 +182,7 @@ public class EventSystem {
     }
 
     /*
-     * Saves all the managers.
+    Saves all the managers.
      */
     private void saveAll() throws IOException {
         g.saveAccountManagerToFile(am, "AccountManagerSave.ser");

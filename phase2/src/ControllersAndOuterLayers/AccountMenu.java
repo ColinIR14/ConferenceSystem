@@ -9,17 +9,20 @@ import java.beans.PropertyChangeSupport;
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * An Account Menu and its sub-menus, part of the controller.
+ */
 public class AccountMenu {
 
-    private AccountManager am;
-    private EventManager em;
-    private MessageManager mm;
-    private String currentUser;
-    private EventSystem es;
-    private Scanner in = new Scanner(System.in);
-    private Gateway g = new Gateway();
-    private TextPresenter tp = new TextPresenter();
-    private PropertyChangeSupport support;
+    private final AccountManager am;
+    private final EventManager em;
+    private final MessageManager mm;
+    private final String currentUser;
+    private final EventSystem es;
+    private final Scanner in = new Scanner(System.in);
+    private final Gateway g = new Gateway();
+    private final TextPresenter tp = new TextPresenter();
+    private final PropertyChangeSupport support;
 
     public AccountMenu(AccountManager am, EventManager em, MessageManager mm, String currentUser) {
         this.am = am;
@@ -32,8 +35,7 @@ public class AccountMenu {
         support.addPropertyChangeListener(am);
     }
 
-    // TODO: Add Javadoc for accountMenu()
-    /*
+    /**
      * If the logged in user is an organizer, allows the user to enter a single-digit input between 1-6 to select the
      * operation they want to take.
      * (1.Add Organizer account  2.delete account  3.Reset account  4.Reset password  5.List users  6.Main menu)
@@ -41,6 +43,8 @@ public class AccountMenu {
      * to select the operation they want to take.
      * (1.delete account  2.Reset account 3.Main menu)
      * Each option selected redirects to a corresponding private method previously defined.
+     *
+     * @throws IOException if there's no serialized file for AccountManager.
      */
     public void accountMenu() throws IOException {
         tp.printAccountMenu("title");
@@ -109,18 +113,18 @@ public class AccountMenu {
     }
 
     /*
-    * Add a certain type account by creating the user name and password if the user logged in is an organizer,
-    * otherwise the request is refused.
-    */
+    Add a certain type account by creating the user name and password if the user logged in is an organizer,
+    otherwise the request is refused.
+     */
     private void addAccount(String accountType) throws IOException {
         tp.printAddAccount("username");
         String username = in.nextLine();
-        if (username.equals("back")){
+        if (username.equals("back")) {
             accountMenu();
         }
         tp.printAddAccount("password");
         String password = in.nextLine();
-        if (password.equals("back")){
+        if (password.equals("back")) {
             accountMenu();
         }
         if (am.addNewUser(username, password, accountType)) {
@@ -132,23 +136,22 @@ public class AccountMenu {
     }
 
     /*
-    * If the user logged in is an organizer, remove a certain account by entering the user name when the user name
-    * entered exists, otherwise the request is refused.
-    * If the user logged in is a speaker or attendee, remove the logged in account by entering user name and password,
-    * otherwise the request is refused.
-    */
+    If the user logged in is an organizer, remove a certain account by entering the user name when the user name
+    entered exists, otherwise the request is refused.
+    If the user logged in is a speaker or attendee, remove the logged in account by entering user name and password,
+    otherwise the request is refused.
+     */
     private void removeAccount() throws IOException {
         if (am.checkAccountType(currentUser).equals("organizer")) {
             tp.printRemoveAccount("username");
             String username = in.nextLine();
-            if (username.equals("back")){
+            if (username.equals("back")) {
                 accountMenu();
             }
             if (am.getUser(username) == null) {
                 tp.printRemoveAccount("user error");
             } else {
-
-                support.firePropertyChange("currentUser",am.getUser(username),null);
+                support.firePropertyChange("currentUser", am.getUser(username), null);
                 am.deleteUser(username, am.getUser(username).getPassword());
                 tp.printSuccess();
             }
@@ -156,13 +159,13 @@ public class AccountMenu {
         } else {
             tp.printRemoveAccount("password");
             String password = in.nextLine();
-            if (password.equals("back")){
+            if (password.equals("back")) {
                 accountMenu();
             }
             User u = am.getUser(currentUser);
             if (am.deleteUser(currentUser, password)) {
                 tp.printSuccess();
-                support.firePropertyChange("currentUser",u,null);
+                support.firePropertyChange("currentUser", u, null);
                 es.welcome();
             } else {
                 tp.printRemoveAccount("self error");
@@ -173,12 +176,12 @@ public class AccountMenu {
     }
 
     /*
-    * Change the current user's password to the newly entered one.
-    */
+    Change the current user's password to the newly entered one.
+     */
     private void changePassword() throws IOException {
         tp.printChangePassword();
         String password = in.nextLine();
-        if (password.equals("back")){
+        if (password.equals("back")) {
             accountMenu();
         }
         am.resetPassword(am.getUser(currentUser), password);
@@ -187,8 +190,8 @@ public class AccountMenu {
     }
 
     /*
-    * Saves all the managers.
-    */
+    Saves all the managers.
+     */
     private void saveAll() throws IOException {
         g.saveAccountManagerToFile(am, "AccountManagerSave.ser");
         g.saveEventManagerToFile(em, "EventManagerSave.ser");

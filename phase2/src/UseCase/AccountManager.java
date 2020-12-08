@@ -14,15 +14,15 @@ import java.util.List;
 
 public class AccountManager implements Serializable, PropertyChangeListener {
 
-    private ArrayList<User> userList;
+    private final ArrayList<User> userList;
     public User currentUser;
 
     /**
-     * Creates an UseCase.AccountManager with an empty ArrayList of User.
+     * Creates an AccountManager with an empty ArrayList of User.
      * NOTE TO CONTROLLER/GATEWAY: Since the AccountManger creates a new userList when it is instantiated, it needs
-     * to load(or save) all User information in the database when a new UseCase.AccountManager is created. Make sure there is a
-     * method in the ControllersAndOuterLayers.Gateway that reads/write the User info as instances of User to the UseCase.AccountManager. An
-     * UseCase.AccountManager can be saved in a UseCase.AccountManager.ser file for easy reading/writing, as this class implements
+     * to load(or save) all User information in the database when a new AccountManager is created. Make sure there is a
+     * method in the ControllersAndOuterLayers.Gateway that reads/write the User info as instances of User to the AccountManager. An
+     * AccountManager can be saved in a AccountManager.ser file for easy reading/writing, as this class implements
      * Serializable. But this can be decided later.
      */
     public AccountManager(){
@@ -43,7 +43,6 @@ public class AccountManager implements Serializable, PropertyChangeListener {
                 return false; //duplicate username
             }
         }
-        //TODO:pass in accountType as parameter when constructor of User is implemented.
         userList.add(new User(username, password, accountType));
         return true;
     }
@@ -130,6 +129,7 @@ public class AccountManager implements Serializable, PropertyChangeListener {
         }
         return null; //Account DNE
     }
+
     /**
      * Returns a more user-friendly String representing all users.
      * @return A String representing the user's usernames
@@ -154,7 +154,6 @@ public class AccountManager implements Serializable, PropertyChangeListener {
             return currentUser;}
         }
         return null;
-        //return new User("invalid","invalid","user");
     }
 
     /**
@@ -224,5 +223,4 @@ public class AccountManager implements Serializable, PropertyChangeListener {
             return false;
         }
     }
-
 }

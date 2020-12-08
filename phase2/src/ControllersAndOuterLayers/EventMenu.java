@@ -15,16 +15,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * An Event Menu and its sub-menus, part of the controller.
+ */
 public class EventMenu {
 
-    private AccountManager am;
-    private EventManager em;
-    private MessageManager mm;
-    private String currentUser;
-    private EventSystem es;
-    private Scanner in = new Scanner(System.in);
-    private Gateway g = new Gateway();
-    private TextPresenter tp = new TextPresenter();
+    private final AccountManager am;
+    private final EventManager em;
+    private final MessageManager mm;
+    private final String currentUser;
+    private final EventSystem es;
+    private final Scanner in = new Scanner(System.in);
+    private final Gateway g = new Gateway();
+    private final TextPresenter tp = new TextPresenter();
 
     public EventMenu(AccountManager am, EventManager em, MessageManager mm, String currentUser) {
         this.am = am;
@@ -34,7 +37,10 @@ public class EventMenu {
         this.es = new EventSystem(am, em, mm, currentUser);
     }
 
-    // TODO: Add Javadoc for eventMenu()
+    /**
+     * Prompts the event menu and takes in user input to move to the next prompt.
+     * @throws IOException if there's no serialized file for EventManager.
+     */
     public void eventMenu() throws IOException {
         tp.eventMenuOrganizerPrompt("title");
         if (am.checkAccountType(currentUser).equals("organizer")) {
@@ -196,12 +202,14 @@ public class EventMenu {
                 tp.eventMenuOrganizerPrompt("input error");
                 eventMenu();
             }
-
         }
         saveAll();
         eventMenu();
     }
 
+    /*
+    A more specific subsection of event menu
+     */
     private void specificEventMenu(Event e) throws IOException {
         tp.specificEventMenuPrompt("options");
         String next = in.nextLine();
@@ -256,6 +264,9 @@ public class EventMenu {
         eventMenu();
     }
 
+    /*
+    Adds an event with prompts and takes user input
+     */
     private void addEvent() throws IOException {
         tp.addEventPrompt("event name");
         String name = in.nextLine();
@@ -297,7 +308,6 @@ public class EventMenu {
                 eventMenu();
             }
 
-
             List<Room> roomList = em.listOfRooms(seating, proj);
 
             StringBuilder s = new StringBuilder();
@@ -333,7 +343,6 @@ public class EventMenu {
             } else {
                 tp.addEventPrompt("event fail");
             }
-
         } catch (DateTimeParseException e) {
             tp.addEventPrompt("invalid date");
             eventMenu();
@@ -349,11 +358,17 @@ public class EventMenu {
         eventMenu();
     }
 
+    /*
+    Cancels an event with given event e
+     */
     private void cancelEvent(Event e) throws IOException {
         em.cancelEvent(e);
         saveAll();
     }
 
+    /*
+    Adds the current logged in user to given event
+     */
     private void addSelfToEvent(Event e) throws IOException {
         if (em.signUpUsertoEvent(e, am.getUser(currentUser))) {
             tp.printAddSelfToEvent("fail");
@@ -369,8 +384,8 @@ public class EventMenu {
     }
 
     /*
-    * addition requests can be made by users to the event that they are attending.
-    */
+    Addition requests can be made by users to the event that they are attending.
+     */
     private void additionalRequest(Event e) throws IOException {
         tp.printAdditionalRequest("menu");
         String input = in.nextLine();
@@ -405,6 +420,10 @@ public class EventMenu {
         saveAll();
     }
 
+    /*
+    Adds an user to given e, will prompt the current user to input the other user to be added to the event. This is a
+    feature only for organizers.
+     */
     private void addUserToEvent(Event e) throws IOException {
         try {
             tp.printAddUserToEvent("username");
@@ -424,7 +443,9 @@ public class EventMenu {
         }
     }
 
-
+    /*
+    Removes the current user from the given event.
+     */
     private void removeSelfFromEvent(Event e) throws IOException {
         if (em.cancelUseratEvent(e, am.getUser(currentUser))) {
             tp.printRemoveSelfFromEvent("success");
@@ -434,6 +455,10 @@ public class EventMenu {
         saveAll();
     }
 
+    /*
+    Removes an user from the event, will prompt the current user to input the other user to be removed. This is a
+    feature only for organizers.
+     */
     private void removeUserFromEvent(Event e) throws IOException {
         tp.printRemoveUserFromEvent("username");
         String username = in.nextLine();
@@ -448,8 +473,8 @@ public class EventMenu {
     }
 
     /*
-    * change the speaker of a given event.
-    */
+    Change the speaker of a given event.
+     */
     private void changeSpeaker(Event e) throws IOException {
         tp.printChangeSpeaker("username");
         String username = in.nextLine();
@@ -460,6 +485,10 @@ public class EventMenu {
         }
         saveAll();
     }
+
+    /*
+    Remove the speaker of a given event.
+     */
     private void removeSpeaker(Event e) throws IOException{
         tp.printRemoveSpeaker("username");
         String username = in.nextLine();
@@ -474,6 +503,9 @@ public class EventMenu {
         saveAll();
     }
 
+    /*
+    Change the capacity of event.
+     */
     private void changeEventCapacity(Event event) throws IOException{
         try {
             tp.printChangeEventCapacity("new capacity");
@@ -492,8 +524,8 @@ public class EventMenu {
     }
 
     /*
-    * Organizer can decide which requests to approve which ones to leave out.
-    */
+    Organizer can decide which requests to approve which ones to leave out.
+     */
     private void addressRequest(Event e) throws IOException {
         boolean repeat = true;
         if (em.getAccessibilityReqListSize(e) + em.getDietaryReqListSize(e) != 0){
@@ -518,10 +550,11 @@ public class EventMenu {
             tp.printAddressRequest("no requests");
     }
 
-    // TODO: Add Javadoc for sendMessageToEventMembers(e)
-    /*
-    * send message to all attendees of given event
-    */
+    /**
+     * Send message to all attendees of given event
+     * @param e Event object
+     * @throws IOException
+     */
     public void sendMessageToEventMembers(Event e) throws IOException {
         tp.printSendMessageToEventMembers();
         String message = in.nextLine();
@@ -530,8 +563,8 @@ public class EventMenu {
     }
 
     /*
-    * Saves all the managers.
-    */
+    Saves all the managers.
+     */
     private void saveAll() throws IOException {
         g.saveAccountManagerToFile(am, "AccountManagerSave.ser");
         g.saveEventManagerToFile(em, "EventManagerSave.ser");

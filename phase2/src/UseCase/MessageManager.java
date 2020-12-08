@@ -14,11 +14,11 @@ import java.util.List;
 
 public class MessageManager implements Serializable{
 
-    private ArrayList<Message> messageList;
+    private final ArrayList<Message> messageList;
 
     /**
-     * Creates a UseCase.MessageManager with an empty ArrayList of user messages.
-     * messageList stores all messages generated thus will need to be saved in a UseCase.MessageManager.ser file for easy
+     * Creates a MessageManager with an empty ArrayList of user messages.
+     * messageList stores all messages generated thus will need to be saved in a MessageManager.ser file for easy
      * reading/writing, this file has implemented Serializable.
      */
     public MessageManager(){
@@ -26,15 +26,14 @@ public class MessageManager implements Serializable{
     }
 
     /*
-     * Takes in sender, receiver, content, and creates a new Message with the given information.
-     * The sender and receiver can not be the same user. There may need be a restriction that will not allow users
-     * to send information to organizers but need to discuss later.
-     * Returns a new Message instance with given arguments.
-     */
+     Takes in sender, receiver, content, and creates a new Message with the given information.
+     The sender and receiver can not be the same user. There may need be a restriction that will not allow users
+     to send information to organizers but need to discuss later.
+     Returns a new Message instance with given arguments.
+      */
     private Message addMessage(User sender, User receiver, String content){
         return new Message(sender, receiver, content);
     }
-
 
     /**
      * Takes in sender, receiver, content, and check if the the receiver is messageable for the sender. If messageable,

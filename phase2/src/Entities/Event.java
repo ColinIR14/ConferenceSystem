@@ -10,20 +10,20 @@ import java.util.List;
  * Stores a unique id,name of event, time started, list of attendees,room and speaker of event.
  * */
 public class Event implements Serializable{
-  private Integer id;
-  private String eventName;
-  private LocalDateTime eventStartTime;
-  private LocalDateTime eventEndTime;
-  private List<User> attendees;
-  private Room eventRoom;
-  private ArrayList<User> eventSpeaker;
+  private final Integer id;
+  private final String eventName;
+  private final LocalDateTime eventStartTime;
+  private final LocalDateTime eventEndTime;
+  private final List<User> attendees;
+  private final Room eventRoom;
+  private final ArrayList<User> eventSpeaker;
   private Integer eventCapacity;
   private transient  DateTimeFormatter d = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
   private boolean isVip;
-  private ArrayList<String> dietaryList;
-  private ArrayList<String> dietaryRequestList;
-  private ArrayList<String> accessibilityReqList;
-  private ArrayList<String> accessibilityList;
+  private final ArrayList<String> dietaryList;
+  private final ArrayList<String> dietaryRequestList;
+  private final ArrayList<String> accessibilityReqList;
+  private final ArrayList<String> accessibilityList;
 
 
   /**Constructor for Event
@@ -78,14 +78,6 @@ public class Event implements Serializable{
   public LocalDateTime getEventEndTime(){return eventEndTime;}
 
   /**
-   * setter for event time start
-   * @param t- new time to be started at
-   */
-  public void setEventStartTime(LocalDateTime t){
-    eventStartTime =t;
-  }
-
-  /**
    * getter for attendees of event
    * @return attendees of event
    */
@@ -99,8 +91,6 @@ public class Event implements Serializable{
    * @return true iff the event can accept the user and the user isn't already added(if it can it adds the user)
    */
   public boolean addAttendee(User NewAttendee){
-    //ArrayList<String> attendeesUsernames = new ArrayList<>();
-    //for (User x:attendees) attendeesUsernames.add(x.getUsername());
     if(attendees.size()<eventRoom.getRoomCapacity() && !NewAttendee.isContainedIn(attendees)) {
       attendees.add(NewAttendee);
       return true;}
@@ -135,17 +125,14 @@ public class Event implements Serializable{
    * setter for speaker
    * @param s user object representing the new speaker
    */
-  public void setSpeaker(ArrayList<User> s){
-    eventSpeaker=s;
-  }
   public boolean hasSpeaker(User s){
     for(User x:eventSpeaker){
       if(x.getUsername().equals(s.getUsername()))
         return true;
-
     }
     return false;
   }
+
   public void addSpeaker(User s){
     if(!this.hasSpeaker(s))
     eventSpeaker.add(s);
@@ -157,14 +144,6 @@ public class Event implements Serializable{
    */
   public Room getEventRoom(){
     return eventRoom;
-  }
-
-  /**
-   * setter for event Room
-   * @param r room object representing new room for event
-   */
-  public void setEventRoom(Room r){
-    eventRoom=r;
   }
 
   /**
@@ -373,13 +352,9 @@ public class Event implements Serializable{
           }
         }
       }
-      //Duration d= Duration.between(this.eventStartTime,q.getEventStartTime());
-      //long difference = Math.abs(d.getSeconds());
-      //if(difference< 3600) b = true;
       return ((this.eventRoom== q.eventRoom & b)||(b & speakerOverlap)||(this.eventName.equals(q.eventName)));
     }
   }
-
 
   /**
    * Returns string rep of event.
@@ -411,11 +386,8 @@ public class Event implements Serializable{
     }
     else
       s.append("No speakers currently registered.");
-
     s.append("\n");
-
     return s.toString();
   }
-
 }
 

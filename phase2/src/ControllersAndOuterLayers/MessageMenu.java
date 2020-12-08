@@ -16,14 +16,14 @@ import java.util.Scanner;
  */
 public class MessageMenu {
 
-    private AccountManager am;
-    private EventManager em;
-    private MessageManager mm;
-    private String currentUser;
-    private EventSystem es;
-    private Scanner in = new Scanner(System.in);
-    private Gateway g = new Gateway();
-    private TextPresenter tp = new TextPresenter();
+    private final AccountManager am;
+    private final EventManager em;
+    private final MessageManager mm;
+    private final String currentUser;
+    private final EventSystem es;
+    private final Scanner in = new Scanner(System.in);
+    private final Gateway g = new Gateway();
+    private final TextPresenter tp = new TextPresenter();
 
     public MessageMenu(AccountManager am, EventManager em, MessageManager mm, String currentUser) {
         this.am = am;
@@ -32,7 +32,6 @@ public class MessageMenu {
         this.currentUser = currentUser;
         this.es = new EventSystem(am, em, mm, currentUser);
     }
-
 
     /**
      * messageMenu allows logged in user to view messages sent to them, send message to other user in contact, add user to
@@ -132,8 +131,8 @@ public class MessageMenu {
     }
 
     /*
-    * See archived messages for user.
-    */
+    See archived messages for user.
+     */
     private void seeArchive(User us) throws IOException {
         if (mm.getArchivedMessage(us).size()==0) {
             tp.printSeeArchive("no messages");
@@ -168,8 +167,8 @@ public class MessageMenu {
     }
 
     /*
-    * A menu for previewing all messages of a user.
-    */
+    A menu for previewing all messages of a user.
+     */
     private void viewMessageMenu(User us) throws IOException {
         tp.printViewMessageMenu("title");
         System.out.println(seeMessages(us));
@@ -196,8 +195,8 @@ public class MessageMenu {
     }
 
     /*
-    * A specific Menu when dealing with individual messages.
-    */
+    A specific Menu when dealing with individual messages.
+     */
     private void specificMessageMenu(User us, int a, boolean inarchive) throws IOException {
         Message currentMessage;
         if (inarchive){
@@ -277,8 +276,8 @@ public class MessageMenu {
     }
 
     /*
-    send message menu for speaker.
-    */
+    Send message menu for speaker.
+     */
     private void sendMessageSpeaker(User sender) throws IOException {
         tp.printSendMessageSpeaker("options");
         ArrayList<User> validUser = new ArrayList<>();
@@ -321,13 +320,12 @@ public class MessageMenu {
                     tp.printSendMessageSpeaker("default invalid");
                     messageMenu();
             }
-
         }
     }
 
     /*
     Send message menu for organizer.
-    */
+     */
     private void sendMessageOrganizer(User sender) throws IOException{
         tp.printSendMessageOrganizer("options");
         String input = in.nextLine();
@@ -338,8 +336,6 @@ public class MessageMenu {
             tp.printSendMessageOrganizer("invalid");
             sendMessageOrganizer(am.getUser(currentUser));
         }
-        //tp.printSendMessageOrganizer("message instruction");
-        //String content = in.nextLine();
         switch (input) {
             case "1":
                 tp.printSendMessageOrganizer("message instruction");
@@ -377,8 +373,8 @@ public class MessageMenu {
     }
 
     /*
-    * Take sender user and ask for content of message and receiver and will send to message.
-    */
+    Take sender user and ask for content of message and receiver and will send to message.
+     */
     private void sendMessage(User us) throws IOException {
         StringBuilder str = mm.getMessageable(am.getContactList(us));
         String receiver = "";
@@ -415,8 +411,8 @@ public class MessageMenu {
     }
 
     /*
-    * Takes in user receiver and generates list of messages that are sent to the taken user and prints it.
-    */
+    Takes in user receiver and generates list of messages that are sent to the taken user and prints it.
+     */
     private StringBuilder seeMessages(User us) {
         StringBuilder strbNew = new StringBuilder();
         ArrayList<Message> messages = mm.getUserMessages(us);
@@ -439,13 +435,12 @@ public class MessageMenu {
                 i += 1;
             }
         }
-
         return strbNew;
     }
 
     /*
-    * Takes in a user and returns the Arraylist of messages in the exact same order as displayed.
-    */
+    Takes in a user and returns the Arraylist of messages in the exact same order as displayed.
+     */
     private ArrayList<Message> seeMessagesList(User us) {
         ArrayList<Message> ml = new ArrayList<>();
         ArrayList<Message> messages = mm.getUserMessages(us);
@@ -466,8 +461,8 @@ public class MessageMenu {
     }
 
     /*
-    * Saves all the managers.
-    */
+    Saves all the managers.
+     */
     private void saveAll() throws IOException {
         g.saveAccountManagerToFile(am, "AccountManagerSave.ser");
         g.saveEventManagerToFile(em, "EventManagerSave.ser");

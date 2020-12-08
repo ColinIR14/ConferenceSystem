@@ -1,16 +1,14 @@
 package Entities;
 
-import Entities.User;
-
 import java.io.Serializable;
 
 /**
  * A Message class. Used for storing and passing user messages.
  */
 public class Message implements Serializable{
-    private User sender;
-    private User receiver;
-    private String content;
+    private final User sender;
+    private final User receiver;
+    private final String content;
     private boolean viewed;
     private boolean archived;
 
@@ -47,14 +45,6 @@ public class Message implements Serializable{
     }
 
     /**
-     * Returns the content of this message.
-     * @return String of the message
-     */
-    public String getContent() {
-        return this.content;
-    }
-
-    /**
      * Returns a more user-friendly String representing message
      * @return String of the message
      */
@@ -65,7 +55,6 @@ public class Message implements Serializable{
         else{
             return "FROM " + this.sender.getUsername() + " TO " + this.receiver.getUsername() + " : " + this.content;
         }
-
     }
 
     /**
