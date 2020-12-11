@@ -4,6 +4,7 @@ Account Features
 Create, delete accounts (speaker / attendee / organizer)
 Reset password
 VIP accounts that can attend VIP exclusive events.
+
 Message
 Send message between users
 Send message to attendees in one event
@@ -13,12 +14,14 @@ Archive messages, remove from archive (phase 2)
 Direct reply to a message (phase 2)
 Unread/ read messages (phase 2)
 Delete messages (phase 2)
+
 Event
 Extra requirements
 Dietary restrictions
 Accessibility requirements
 Approve any pending requirements
 Specifications for room type, and showing rooms for an event based on room type
+
 General
 Divided controller up by each submenu (AccountMenu, MessageMenu, EventMenu)
 Added presenter class
