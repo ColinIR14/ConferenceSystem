@@ -1,0 +1,13 @@
+List of Patterns 
+
+Reasons why Observer Design Pattern was not used
+(The Observer class in Java was not used because it was deprecated, and instead the PropertyChangeListener and these related interfaces were used). This event being observed was a removal of an account in the AccountMenu,(line 140), and the observers were EventManager and AccountManager(to update events and messages). We decided to implement this so in the case of extending the program to  include other menus, they can easily be updated if an account is removed by just making them an observer here(a classic case as to where the observer design pattern is used)
+
+Strategy
+We considered using this when implementing menus, ie using a strategy that produces different menus based on user type, as the menu available to organisers versus users is different.However, we do not actually think this is necessary, because even though more types of user may be available, the general menu should suffice for most types of users,for example VIP users have the same eventmenu as regular users. Also, creating a new subclass for each type of person or menu is something that we believe would result in a cluttered program.
+
+Factory
+The main place where a factory would be used in this program is in the creation of User accounts, where a Factory could be made for creation of different types of accounts(example Speaker, Organiser,User).There are two reasons we chose not to implement this. Firstly, in our implementation, we decided have all users be in the class User, and have a string representing their account type, thus we are only ever creating instances of User, hence Factory is not necessary.Furthermore, the implementation of the program is such that you first specify what account type you want to make, then make the account, which means Factory is even less applicable!
+
+Dependency Injection
+The Dependency Injection Design Pattern is mainly used in the use case classes (i.e. MessageMenu, AccountMenu, EventMenu) of this program. It is used when the instance variables in these use cases are required to be assigned certain values by calling the functions in entity classes. The main purpose of the application of this design pattern was to avoid any hard-coded dependency of use case classes and entity classes. Specifically, instead of creating a new instance of the object by calling the constructor from the entity class, we pass the object into the function as a variable to avoid creating any hard copy of the object. The application of Dependency Injection Design Pattern allowed us to lessen the dependency in the program as much as possible, which is a good measure for any further possible extension of the program.
